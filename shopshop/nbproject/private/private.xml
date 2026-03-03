@@ -3,17 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Admin/Documents/NetBeansProjects/shopshop/src/java/com/shopshop/context/DBContext.java</file>
-            <file>file:/C:/Users/Admin/Documents/NetBeansProjects/shopshop/src/java/com/shopshop/dao/CategoryDAO.java</file>
-            <file>file:/C:/Users/Admin/Documents/NetBeansProjects/shopshop/src/java/com/shopshop/dao/UsersDAO.java</file>
-            <file>file:/C:/Users/Admin/Documents/NetBeansProjects/shopshop/src/java/com/shopshop/dao/ProductDAO.java</file>
-            <file>file:/C:/Users/Admin/Documents/NetBeansProjects/shopshop/src/java/com/shopshop/dao/OrdersDAO.java</file>
-            <file>file:/C:/Users/Admin/Documents/NetBeansProjects/shopshop/src/java/com/shopshop/model/Orders.java</file>
-            <file>file:/C:/Users/Admin/Documents/NetBeansProjects/shopshop/src/java/com/shopshop/model/Product.java</file>
-            <file>file:/C:/Users/Admin/Documents/NetBeansProjects/shopshop/src/java/com/shopshop/model/Users.java</file>
-            <file>file:/C:/Users/Admin/Documents/NetBeansProjects/shopshop/src/java/com/shopshop/model/OrderDetail.java</file>
-            <file>file:/C:/Users/Admin/Documents/NetBeansProjects/shopshop/src/java/com/shopshop/model/ProductVariant.java</file>
-            <file>file:/C:/Users/Admin/Documents/NetBeansProjects/shopshop/src/java/com/shopshop/model/Category.java</file>
+            <file>file:/D:/coding/WebShopShop_PTIT/shopshop/src/java/com/shopshop/controller/NewServlet.java</file>
         </group>
     </open-files>
 </project-private>
