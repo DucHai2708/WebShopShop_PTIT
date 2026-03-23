@@ -8,7 +8,7 @@ import java.util.*;
 
 public class ProductDAO extends DBContext {
 
-    //Ham lay danh sach cac bien the cua 1 san pham
+    //Hàm lấy danh sách các biến thể của 1 sản phẩm
     public List<ProductVariant> getVariantProductId(int productId) {
         List<ProductVariant> list = new ArrayList<>();
         String sql = "SELECT * FROM ProductVariant WHERE product_id = ?";
@@ -35,7 +35,7 @@ public class ProductDAO extends DBContext {
         return list;
     }
 
-    //Ham lay tat ca cac san pham va nap luon cac bien the vao doi tuong san pham do
+    //Hàm lấy toàn bộ sản phẩm (đã đính kèm luôn danh sách các phân loại của nó).
     public List<Product> getAll() {
         List<Product> list = new ArrayList<>();
         String sql = "SELECT * FROM Product";
@@ -60,7 +60,7 @@ public class ProductDAO extends DBContext {
         return list;
     }
 
-    // Ham lay danh sach san pham dua tren id
+    // Hàm lấy danh sách sản phẩm dựa trên id
     public Product getProductById(int id) {
         String sql = "SELECT * FROM Product WHERE id = ?";
         try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -89,7 +89,7 @@ public class ProductDAO extends DBContext {
         return null;
     }
 
-    // Ham loc san pham dua tren danh muc (vi du: chi hien ao khoac)
+    // Hàm lọc sản phẩm dựa trên id danh mục (ví dụ chỉ hiển thị áo khoác)
     public List<Product> getProductByCategoryId(int cid) {
         List<Product> list = new ArrayList<>();
         String sql = "SELECT * FROM Product WHERE category_id = ? "
@@ -122,7 +122,7 @@ public class ProductDAO extends DBContext {
         return list;
     }
 
-    //Ham tim kiem san pham
+    //Hàm tìm kiếm sản phẩm theo tên
     public List<Product> searchByName(String txtSearch) {
         List<Product> list = new ArrayList<>();
         String sql = "SELECT * FROM Product WHERE name LIKE ?";
@@ -210,7 +210,7 @@ public class ProductDAO extends DBContext {
         return -1;
     }
 
-    // Hàm thêm một biến thể (Size/Màu) cho sản phẩm
+    // Hàm thêm một biến thể (Size/Màu) cho sản phẩm vừa tạo
     public boolean insertVariant(ProductVariant pv) {
         String sql = "INSERT INTO ProductVariant (product_id, color, size, stock_quantity) VALUES (?, ?, ?, ?)";
         try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {

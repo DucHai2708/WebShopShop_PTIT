@@ -8,7 +8,7 @@ import java.util.*;
 
 public class OrdersDAO extends DBContext {
 
-    //Ham tao don hang moi va tra ve id cua don hang vua dat 
+    //Hàm tạo đơn hàng và trả về id của đơn hàng đó
     public int insertOrder(Orders order) {
         String sql = "INSERT INTO Orders (user_id, totalPrice, shipName, shipAddress, shipPhone, status, note) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -32,7 +32,7 @@ public class OrdersDAO extends DBContext {
         return -1;
     }
 
-    //Ham tao chi tiet don hang - lay cai id tu ham 1 de cho vao order_id
+    //Hàm tạo chi tiết đơn hàng - lấy id từ hàm 1 cho vào order_id -  Lưu từng món hàng khách đã chọn vào bảng chi tiết đơn hàng.
     public void insertOrderDetail(int order_id, int variant_id, int quantity, double price) {
         String sql = "INSERT INTO OrderDetail(order_id, variant_id, quantity, price) "
                 + "VALUES(?,?,?,?)";
@@ -49,7 +49,7 @@ public class OrdersDAO extends DBContext {
         }
     }
 
-    //Ham cap nhat kho hang sau khi chot don thanh cong
+    //Hàm cập nhật lại kho hàng nếu chốt đơn thành công
     public void updateStock(int variant_id, int quantityBought) {
         String sql = "UPDATE ProductVariant SET stock_quantity = stock_quantity - ? WHERE id = ?";
         try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -63,7 +63,7 @@ public class OrdersDAO extends DBContext {
         }
     }
 
-    //Ham lay lich su mua hang dua tren user_id
+    //Ham lấy lịch sử mua hàng dựa trên user_id
     public List<Orders> getOrdersByUserId(int user_id) {
         List<Orders> list = new ArrayList<>();
         String sql = "SELECT * FROM Orders WHERE user_id = ? ORDER BY orderDate DESC";
@@ -93,7 +93,7 @@ public class OrdersDAO extends DBContext {
         return list;
     }
 
-    //Ham huy don hang
+    //Ham hủy đơn hàng
     public void cancelOrder(int order_id) {
         String sqlUpdateOrder = "UPDATE Orders SET status = -1 WHERE id = ?";
         String sqlGetDetail = "SELECT variant_id, quantity FROM OrderDetail WHERE order_id = ?";
@@ -129,7 +129,7 @@ public class OrdersDAO extends DBContext {
         }
     }
 
-    //Ham cap nhat trang thai giao hang
+    //Hàm cập nhật lại trạng thái đơn hàng
     public void updateOrderStatus(int order_id, int newStatus) {
         String sql = "UPDATE Orders SET status = ? WHERE id = ?";
         try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -144,7 +144,7 @@ public class OrdersDAO extends DBContext {
         }
     }
 
-    //Ham hien thi don hang cua khach da dat
+    //Hàm hiển thị chi tiết đơn hàng khác vừa đặt
     public List<OrderDetail> getOrderDetailByOrderId(int order_id) {
         List<OrderDetail> list = new ArrayList<>();
         String sql = "SELECT od.*, p.name AS productName, pv.color, pv.size "

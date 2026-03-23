@@ -9,7 +9,7 @@ import java.util.*;
 
 public class CategoryDAO extends DBContext {
 
-    //Ham lay tat ca cac danh muc dang hoat dong
+    //Hàm lấy tất cả các danh mục đang hoạt động
     public List<Category> getAll() {
         List<Category> list = new ArrayList<>();
         String sql = "SELECT * FROM Category WHERE status = 1";
