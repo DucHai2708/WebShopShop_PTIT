@@ -12,13 +12,15 @@
             integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
 
         <title>Atino</title>
+        <!-- CSS -->
+        <link rel="stylesheet" href="./assets/css/style.css">
+        <link rel="stylesheet" href="./assets/css/base.css">
+        <link rel="stylesheet" href="./assets/css/reset.css">
+        <link rel="stylesheet" href="./assets/css/login.css">
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
             integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w=="
             crossorigin="anonymous" referrerpolicy="no-referrer" />
-        <link rel="stylesheet" href="./assets/css/style.css">
-        <link rel="stylesheet" href="./assets/css/base.css">
-        <link rel="stylesheet" href="./assets/css/reset.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
             integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
             crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -37,6 +39,8 @@
         <link
             href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
             rel="stylesheet">
+
+
         <div class="section-one">
             <div class="container-fluid">
                 <div class="inner-wrap">
@@ -45,37 +49,18 @@
                         <p class="phone-number">096728.4444</p>
                     </div>
                     <div class="account-wrap">
-                        <% // Lấy user từ session com.shopshop.model.Users user=(com.shopshop.model.Users)
-                            session.getAttribute("user"); %>
-                            <% if (user !=null) { %>
-                                <%-- ĐÃ ĐĂNG NHẬP: Hiển thị tên + nút đăng xuất --%>
-                                    <div class="account">
-                                        <i class="fa-solid fa-person account-icon"></i>
-                                        <p class="account-text">
-                                            <%= user.getFullName() %>
-                                        </p>
-                                    </div>
-                                    <div class="logout" style="margin-right: 20px;">
-                                        <i class="fa-solid fa-right-from-bracket" style="margin-right: 5px;"></i>
-                                        <a href="logout" class="account-link"
-                                            style="text-decoration: none; color: #5a5a5a;">
-                                            <p class="account-text" style="margin: 0;">Đăng xuất</p>
-                                        </a>
-                                    </div>
-                                    <% } else { %>
-                                        <%-- CHƯA ĐĂNG NHẬP: Hiển thị link đến trang đăng nhập --%>
-                                            <div class="account">
-                                                <i class="fa-solid fa-person account-icon"></i>
-                                                <a href="login" class="account-link">
-                                                    <p class="account-text">Tài khoản</p>
-                                                </a>
-                                            </div>
-                                            <% } %>
-                                                <div class="cart">
-                                                    <i class="fa-solid fa-cart-arrow-down cart-icon"></i>
-                                                    <p class="cart-text">Giỏ hàng(0)</p>
-                                                </div>
+                        <div class="account">
+                            <i class="fa-solid fa-person account-icon"></i>
+                            <a href="#" class="account-link">
+                                <p class="account-text">Tài khoản</p>
+                            </a>
+                        </div>
+                        <div class="cart">
+                            <i class="fa-solid fa-cart-arrow-down cart-icon"></i>
+                            <p class="cart-text">Giỏ hàng(0)</p>
+                        </div>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -159,128 +144,90 @@
             </div>
         </header>
 
-        <div class="slide">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="slide-wrap">
-                            <a href="#">
-                                <img src="./assets/images/slide.jpg" alt="" class="slide-img">
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <style>
 
-        <div class="category">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="category-wrap">
-                            <h2 class="category-title">Áo Thu Đông</h2>
-                            <div class="category-nav">
-                                <a href="#" class="category-item">Áo nỉ/Áo thun tay</a>
-                                <a href="#" class="category-item">Áo len</a>
-                                <a href="#" class="category-item">Áo khoác</a>
-                                <a href="#" class="category-item">Cardigan</a>
-                                <a href="#" class="category-item">Áo Blazer/Áo măng tô</a>
-                                <a href="#" class="category-item">Áo Hoodie</a>
-                                <a href="#" class="category-item">Bộ thể thao thu đông</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        </style>
 
-                <div class="products-wrap">
-                    <div class="row">
-                        <div class="col-xl-3">
-                            <div class="product-wrap">
-                                <img src="./assets/images/product1.jpeg" alt="" class="product-img">
-                                <h4 class="product-title">Áo Nỉ Fitted L.2.7812</h4>
-                                <div class="product-price-wrap">
-                                    <p class="product-price-number">89,000</p>
-                                    <i class="fa-solid fa-dong-sign product-price-dong"></i>
-                                </div>
-
-                                <div class="product-button-wrap">
-                                    <button class="product-btn">
-                                        <i class="fa-solid fa-cart-arrow-down product-btn-icon"></i>
-                                        Mua nhanh
-                                    </button>
-
-                                    <button class="product-btn">
-                                        <i class="fa-regular fa-eye"></i> Xem chi tiết
-                                    </button>
-                                </div>
-                            </div>
+        <div class="login">
+            <div class="container">
+                <div class="login-wrapper">
+                    <div class="login-box">
+                        <div class="login-tabs d-flex">
+                            <div class="tab-item active" id="tab-login">Đăng nhập</div>
+                            <div class="tab-item" id="tab-register">Đăng ký</div>
                         </div>
 
-                        <div class="col-xl-3">
-                            <div class="product-wrap">
-                                <img src="./assets/images/product1.jpeg" alt="" class="product-img">
-                                <h4 class="product-title">Áo Nỉ Fitted L.2.7812</h4>
-                                <div class="product-price-wrap">
-                                    <p class="product-price-number">89,000</p>
-                                    <i class="fa-solid fa-dong-sign product-price-dong"></i>
-                                </div>
+                        <div class="login-form-body" id="form-login">
+                            <form action="login" method="POST">
+                                <%-- Hiển thị thông báo lỗi nếu có --%>
+                                    <% String error=(String) request.getAttribute("error"); %>
+                                        <% if (error !=null) { %>
+                                            <div class="alert alert-danger" style="font-size: 14px;">
+                                                <%= error %>
+                                            </div>
+                                            <% } %>
+                                                <div class="form-group mb-4">
+                                                    <input type="text" name="username" class="form-control"
+                                                        placeholder="Nhập email hoặc Tên đăng nhập">
+                                                </div>
+                                                <div class="form-group mb-4">
+                                                    <input type="password" name="password" class="form-control"
+                                                        placeholder="Mật khẩu">
+                                                </div>
+                                                <button type="submit" class="btn btn-login-submit mb-3 col-12">ĐĂNG
+                                                    NHẬP</button>
 
-                                <div class="product-button-wrap">
-                                    <button class="product-btn">
-                                        <i class="fa-solid fa-cart-arrow-down product-btn-icon"></i>
-                                        Mua nhanh
-                                    </button>
+                                                <div class="text-center mt-2 mb-3">
+                                                    <a href="#"
+                                                        style="color: #4285f4; font-size: 14px; text-decoration: none;">Quên
+                                                        mật
+                                                        khẩu?</a>
+                                                    <p class="mt-2 text-muted" style="font-size: 14px;">Hoặc đăng nhập
+                                                        với</p>
+                                                </div>
 
-                                    <button class="product-btn">
-                                        <i class="fa-regular fa-eye"></i> Xem chi tiết
-                                    </button>
-                                </div>
-                            </div>
+                                                <div class="row px-2">
+                                                    <div class="col-6 px-2">
+                                                        <a href="#" class="social-btn btn-fb w-100">
+                                                            <div class="icon-box">
+                                                                <i class="fa-brands fa-facebook-f"></i>
+                                                            </div>
+                                                            <span class="flex-grow-1 text-center">Đăng nhập bằng
+                                                                Facebook</span>
+                                                        </a>
+                                                    </div>
+                                                    <div class="col-6 px-2">
+                                                        <a href="#" class="social-btn btn-gg w-100">
+                                                            <div class="icon-box">
+                                                                <i class="fa-brands fa-google text-dark bg-white"
+                                                                    style="display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; font-size: 12px;"></i>
+                                                            </div>
+                                                            <span class="flex-grow-1 text-center">Đăng nhập bằng
+                                                                Google</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                            </form>
                         </div>
 
-                        <div class="col-xl-3">
-                            <div class="product-wrap">
-                                <img src="./assets/images/product1.jpeg" alt="" class="product-img">
-                                <h4 class="product-title">Áo Nỉ Fitted L.2.7812</h4>
-                                <div class="product-price-wrap">
-                                    <p class="product-price-number">89,000</p>
-                                    <i class="fa-solid fa-dong-sign product-price-dong"></i>
+                        <div class="login-form-body" id="form-register" style="display: none;">
+                            <form action="#">
+                                <div class="form-group mb-4">
+                                    <input type="text" class="form-control" placeholder="Họ và tên">
                                 </div>
-
-                                <div class="product-button-wrap">
-                                    <button class="product-btn">
-                                        <i class="fa-solid fa-cart-arrow-down product-btn-icon"></i>
-                                        Mua nhanh
-                                    </button>
-
-                                    <button class="product-btn">
-                                        <i class="fa-regular fa-eye"></i> Xem chi tiết
-                                    </button>
+                                <div class="form-group mb-4">
+                                    <input type="text" class="form-control" placeholder="Số điện thoại">
                                 </div>
-                            </div>
+                                <div class="form-group mb-4">
+                                    <input type="email" class="form-control" placeholder="Email">
+                                </div>
+                                <div class="form-group mb-4">
+                                    <input type="password" class="form-control" placeholder="Mật khẩu">
+                                </div>
+                                <button type="submit" class="btn btn-login-submit mb-3 w-100">ĐĂNG KÝ TÀI KHOẢN</button>
+                            </form>
                         </div>
 
-                        <div class="col-xl-3">
-                            <div class="product-wrap">
-                                <img src="./assets/images/product1.jpeg" alt="" class="product-img">
-                                <h4 class="product-title">Áo Nỉ Fitted L.2.7812</h4>
-                                <div class="product-price-wrap">
-                                    <p class="product-price-number">89,000</p>
-                                    <i class="fa-solid fa-dong-sign product-price-dong"></i>
-                                </div>
-
-                                <div class="product-button-wrap">
-                                    <button class="product-btn">
-                                        <i class="fa-solid fa-cart-arrow-down product-btn-icon"></i>
-                                        Mua nhanh
-                                    </button>
-
-                                    <button class="product-btn">
-                                        <i class="fa-regular fa-eye"></i> Xem chi tiết
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -478,6 +425,52 @@
                 </div>
             </div>
         </footer>
+
+        <script>
+            window.addEventListener('scroll', function () {
+                const header = document.querySelector('.header');
+
+                // Bạn có thể thay đổi số 150 này. 
+                // Đây là mốc (tính bằng pixel) khi bạn cuộn qua, header sẽ trượt xuống.
+                if (window.scrollY > 150) {
+                    header.classList.add('sticky');
+                } else {
+                    header.classList.remove('sticky');
+                }
+            });
+        </script>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                // Lấy các phần tử tab và form
+                const tabLogin = document.getElementById('tab-login');
+                const tabRegister = document.getElementById('tab-register');
+                const formLogin = document.getElementById('form-login');
+                const formRegister = document.getElementById('form-register');
+
+                // Bắt sự kiện click vào tab Đăng nhập
+                tabLogin.addEventListener('click', function () {
+                    // Đổi trạng thái tab
+                    tabLogin.classList.add('active');
+                    tabRegister.classList.remove('active');
+
+                    // Hiển thị form đăng nhập, ẩn form đăng ký
+                    formLogin.style.display = 'block';
+                    formRegister.style.display = 'none';
+                });
+
+                // Bắt sự kiện click vào tab Đăng ký
+                tabRegister.addEventListener('click', function () {
+                    // Đổi trạng thái tab
+                    tabRegister.classList.add('active');
+                    tabLogin.classList.remove('active');
+
+                    // Hiển thị form đăng ký, ẩn form đăng nhập
+                    formRegister.style.display = 'block';
+                    formLogin.style.display = 'none';
+                });
+            });
+        </script>
     </body>
 
     </html>

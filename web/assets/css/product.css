@@ -1,0 +1,302 @@
+/* -- PRODUCT DETAIL SECTION -- */
+.product-detail-section {
+    color: var(--text-color);
+}
+
+/* 1. Cột Ảnh Thumbnail */
+.product-thumbnails {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.thumb-img {
+    width: 100%;
+    border: 1px solid #eee;
+    cursor: pointer;
+    padding: 5px;
+    transition: border 0.2s;
+}
+
+.thumb-img.active,
+.thumb-img:hover {
+    border-color: #000;
+}
+
+/* 2. Cột Ảnh Chính */
+.product-main-image {
+    position: relative;
+    background-color: #f8f8f8;
+    padding: 20px;
+    text-align: center;
+}
+
+.product-main-image img {
+    width: 100%;
+    max-width: 450px;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.product-main-image img.fade-out {
+    opacity: 0;
+}
+
+.img-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 24px;
+    color: #ccc;
+    cursor: pointer;
+}
+
+.img-nav.prev {
+    left: 20px;
+}
+
+.img-nav.next {
+    right: 20px;
+}
+
+.zoom-text {
+    font-size: 13px;
+    color: #999;
+}
+
+/* 3. Cột Chi tiết - Chữ & Giá */
+.product-name {
+    font-size: 24px;
+    font-weight: 500;
+    color: #000;
+    margin-bottom: 5px;
+}
+
+.product-status {
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.product-status span {
+    font-weight: 600;
+    color: #000;
+}
+
+.product-price {
+    font-size: 28px;
+    font-weight: 600;
+    color: #000;
+    margin-bottom: 15px;
+}
+
+/* 4. Tùy chọn Màu & Size */
+.option-group {
+    margin-bottom: 20px;
+}
+
+.option-group label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #000;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.size-guide {
+    font-size: 12px;
+    color: #999;
+    text-decoration: underline;
+}
+
+.color-list,
+.size-list {
+    display: flex;
+    gap: 10px;
+}
+
+.color-item {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    border: 1px solid #ccc;
+    padding: 2px;
+    cursor: pointer;
+}
+
+.color-item.active {
+    border-color: #000;
+}
+
+.color-item img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.size-item {
+    width: 45px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    cursor: pointer;
+    color: #000;
+}
+
+.size-item.active,
+.size-item:hover {
+    border-color: #000;
+    background-color: #fff;
+}
+
+/* 5. Nút Bấm & Số Lượng */
+.quantity-selector {
+    display: inline-flex;
+    border: 1px solid #ddd;
+    height: 45px;
+}
+
+.qty-btn {
+    width: 40px;
+    background: #fff;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.qty-input {
+    width: 50px;
+    border: none;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    text-align: center;
+    font-size: 16px;
+}
+
+.qty-input:focus {
+    outline: none;
+}
+
+.btn-add-cart,
+.btn-buy-now {
+    background-color: #000;
+    color: #fff;
+    border: none;
+    height: 50px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-add-cart:hover,
+.btn-buy-now:hover {
+    background-color: #333;
+}
+
+.btn-wishlist {
+    background-color: #fff;
+    color: #000;
+    border: 1px solid #000;
+    height: 50px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-wishlist:hover {
+    background-color: #f9f9f9;
+}
+
+/* 6. Danh sách Cửa Hàng */
+.store-availability {
+    border: 1px solid #eee;
+}
+
+.store-header {
+    background-color: #000;
+    color: #fff;
+    padding: 10px 15px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.store-select {
+    border: none;
+    border-bottom: 1px solid #eee;
+    border-radius: 0;
+    font-size: 13px;
+    box-shadow: none !important;
+}
+
+.store-list {
+    max-height: 200px;
+    overflow-y: auto;
+    padding: 0 15px 15px 15px;
+}
+
+.store-item {
+    display: flex;
+    gap: 15px;
+    padding: 15px 0;
+    border-bottom: 1px dashed #eee;
+}
+
+.store-item:last-child {
+    border-bottom: none;
+}
+
+.store-item .fa-location-dot {
+    color: #666;
+    margin-top: 3px;
+}
+
+.store-info p {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.store-address {
+    font-weight: 600;
+    color: #000;
+}
+
+.store-phone {
+    color: #666;
+}
+
+.store-status.in-stock span {
+    color: #28a745;
+    font-weight: 600;
+}
+
+.store-status.out-stock span {
+    color: #dc3545;
+    font-weight: 600;
+}
+
+/* Custom Thanh Cuộn cho Store List */
+.store-list::-webkit-scrollbar {
+    width: 5px;
+}
+
+.store-list::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 10px;
+}
+
+/* Nút Share */
+.share-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 25px;
+    height: 25px;
+    background-color: #999;
+    color: #fff;
+    border-radius: 50%;
+    text-decoration: none;
+}

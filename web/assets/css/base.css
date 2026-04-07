@@ -1,0 +1,12 @@
+:root {
+    --white-color: #ffffff;
+    --text-color: #5a5a5a;
+}
+
+.body {
+    font-family: "Be Vietnam Pro";
+}
+
+.container {
+    max-width: 1200px;
+}

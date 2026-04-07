@@ -1,0 +1,108 @@
+.login-wrapper {
+    margin: 60px auto;
+    max-width: 550px;
+}
+
+.login-box {
+    border: 1px solid #e1e1e1;
+    background-color: #fff;
+}
+
+.login-tabs {
+    border-bottom: 1px solid #e1e1e1;
+}
+
+.login-tabs .tab-item {
+    width: 50%;
+    text-align: center;
+    padding: 15px 0;
+    font-weight: 500;
+    color: #777;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-size: 15px;
+}
+
+.login-tabs .tab-item.active {
+    color: #333;
+    border-bottom: 2px solid #00a0e9;
+    margin-bottom: -1px;
+}
+
+.login-form-body {
+    padding: 30px;
+}
+
+.login-form-body .form-control {
+    border: none;
+    border-bottom: 1px solid #d9d9d9;
+    border-radius: 0;
+    padding-left: 0;
+    box-shadow: none;
+    font-size: 14px;
+}
+
+.login-form-body .form-control:focus {
+    border-color: #333;
+}
+
+.btn-login-submit {
+    background-color: #000;
+    color: #fff;
+    border-radius: 0;
+    padding: 10px 30px;
+    font-weight: 500;
+}
+
+.btn-login-submit:hover {
+    color: #fff;
+    background-color: #333;
+}
+
+.social-btn {
+    border-radius: 0;
+    padding: 0;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    text-decoration: none !important;
+}
+
+.social-btn:hover {
+    opacity: 0.9;
+}
+
+.btn-fb {
+    background-color: #3b5998;
+    color: #fff;
+    border: 1px solid #3b5998;
+}
+
+.btn-fb .icon-box {
+    background-color: #344e86;
+    color: white;
+    border-right: 1px solid #3b5998;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-gg {
+    background-color: #000;
+    color: #fff;
+    border: 1px solid #000;
+}
+
+.btn-gg .icon-box {
+    background-color: #000;
+    color: #fff;
+    border-right: 1px solid #333;
+}
+
+.social-btn .icon-box {
+    width: 45px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
