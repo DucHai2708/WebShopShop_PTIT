@@ -1,6 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
     <%@page import="com.shopshop.model.Product" %>
         <%@page import="com.shopshop.model.ProductVariant" %>
+                <%@page import="com.shopshop.model.Category" %>
             <%@page import="java.util.List" %>
                 <%@page import="java.text.NumberFormat" %>
                     <%@page import="java.util.Locale" %>
@@ -127,7 +128,7 @@
                                                             <div class="header-wrap">
                                                                 <div class="col-xl-2">
                                                                     <div class="logo-wrap">
-                                                                        <a href="./home.jsp">
+                                                                        <a href="home">
                                                                             <img src="./assets/images/logo.jpg" alt=""
                                                                                 class="header-logo">
                                                                         </a>
@@ -136,58 +137,67 @@
                                                                 <div class="col-xl-7">
                                                                     <div class="nav-wrap">
                                                                         <div class="header-nav">
-                                                                            <a href="./home.jsp"
+                                                                            <a href="home"
                                                                                 class="header-item">Trang chủ</a>
-                                                                            <div class="nav-item-has-dropdown">
-                                                                                <a href="category?id=1"
-                                                                                    class="header-item">Áo thun/Áo
-                                                                                    nỉ</a>
-                                                                                <div class="nav-dropdown">
-                                                                                    <a href="category?id=1">Áo Nỉ / Áo
-                                                                                        Thun Dài Tay</a>
-                                                                                    <a href="category?id=1">Áo Len</a>
-                                                                                    <a href="category?id=1">Áo Khoác</a>
-                                                                                    <a href="category?id=1">Cardigan</a>
-                                                                                    <a href="category?id=1">Áo Blazer /
-                                                                                        Áo Măng Tô</a>
-                                                                                    <a href="category?id=1">Áo
-                                                                                        Hoodie</a>
-                                                                                    <a href="category?id=1">Bộ thể thao
-                                                                                        thu đông</a>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="nav-item-has-dropdown">
-                                                                                <a href="category?id=2"
-                                                                                    class="header-item">Áo xuân hè</a>
-                                                                                <div class="nav-dropdown">
-                                                                                    <a href="category?id=2">Áo Thun Ngắn
-                                                                                        Tay</a>
-                                                                                    <a href="category?id=2">Áo Polo</a>
-                                                                                    <a href="category?id=2">Sơ Mi</a>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="nav-item-has-dropdown">
-                                                                                <a href="category?id=3"
-                                                                                    class="header-item">Quần</a>
-                                                                                <div class="nav-dropdown">
-                                                                                    <a href="category?id=3">Quần
-                                                                                        Jeans</a>
-                                                                                    <a href="category?id=3">Quần
-                                                                                        Kaki</a>
-                                                                                    <a href="category?id=3">Quần
-                                                                                        Short</a>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="nav-item-has-dropdown">
-                                                                                <a href="category?id=4"
-                                                                                    class="header-item">Phụ kiện</a>
-                                                                                <div class="nav-dropdown">
-                                                                                    <a href="category?id=4">Mũ</a>
-                                                                                    <a href="category?id=4">Túi</a>
-                                                                                    <a href="category?id=4">Thắt
-                                                                                        lưng</a>
-                                                                                </div>
-                                                                            </div>
+                                                                           <div class="nav-item-has-dropdown">
+    <a href="category?id=1" class="header-item">Áo Thu Đông</a>
+    <div class="nav-dropdown">
+        <% 
+            List<Category> listWinter = (List<Category>) request.getAttribute("winter");
+            if (listWinter != null) {
+                for (Category c : listWinter) { 
+        %>
+            <a href="category?id=<%= c.getId() %>"><%= c.getName() %></a>
+        <%      }
+            } 
+        %>
+    </div>
+</div>
+
+<div class="nav-item-has-dropdown">
+    <a href="category?id=2" class="header-item">Áo xuân hè</a>
+    <div class="nav-dropdown">
+        <% 
+            List<Category> listSummer = (List<Category>) request.getAttribute("summer");
+            if (listSummer != null) {
+                for (Category c : listSummer) { 
+        %>
+            <a href="category?id=<%= c.getId() %>"><%= c.getName() %></a>
+        <%      }
+            } 
+        %>
+    </div>
+</div>
+
+<div class="nav-item-has-dropdown">
+    <a href="category?id=3" class="header-item">Quần</a>
+    <div class="nav-dropdown">
+        <% 
+            List<Category> listPant = (List<Category>) request.getAttribute("pant");
+            if (listPant != null) {
+                for (Category c : listPant) { 
+        %>
+            <a href="category?id=<%= c.getId() %>"><%= c.getName() %></a>
+        <%      }
+            } 
+        %>
+    </div>
+</div>
+
+<div class="nav-item-has-dropdown">
+    <a href="category?id=4" class="header-item">Phụ kiện</a>
+    <div class="nav-dropdown">
+        <% 
+            List<Category> listAcc = (List<Category>) request.getAttribute("accessories");
+            if (listAcc != null) {
+                for (Category c : listAcc) { 
+        %>
+            <a href="category?id=<%= c.getId() %>"><%= c.getName() %></a>
+        <%      }
+            } 
+        %>
+    </div>
+</div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
