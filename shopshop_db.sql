@@ -6,7 +6,8 @@ CREATE TABLE Category (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
     description TEXT,
-    status INT DEFAULT 1
+    status INT DEFAULT 1,
+    parent_id INT DEFAULT NULL
 );
 
 -- 2. Bảng Người dùng

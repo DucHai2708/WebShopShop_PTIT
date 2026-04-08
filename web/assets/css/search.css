@@ -1,0 +1,28 @@
+/* SEARCH */
+.search {
+    margin: 50px 0 0 0;
+}
+
+.search .search-title {
+    font-size: 36px;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+.search .search-content {
+    font-size: 16px;
+    color: #777;
+    text-align: center;
+}
+
+.search .search-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+/* END SEARCH */
+
+/* PRODUCT */
+
+/* END PRODUCT */
