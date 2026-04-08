@@ -3,6 +3,7 @@ package com.shopshop.controller;
 import com.shopshop.dao.ProductDAO;
 import com.shopshop.model.Product;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -10,6 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+@WebServlet(name = "SearchServlet", urlPatterns = {"/search"})
 public class SearchServlet extends HttpServlet {
 
     @Override
@@ -24,6 +26,13 @@ public class SearchServlet extends HttpServlet {
             request.setAttribute("productList", listProducts);
             request.setAttribute("keyword", keyword);
             
+            // --- BỔ SUNG LẤY DỮ LIỆU CHO MENU HEADER ---
+            com.shopshop.dao.CategoryDAO categoryDAOMenu = new com.shopshop.dao.CategoryDAO();
+            request.setAttribute("winter", categoryDAOMenu.getChildCategories(1));
+            request.setAttribute("summer", categoryDAOMenu.getChildCategories(2));
+            request.setAttribute("pant", categoryDAOMenu.getChildCategories(3));
+            request.setAttribute("accessories", categoryDAOMenu.getChildCategories(4));
+
             request.getRequestDispatcher("search.jsp").forward(request, response);
         } else {
             response.sendRedirect("home");
