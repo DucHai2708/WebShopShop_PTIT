@@ -22,7 +22,9 @@
                             <!-- CSS -->
                             <link rel="stylesheet" href="./assets/css/style.css">
                             <link rel="stylesheet" href="./assets/css/base.css">
-                            <link rel="stylesheet" href="./assets/css/reset.css">
+                            <link rel="stylesheet" href="./assets/css/search.css">
+                            <link rel="stylesheet" href="./assets/css/product.css">
+                            <link rel="stylesheet" href="./assets/css/search.css">
                             <meta charset="UTF-8">
                             <meta name="viewport" content="width=device-width, initial-scale=1.0">
                             <link rel="stylesheet"
@@ -93,7 +95,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <header class="header">
                                 <div class="container-fluid">
                                     <div class="row">
@@ -163,18 +164,24 @@
                                 </div>
                             </header>
 
-                            <div class="breadcrumb-section">
+                            <div class="search">
                                 <div class="container-fluid">
-                                    <% Category category=(Category) request.getAttribute("category"); String
-                                        cateName=category !=null ? category.getName() : "Danh mục" ; %>
-                                        <nav aria-label="breadcrumb">
-                                            <ol class="breadcrumb custom-breadcrumb">
-                                                <li class="breadcrumb-item"><a href="home">Trang chủ</a></li>
-                                                <li class="breadcrumb-item"><a href="#">
-                                                        <%= cateName %>
-                                                    </a></li>
-                                            </ol>
-                                        </nav>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="search-wrap">
+                                                <h2 class="search-title">Tìm kiếm</h2>
+                                                <% List<Product> pList = (List<Product>)
+                                                        request.getAttribute("productList");
+                                                        int count = (pList != null) ? pList.size() : 0;
+                                                        String searchKw = (String) request.getAttribute("keyword");
+                                                        %>
+                                                        <p style="font-size: 16px; color: #777;">Có <%= count %> sản
+                                                                phẩm cho tìm kiếm "<b>
+                                                                    <%= searchKw !=null ? searchKw : "" %>
+                                                                </b>"</p>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
@@ -182,13 +189,6 @@
                             <div class="category">
                                 <div class="container-fluid">
                                     <div class="category-wrap">
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <h2 class="category-title">
-                                                    <%= cateName %>
-                                                </h2>
-                                            </div>
-                                        </div>
                                     </div>
 
                                     <div class="row">
@@ -370,30 +370,34 @@
                                     </div>
                                 </div>
                                 <!-- Grid Sản phẩm -->
-                                <% List<Product> productList = (List<Product>) request.getAttribute("productList");
-                                        NumberFormat nf = NumberFormat.getNumberInstance(new Locale("vi", "VN"));
-                                        %>
+                                <% NumberFormat nf=NumberFormat.getNumberInstance(new Locale("vi", "VN" )); %>
+                                    <div class="products-wrap">
                                         <div class="container-fluid">
-                                            <div class="products-wrap">
-                                                <div class="row">
-                                                    <% if (productList != null && !productList.isEmpty()) {
-                                                        for (Product p : productList) { %>
+                                            <div class="row">
+                                                <% if (pList !=null && !pList.isEmpty()) { for (Product p : pList) { %>
                                                     <div class="col-xl-3">
                                                         <div class="product-wrap">
-                                                            <a href="product?id=<%= p.getId() %>">
-                                                                <img src="<%= p.getImage() %>" alt="<%= p.getName() %>" class="product-img">
-                                                            </a>
-                                                            <h4 class="product-title"><%= p.getName() %></h4>
+                                                            <img src="<%= p.getImage() %>" alt="<%= p.getName() %>"
+                                                                class="product-img">
+                                                            <h4 class="product-title">
+                                                                <%= p.getName() %>
+                                                            </h4>
                                                             <div class="product-price-wrap">
-                                                                <p class="product-price-number"><%= nf.format((long) p.getPrice()) %></p>
+                                                                <p class="product-price-number">
+                                                                    <%= nf.format(p.getPrice()) %>
+                                                                </p>
                                                                 <i class="fa-solid fa-dong-sign product-price-dong"></i>
                                                             </div>
+
                                                             <div class="product-button-wrap">
                                                                 <button class="product-btn">
-                                                                    <i class="fa-solid fa-cart-arrow-down product-btn-icon"></i>
+                                                                    <i
+                                                                        class="fa-solid fa-cart-arrow-down product-btn-icon"></i>
                                                                     Mua nhanh
                                                                 </button>
-                                                                <a href="product?id=<%= p.getId() %>" class="product-btn"
+
+                                                                <a href="product?id=<%= p.getId() %>"
+                                                                    class="product-btn"
                                                                     style="display:inline-flex;align-items:center;gap:5px;text-decoration:none;justify-content:center;">
                                                                     <i class="fa-regular fa-eye"></i> Xem chi tiết
                                                                 </a>
@@ -401,261 +405,260 @@
                                                         </div>
                                                     </div>
                                                     <% } } else { %>
-                                                    <div class="col-12 text-center" style="padding: 40px 0;">
-                                                        <p style="font-size: 16px; color: #888;">Không có sản phẩm nào trong danh mục này.</p>
-                                                    </div>
-                                                    <% } %>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- Pagination -->
-                                        <div class="pagination-section">
-                                            <div class="container">
-                                                <div class="pagination-wrap">
-                                                    <div class="row">
-                                                        <div class="col-12">
-                                                            <nav aria-label="Page navigation example">
-                                                                <ul class="pagination">
-                                                                    <li class="page-item">
-                                                                        <a class="page-link" href="#"
-                                                                            aria-label="Previous">
-                                                                            <span aria-hidden="true">&laquo;</span>
-                                                                        </a>
-                                                                    </li>
-                                                                    <li class="page-item"><a class="page-link"
-                                                                            href="#">1</a></li>
-                                                                    <li class="page-item"><a class="page-link"
-                                                                            href="#">2</a></li>
-                                                                    <li class="page-item"><a class="page-link"
-                                                                            href="#">3</a></li>
-                                                                    <li class="page-item">
-                                                                        <a class="page-link" href="#" aria-label="Next">
-                                                                            <span aria-hidden="true">&raquo;</span>
-                                                                        </a>
-                                                                    </li>
-                                                                </ul>
-                                                            </nav>
+                                                        <div class="col-12 text-center mt-5 mb-5">
+                                                            <h5>Không tìm thấy sản phẩm nào phù hợp với từ khóa của bạn.
+                                                            </h5>
                                                         </div>
+                                                        <% } %>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Pagination -->
+                                    <div class="pagination-section">
+                                        <div class="container">
+                                            <div class="pagination-wrap">
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <nav aria-label="Page navigation example">
+                                                            <ul class="pagination">
+                                                                <li class="page-item">
+                                                                    <a class="page-link" href="#" aria-label="Previous">
+                                                                        <span aria-hidden="true">&laquo;</span>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="page-item"><a class="page-link"
+                                                                        href="#">1</a></li>
+                                                                <li class="page-item"><a class="page-link"
+                                                                        href="#">2</a></li>
+                                                                <li class="page-item"><a class="page-link"
+                                                                        href="#">3</a></li>
+                                                                <li class="page-item">
+                                                                    <a class="page-link" href="#" aria-label="Next">
+                                                                        <span aria-hidden="true">&raquo;</span>
+                                                                    </a>
+                                                                </li>
+                                                            </ul>
+                                                        </nav>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="horizontal-ruler">
+                                        <div class="container">
+                                            <div class="row">
+                                                <hr class="hr">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="customer-service">
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col-xl-3">
+                                                    <h3 class="customer-title">
+                                                        GỌI MUA HÀNG (8:30 - 22:20)
+                                                    </h3>
+                                                    <p class="customer-call-number">0967.284.444</p>
+                                                    <p class="customer-desc">Tất cả các ngày trong tuần</p>
+                                                </div>
+                                                <div class="col-xl-3">
+                                                    <h3 class="customer-title">
+                                                        GÓP Ý, KHIẾU NẠI (8:00 - 17:00)
+                                                    </h3>
+                                                    <p class="customer-call-number">0968.959.050</p>
+                                                    <p class="customer-desc">Các ngày trong tuần (trừ ngày lễ)</p>
+                                                </div>
+                                                <div class="col-xl-3">
+                                                    <h3 class="customer-title">Đăng ký nhận thông tin mới</h3>
+                                                    <div class="form-wrap">
+                                                        <input type="text" class="form-control" id="customer-email"
+                                                            placeholder="Nhập email của bạn tại đây...">
+                                                        <button class="form-control" id="customer-btn">Đăng
+                                                            ký</button>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-3">
+                                                    <h3 class="customer-title">
+                                                        Theo dõi chúng tôi
+                                                    </h3>
+                                                    <div class="customer-socials-wrap">
+                                                        <a href="#" class="customer-socials-item">
+                                                            <i class="fa-brands fa-facebook-f"></i>
+                                                        </a>
+                                                        <a href="#" class="customer-socials-item">
+                                                            <i class="fa-brands fa-instagram"></i>
+                                                        </a>
+                                                        <a href="#" class="customer-socials-item">
+                                                            <i class="fa-solid fa-shop"></i>
+                                                        </a>
+                                                        <a href="#" class="customer-socials-item">
+                                                            <i class="fa-brands fa-twitter"></i>
+                                                        </a>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div class="horizontal-ruler">
-                                            <div class="container">
-                                                <div class="row">
-                                                    <hr class="hr">
+                                    </div>
+
+                                    <footer class="footer">
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col-xl-3">
+                                                    <h3 class="footer-item-title">Hỗ trợ khách hàng</h3>
+                                                    <a href="#" class="footer-item-link">Hướng dẫn mua hàng</a> <br>
+                                                    <a href="#" class="footer-item-link">Hướng dẫn chọn size</a>
+                                                    <br>
+                                                    <a href="#" class="footer-item-link">Phương thức</a> <br>
+                                                    <a href="#" class="footer-item-link">Chính sách vận chuyển</a>
+                                                    <br>
+                                                    <a href="#" class="footer-item-link">Chính sách bảo mật</a> <br>
+                                                    <a href="#" class="footer-item-link">Qui định đổi trả</a> <br>
+                                                    <a href="#" class="footer-item-link">Chính sách xử lý khiếu
+                                                        nại</a>
+                                                </div>
+                                                <div class="col-xl-3">
+                                                    <h3 class="footer-item-title">Về chúng tôi</h3>
+                                                    <p class="footer-item-text">Hộ kinh doanh atino</p>
+                                                    <p style="font-size: 14px; margin-bottom: 5px;"><b>Địa chỉ:
+                                                        </b>Số 110 Phố Nhổn, Phường Tây Tựu,
+                                                        Quận Bắc Từ Liêm, Tp. Hà Nộ</p>
+                                                    <p style="font-size: 14px; margin-bottom: 5px;"><b>Mã Số Doanh
+                                                            Nghiệp: </b>01D-8004624</p>
+                                                    <p style="font-size: 14px; margin-bottom: 5px;"><b>Email:
+                                                        </b>cntt@atino.vn</p>
+                                                </div>
+                                                <div class="col-xl-3">
+                                                    <h3 class="footer-item-title">Hệ thống cửa hàng</h3>
+                                                    <h4 class="footer-list-title">Thành phố Hà Nội</h4>
+                                                    <ul class="footer-item-list">
+                                                        <li class="footer-item">
+                                                            110 Phố Nhổn
+                                                        </li>
+                                                        <li class="footer-item">
+                                                            1221 Giải Phóng
+                                                        </li>
+                                                        <li class="footer-item">
+                                                            154 Quang Trung, Hà Đông
+                                                        </li>
+                                                        <li class="footer-item">
+                                                            34 Trần Phú, Hà Đông
+                                                        </li>
+                                                        <li class="footer-item">
+                                                            208 Bạch Mai
+                                                        </li>
+                                                        <li class="footer-item">
+                                                            175 Chùa Bộc
+                                                        </li>
+                                                        <li class="footer-item">
+                                                            116 Cầu Giấy
+                                                        </li>
+                                                        <li class="footer-item">
+                                                            290 Nguyễn Trãi, Trung Văn (Gần Đại học Hà Nội)
+                                                        </li>
+                                                        <li class="footer-item">
+                                                            312 Khu 6 Trạm Trôi, Hoài Đức
+                                                        </li>
+                                                        <li class="footer-item">
+                                                            195 Quang Trung, Tx.Sơn Tây
+                                                        </li>
+                                                    </ul>
+
+                                                    <h4 class="footer-list-title">Khu vực miền Nam:</h4>
+                                                    <ul class="footer-item-list">
+                                                        <li class="footer-item">
+                                                            225 Võ Văn Ngân, Thủ Đức, HCM
+                                                        </li>
+                                                        <li class="footer-item">
+                                                            567 Quang Trung, P10, Gò Vấp, HCM
+                                                        </li>
+                                                        <li class="footer-item">
+                                                            242 Nguyễn Trãi, P5, Q5, HCM
+                                                        </li>
+                                                        <li class="footer-item">
+                                                            TP. Biên Hoà: 1363 Phạm Văn Thuận
+                                                        </li>
+                                                        <li class="footer-item">
+                                                            Bình Dương: 93 Yersin, TP Thủ Dầu Một
+                                                        </li>
+                                                        <li class="footer-item">
+                                                            Cần Thơ: 73 Nguyễn Việt Hồng
+                                                        </li>
+                                                    </ul>
+
+                                                    <h4 class="footer-list-title">Các tỉnh & thành phố khác:</h4>
+                                                    <ul class="footer-item-list">
+                                                        <li class="footer-item">
+                                                            TP. Thanh Hoá: 236-238 Lê Hoàn
+                                                        </li>
+                                                        <li class="footer-item">
+                                                            TP. Vinh: 167 Nguyễn Văn Cừ, TP Vinh
+                                                        </li>
+                                                        <li class="footer-item">
+                                                            TP. Bắc Ninh: 128 Trần Hưng Đạo
+                                                        </li>
+                                                        <li class="footer-item">
+                                                            TP. Thái Nguyên: 156 Lương Ngọc Quyến
+                                                        </li>
+                                                        <li class="footer-item">
+                                                            TP. Hải Phòng: 300 Lê Lợi
+                                                        </li>
+                                                        <li class="footer-item">
+                                                            TP. Huế: 42 Bến Nghé
+                                                        </li>
+                                                        <li class="footer-item">
+                                                            TP. Đà Nẵng: 436 Lê Duẩn
+                                                        </li>
+                                                        <li class="footer-item">
+                                                            TP. Nam Định: 57 Hàn Thuyên
+                                                        </li>
+                                                        <li class="footer-item">
+                                                            TP. Hạ Long: 581 Lê Thánh Tông
+                                                        </li>
+                                                        <li class="footer-item">
+                                                            TP. Hải Dương: 58 Trần Hưng Đạo
+                                                        </li>
+                                                        <li class="footer-item">
+                                                            TP. Thái Bình: 122 Trần Hưng Đạo
+                                                        </li>
+                                                        <li class="footer-item">
+                                                            TP. Ninh Bình: 61 Đinh Tiên Hoàng
+                                                        </li>
+                                                        <li class="footer-item">
+                                                            TP. Việt Trì: 2145 Đại Lộ Hùng Vương, Phú Thọ
+                                                        </li>
+                                                        <li class="footer-item">
+                                                            TP. Bắc Giang: 206 Hoàng Văn Thụ, Bắc Giang
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                <div class="col-xl-3">
+                                                    <iframe
+                                                        src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FAtino.vn&tabs=timeline&width=340&height=250&small_header=true&adapt_container_width=true&hide_cover=true&show_facepile=false"
+                                                        width="100%" height="250" style="border:none;overflow:hidden"
+                                                        scrolling="no" frameborder="0" allowfullscreen="true"
+                                                        allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
                                                 </div>
                                             </div>
                                         </div>
+                                    </footer>
 
-                                        <div class="customer-service">
-                                            <div class="container">
-                                                <div class="row">
-                                                    <div class="col-xl-3">
-                                                        <h3 class="customer-title">
-                                                            GỌI MUA HÀNG (8:30 - 22:20)
-                                                        </h3>
-                                                        <p class="customer-call-number">0967.284.444</p>
-                                                        <p class="customer-desc">Tất cả các ngày trong tuần</p>
-                                                    </div>
-                                                    <div class="col-xl-3">
-                                                        <h3 class="customer-title">
-                                                            GÓP Ý, KHIẾU NẠI (8:00 - 17:00)
-                                                        </h3>
-                                                        <p class="customer-call-number">0968.959.050</p>
-                                                        <p class="customer-desc">Các ngày trong tuần (trừ ngày lễ)</p>
-                                                    </div>
-                                                    <div class="col-xl-3">
-                                                        <h3 class="customer-title">Đăng ký nhận thông tin mới</h3>
-                                                        <div class="form-wrap">
-                                                            <input type="text" class="form-control" id="customer-email"
-                                                                placeholder="Nhập email của bạn tại đây...">
-                                                            <button class="form-control" id="customer-btn">Đăng
-                                                                ký</button>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-xl-3">
-                                                        <h3 class="customer-title">
-                                                            Theo dõi chúng tôi
-                                                        </h3>
-                                                        <div class="customer-socials-wrap">
-                                                            <a href="#" class="customer-socials-item">
-                                                                <i class="fa-brands fa-facebook-f"></i>
-                                                            </a>
-                                                            <a href="#" class="customer-socials-item">
-                                                                <i class="fa-brands fa-instagram"></i>
-                                                            </a>
-                                                            <a href="#" class="customer-socials-item">
-                                                                <i class="fa-solid fa-shop"></i>
-                                                            </a>
-                                                            <a href="#" class="customer-socials-item">
-                                                                <i class="fa-brands fa-twitter"></i>
-                                                            </a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                    <script>
+                                        window.addEventListener('scroll', function () {
+                                            const header = document.querySelector('.header');
 
-                                        </div>
-
-                                        <footer class="footer">
-                                            <div class="container">
-                                                <div class="row">
-                                                    <div class="col-xl-3">
-                                                        <h3 class="footer-item-title">Hỗ trợ khách hàng</h3>
-                                                        <a href="#" class="footer-item-link">Hướng dẫn mua hàng</a> <br>
-                                                        <a href="#" class="footer-item-link">Hướng dẫn chọn size</a>
-                                                        <br>
-                                                        <a href="#" class="footer-item-link">Phương thức</a> <br>
-                                                        <a href="#" class="footer-item-link">Chính sách vận chuyển</a>
-                                                        <br>
-                                                        <a href="#" class="footer-item-link">Chính sách bảo mật</a> <br>
-                                                        <a href="#" class="footer-item-link">Qui định đổi trả</a> <br>
-                                                        <a href="#" class="footer-item-link">Chính sách xử lý khiếu
-                                                            nại</a>
-                                                    </div>
-                                                    <div class="col-xl-3">
-                                                        <h3 class="footer-item-title">Về chúng tôi</h3>
-                                                        <p class="footer-item-text">Hộ kinh doanh atino</p>
-                                                        <p style="font-size: 14px; margin-bottom: 5px;"><b>Địa chỉ:
-                                                            </b>Số 110 Phố Nhổn, Phường Tây Tựu,
-                                                            Quận Bắc Từ Liêm, Tp. Hà Nộ</p>
-                                                        <p style="font-size: 14px; margin-bottom: 5px;"><b>Mã Số Doanh
-                                                                Nghiệp: </b>01D-8004624</p>
-                                                        <p style="font-size: 14px; margin-bottom: 5px;"><b>Email:
-                                                            </b>cntt@atino.vn</p>
-                                                    </div>
-                                                    <div class="col-xl-3">
-                                                        <h3 class="footer-item-title">Hệ thống cửa hàng</h3>
-                                                        <h4 class="footer-list-title">Thành phố Hà Nội</h4>
-                                                        <ul class="footer-item-list">
-                                                            <li class="footer-item">
-                                                                110 Phố Nhổn
-                                                            </li>
-                                                            <li class="footer-item">
-                                                                1221 Giải Phóng
-                                                            </li>
-                                                            <li class="footer-item">
-                                                                154 Quang Trung, Hà Đông
-                                                            </li>
-                                                            <li class="footer-item">
-                                                                34 Trần Phú, Hà Đông
-                                                            </li>
-                                                            <li class="footer-item">
-                                                                208 Bạch Mai
-                                                            </li>
-                                                            <li class="footer-item">
-                                                                175 Chùa Bộc
-                                                            </li>
-                                                            <li class="footer-item">
-                                                                116 Cầu Giấy
-                                                            </li>
-                                                            <li class="footer-item">
-                                                                290 Nguyễn Trãi, Trung Văn (Gần Đại học Hà Nội)
-                                                            </li>
-                                                            <li class="footer-item">
-                                                                312 Khu 6 Trạm Trôi, Hoài Đức
-                                                            </li>
-                                                            <li class="footer-item">
-                                                                195 Quang Trung, Tx.Sơn Tây
-                                                            </li>
-                                                        </ul>
-
-                                                        <h4 class="footer-list-title">Khu vực miền Nam:</h4>
-                                                        <ul class="footer-item-list">
-                                                            <li class="footer-item">
-                                                                225 Võ Văn Ngân, Thủ Đức, HCM
-                                                            </li>
-                                                            <li class="footer-item">
-                                                                567 Quang Trung, P10, Gò Vấp, HCM
-                                                            </li>
-                                                            <li class="footer-item">
-                                                                242 Nguyễn Trãi, P5, Q5, HCM
-                                                            </li>
-                                                            <li class="footer-item">
-                                                                TP. Biên Hoà: 1363 Phạm Văn Thuận
-                                                            </li>
-                                                            <li class="footer-item">
-                                                                Bình Dương: 93 Yersin, TP Thủ Dầu Một
-                                                            </li>
-                                                            <li class="footer-item">
-                                                                Cần Thơ: 73 Nguyễn Việt Hồng
-                                                            </li>
-                                                        </ul>
-
-                                                        <h4 class="footer-list-title">Các tỉnh & thành phố khác:</h4>
-                                                        <ul class="footer-item-list">
-                                                            <li class="footer-item">
-                                                                TP. Thanh Hoá: 236-238 Lê Hoàn
-                                                            </li>
-                                                            <li class="footer-item">
-                                                                TP. Vinh: 167 Nguyễn Văn Cừ, TP Vinh
-                                                            </li>
-                                                            <li class="footer-item">
-                                                                TP. Bắc Ninh: 128 Trần Hưng Đạo
-                                                            </li>
-                                                            <li class="footer-item">
-                                                                TP. Thái Nguyên: 156 Lương Ngọc Quyến
-                                                            </li>
-                                                            <li class="footer-item">
-                                                                TP. Hải Phòng: 300 Lê Lợi
-                                                            </li>
-                                                            <li class="footer-item">
-                                                                TP. Huế: 42 Bến Nghé
-                                                            </li>
-                                                            <li class="footer-item">
-                                                                TP. Đà Nẵng: 436 Lê Duẩn
-                                                            </li>
-                                                            <li class="footer-item">
-                                                                TP. Nam Định: 57 Hàn Thuyên
-                                                            </li>
-                                                            <li class="footer-item">
-                                                                TP. Hạ Long: 581 Lê Thánh Tông
-                                                            </li>
-                                                            <li class="footer-item">
-                                                                TP. Hải Dương: 58 Trần Hưng Đạo
-                                                            </li>
-                                                            <li class="footer-item">
-                                                                TP. Thái Bình: 122 Trần Hưng Đạo
-                                                            </li>
-                                                            <li class="footer-item">
-                                                                TP. Ninh Bình: 61 Đinh Tiên Hoàng
-                                                            </li>
-                                                            <li class="footer-item">
-                                                                TP. Việt Trì: 2145 Đại Lộ Hùng Vương, Phú Thọ
-                                                            </li>
-                                                            <li class="footer-item">
-                                                                TP. Bắc Giang: 206 Hoàng Văn Thụ, Bắc Giang
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                    <div class="col-xl-3">
-                                                        <iframe
-                                                            src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FAtino.vn&tabs=timeline&width=340&height=250&small_header=true&adapt_container_width=true&hide_cover=true&show_facepile=false"
-                                                            width="100%" height="250"
-                                                            style="border:none;overflow:hidden" scrolling="no"
-                                                            frameborder="0" allowfullscreen="true"
-                                                            allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </footer>
-
-                                        <script>
-                                            window.addEventListener('scroll', function () {
-                                                const header = document.querySelector('.header');
-
-                                                // Bạn có thể thay đổi số 150 này. 
-                                                // Đây là mốc (tính bằng pixel) khi bạn cuộn qua, header sẽ trượt xuống.
-                                                if (window.scrollY > 150) {
-                                                    header.classList.add('sticky');
-                                                } else {
-                                                    header.classList.remove('sticky');
-                                                }
-                                            });
-                                        </script>
+                                            // Bạn có thể thay đổi số 150 này. 
+                                            // Đây là mốc (tính bằng pixel) khi bạn cuộn qua, header sẽ trượt xuống.
+                                            if (window.scrollY > 150) {
+                                                header.classList.add('sticky');
+                                            } else {
+                                                header.classList.remove('sticky');
+                                            }
+                                        });
+                                    </script>
                         </body>
 
                         </html>

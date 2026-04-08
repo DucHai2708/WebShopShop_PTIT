@@ -56,6 +56,12 @@ body {
     padding: 10px 0;
 }
 
+.section-one .logout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 /* HEADER */
 .header {
     background-color: var(--white-color);
@@ -333,7 +339,6 @@ body {
     padding: 10px;
     width: 50%;
     font-size: 12px;
-
     opacity: 0;
     visibility: hidden;
     transition: all 0.3s ease;
@@ -359,6 +364,15 @@ body {
 
 .category .products-wrap .row {
     margin-bottom: 20px;
+}
+
+.category .product-wrap a {
+    display: flex;
+    justify-content: center;
+}
+
+.category .product-wrap .product-img {
+    width: 100%;
 }
 
 /* FILTER */

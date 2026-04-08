@@ -9,17 +9,18 @@ import java.util.*;
 
 public class CategoryDAO extends DBContext {
 
-    //Hàm lấy tất cả các danh mục đang hoạt động
+    // Hàm lấy tất cả các danh mục đang hoạt động
     public List<Category> getAll() {
         List<Category> list = new ArrayList<>();
         String sql = "SELECT * FROM Category WHERE status = 1";
         try (
                 Connection conn = getConnection(); // mở kết nối
-                 PreparedStatement ps = conn.prepareStatement(sql); // chuẩn bị 1 câu lệnh sql để gửi đi 
-                 ResultSet rs = ps.executeQuery() // thực thi lệnh sql rồi lưu vào 1 bộ nhớ tạm là resultset
-                ) {
+                PreparedStatement ps = conn.prepareStatement(sql); // chuẩn bị 1 câu lệnh sql để gửi đi
+                ResultSet rs = ps.executeQuery() // thực thi lệnh sql rồi lưu vào 1 bộ nhớ tạm là resultset
+        ) {
             while (rs.next()) { // ktra còn dòng nào k
-                list.add(new Category(rs.getInt("id"), rs.getString("name"), rs.getString("description"), rs.getInt("status"), rs.getInt("parent_id")));
+                list.add(new Category(rs.getInt("id"), rs.getString("name"), rs.getString("description"),
+                        rs.getInt("status"), rs.getInt("parent_id")));
             }
         } catch (Exception e) {
             e.printStackTrace(); // in ra lỗi nếu có
@@ -27,10 +28,11 @@ public class CategoryDAO extends DBContext {
         return list;
     }
 
-    //Hàm hiển thị các danh mục con của danh mục cha đã chọn
+    // Hàm hiển thị các danh mục con của danh mục cha đã chọn
     public List<Category> getChildCategories(int parentId) {
         List<Category> list = new ArrayList<>();
-        // Câu lệnh SQL: Lấy các danh mục có parent_id khớp và đang ở trạng thái hoạt động (status = 1)
+        // Câu lệnh SQL: Lấy các danh mục có parent_id khớp và đang ở trạng thái hoạt
+        // động (status = 1)
         String sql = "SELECT * FROM Category WHERE parent_id = ? AND status = 1";
 
         try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -45,14 +47,34 @@ public class CategoryDAO extends DBContext {
                             rs.getString("name"),
                             rs.getString("description"),
                             rs.getInt("status"),
-                            rs.getInt("parent_id")
-                    ));
+                            rs.getInt("parent_id")));
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return list;
+    }
+
+    // Hàm lấy chi tiết 1 Danh mục theo ID
+    public Category getCategoryById(int id) {
+        String sql = "SELECT * FROM Category WHERE id = ?";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return new Category(
+                            rs.getInt("id"),
+                            rs.getString("name"),
+                            rs.getString("description"),
+                            rs.getInt("status"),
+                            rs.getInt("parent_id"));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public static void main(String[] args) {
