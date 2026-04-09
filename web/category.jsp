@@ -263,12 +263,12 @@
                                                                 <i class="fa-solid fa-dong-sign product-price-dong"></i>
                                                             </div>
                                                             <div class="product-button-wrap">
-                                                                <button class="product-btn">
+                                                                <button class="product-btn d-none">
                                                                     <i class="fa-solid fa-cart-arrow-down product-btn-icon"></i>
                                                                     Mua nhanh
                                                                 </button>
                                                                 <a href="product?id=<%= p.getId() %>" class="product-btn"
-                                                                    style="display:inline-flex;align-items:center;gap:5px;text-decoration:none;justify-content:center;">
+                                                                    style="display:inline-flex;align-items:center;gap:5px;text-decoration:none;justify-content:center;width: 100%;">
                                                                     <i class="fa-regular fa-eye"></i> Xem chi tiết
                                                                 </a>
                                                             </div>

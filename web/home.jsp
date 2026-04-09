@@ -153,21 +153,12 @@
                                 </div>
                             </div>
 
-                            <div class="category">
+                            <!-- <div class="category">
                                 <div class="container-fluid">
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="category-wrap">
                                                 <h2 class="category-title">Áo Thu Đông</h2>
-                                                <!-- <div class="category-nav">
-                                                    <a href="#" class="category-item">Áo nỉ/Áo thun tay</a>
-                                                    <a href="#" class="category-item">Áo len</a>
-                                                    <a href="#" class="category-item">Áo khoác</a>
-                                                    <a href="#" class="category-item">Cardigan</a>
-                                                    <a href="#" class="category-item">Áo Blazer/Áo măng tô</a>
-                                                    <a href="#" class="category-item">Áo Hoodie</a>
-                                                    <a href="#" class="category-item">Bộ thể thao thu đông</a>
-                                                </div> -->
                                             </div>
                                         </div>
                                     </div>
@@ -216,7 +207,7 @@
                                             </div>
                                         </div>
                                 </div>
-                            </div>
+                            </div> -->
 
                             <div class="horizontal-ruler">
                                 <div class="container">

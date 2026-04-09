@@ -100,7 +100,7 @@
                         <div class="col-xl-7">
                             <div class="nav-wrap">
                                 <div class="header-nav">
-                                    <a href="./home.jsp" class="header-item">Trang chủ</a>
+                                    <a href="./home" class="header-item">Trang chủ</a>
                                     <% CategoryDAO headerCatDAO = new CategoryDAO();
                                        List<Category> rootCats = headerCatDAO.getRootCategories();
                                        for (Category rc : rootCats) {

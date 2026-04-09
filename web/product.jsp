@@ -283,18 +283,9 @@
                                                                             <button class="btn-buy-now w-50 ml-2">MUA
                                                                                 NGAY</button>
                                                                         </div>
-
-                                                                        <button class="btn-wishlist w-100 mt-3"><i
-                                                                                class="fa-regular fa-heart"></i> YÊU
-                                                                            THÍCH</button>
                                                                     </div>
 
-                                                                    <div class="product-share mt-3 text-center">
-                                                                        <a href="#" class="share-icon"><i
-                                                                                class="fa-brands fa-facebook-f"></i></a>
-                                                                    </div>
-
-                                                                    <div class="store-availability mt-4">
+                                                                    <!-- <div class="store-availability mt-4">
                                                                         <div class="store-header">Cửa hàng còn sản phẩm
                                                                             này</div>
                                                                         <select class="form-control store-select">
@@ -328,7 +319,7 @@
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                    </div>
+                                                                    </div> -->
                                                                 </div>
                                                             </div>
                                                         </div>
