@@ -63,6 +63,55 @@ public class UsersDAO extends DBContext {
         }
     }
 
+    // Lấy toàn bộ danh sách user (dùng cho trang Admin)
+    public java.util.List<Users> getAllUsers() {
+        java.util.List<Users> list = new java.util.ArrayList<>();
+        String sql = "SELECT * FROM Users ORDER BY id DESC";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                list.add(new Users(
+                    rs.getInt("id"), rs.getString("username"), rs.getString("password"),
+                    rs.getString("fullName"), rs.getString("email"),
+                    rs.getString("phone"), rs.getString("address"), rs.getInt("role")
+                ));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    // Xóa user theo ID (dùng cho trang Admin)
+    public boolean deleteUser(int id) {
+        String sql = "DELETE FROM Users WHERE id = ?";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    // Lấy 1 user theo ID (dùng cho admin edit)
+    public Users getUserById(int id) {
+        String sql = "SELECT * FROM Users WHERE id = ?";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return new Users(rs.getInt("id"), rs.getString("username"), rs.getString("password"),
+                        rs.getString("fullName"), rs.getString("email"),
+                        rs.getString("phone"), rs.getString("address"), rs.getInt("role"));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public static void main(String[] args) {
         UsersDAO dao = new UsersDAO();
         dao.register("haicake", "111", "N D Hai", "abc@gmail.com", "0912345678", "TP HCM");

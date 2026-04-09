@@ -255,9 +255,6 @@
                                                                     <div class="img-nav next"><i
                                                                             class="fa-solid fa-chevron-right"></i></div>
                                                                 </div>
-                                                                <p class="zoom-text mt-3 text-center"><i
-                                                                        class="fa-solid fa-magnifying-glass"></i> Click
-                                                                    xem hình lớn hơn</p>
                                                             </div>
 
                                                             <div class="col-xl-5 col-lg-5 col-md-12">
@@ -285,7 +282,7 @@
                                                                                     <% boolean firstColor=true; %>
                                                                                         <% for (String color : colors) { %>
                                                                                             <div class="color-item <%= firstColor ? "active" : "" %>">
-                                                                                                <span style="padding: 4px 8px; font-size: 13px;">
+                                                                                                <span style="padding: 4px 8px; font-size: 13px; text-transform: capitalize;">
                                                                                                     <%= color %>
                                                                                                 </span>
                                                                                             </div>
@@ -307,7 +304,7 @@
                                                                                             <% boolean firstSize=true;
                                                                                                 %>
                                                                                                 <% for (String size : sizes) { %>
-                                                                                                    <div class="size-item <%= firstSize ? "active" : "" %>">
+                                                                                                    <div style="text-transform: uppercase;" class="size-item <%= firstSize ? "active" : "" %>">
                                                                                                         <%= size %>
                                                                                                     </div>
                                                                                                     <% firstSize=false; } %>
@@ -337,9 +334,6 @@
                                                                     </div>
 
                                                                     <div class="product-share mt-3 text-center">
-                                                                        <span class="mr-2"
-                                                                            style="font-size: 12px; color: #999;">CHIA
-                                                                            SẺ</span>
                                                                         <a href="#" class="share-icon"><i
                                                                                 class="fa-brands fa-facebook-f"></i></a>
                                                                     </div>

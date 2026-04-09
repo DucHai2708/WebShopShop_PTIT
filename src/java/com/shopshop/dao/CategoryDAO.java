@@ -14,16 +14,48 @@ public class CategoryDAO extends DBContext {
         List<Category> list = new ArrayList<>();
         String sql = "SELECT * FROM Category WHERE status = 1";
         try (
-                Connection conn = getConnection(); // mở kết nối
-                PreparedStatement ps = conn.prepareStatement(sql); // chuẩn bị 1 câu lệnh sql để gửi đi
-                ResultSet rs = ps.executeQuery() // thực thi lệnh sql rồi lưu vào 1 bộ nhớ tạm là resultset
+                Connection conn = getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery()
         ) {
-            while (rs.next()) { // ktra còn dòng nào k
+            while (rs.next()) {
                 list.add(new Category(rs.getInt("id"), rs.getString("name"), rs.getString("description"),
                         rs.getInt("status"), rs.getInt("parent_id")));
             }
         } catch (Exception e) {
-            e.printStackTrace(); // in ra lỗi nếu có
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    // Hàm lấy TẤT CẢ danh mục kể cả ẩn — dùng cho trang Admin
+    public List<Category> getAllForAdmin() {
+        List<Category> list = new ArrayList<>();
+        String sql = "SELECT * FROM Category ORDER BY id ASC";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                list.add(new Category(rs.getInt("id"), rs.getString("name"), rs.getString("description"),
+                        rs.getInt("status"), rs.getInt("parent_id")));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    // Hàm lấy các danh mục GỐC (parent_id IS NULL hoặc = 0) — dùng cho header nav
+    public List<Category> getRootCategories() {
+        List<Category> list = new ArrayList<>();
+        String sql = "SELECT * FROM Category WHERE (parent_id IS NULL OR parent_id = 0) AND status = 1";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                list.add(new Category(rs.getInt("id"), rs.getString("name"), rs.getString("description"),
+                        rs.getInt("status"), rs.getInt("parent_id")));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return list;
     }
