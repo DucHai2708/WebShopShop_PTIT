@@ -65,11 +65,74 @@ public class CartDAO extends DBContext {
             }
         }
     }
-    
+
+    //Hàm lấy ra các món hàng được chọn cho việc thanh toán
+    public List<CartItem> getSelectedCartItems(String[] cartItemIds) {
+        List<CartItem> list = new ArrayList<>();
+        if (cartItemIds == null || cartItemIds.length == 0) {
+            return list;
+        }
+
+        // Mẹo tạo chuỗi "?, ?, ?" tương ứng với số lượng ID khách chọn
+        String placeholders = String.join(",", Collections.nCopies(cartItemIds.length, "?"));
+
+        // Câu lệnh JOIN 3 bảng thần thánh
+        String sql = "SELECT c.id, c.user_id, c.variant_id, c.quantity, "
+                + "p.name, v.color, v.size, p.price "
+                + "FROM CartItem c "
+                + "JOIN ProductVariant v ON c.variant_id = v.id "
+                + "JOIN Product p ON v.product_id = p.id "
+                + "WHERE c.id IN (" + placeholders + ")";
+
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            // Gán giá trị cho từng dấu hỏi chấm
+            for (int i = 0; i < cartItemIds.length; i++) {
+                ps.setInt(i + 1, Integer.parseInt(cartItemIds[i]));
+            }
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    CartItem item = new CartItem(
+                            rs.getInt("id"), rs.getInt("user_id"),
+                            rs.getInt("variant_id"), rs.getInt("quantity")
+                    );
+                    // Gán thêm các thông tin phụ để mang lên giao diện
+                    item.setProductName(rs.getString("name"));
+                    item.setColor(rs.getString("color"));
+                    item.setSize(rs.getString("size"));
+                    item.setPrice(rs.getDouble("price"));
+
+                    list.add(item);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    //Hàm xóa các món đã mua ra khỏi Giỏ hàng
+    public void removeCartItems(String[] cartItemIds) {
+        if (cartItemIds == null || cartItemIds.length == 0) {
+            return;
+        }
+
+        String placeholders = String.join(",", Collections.nCopies(cartItemIds.length, "?"));
+        String sql = "DELETE FROM CartItem WHERE id IN (" + placeholders + ")";
+
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            for (int i = 0; i < cartItemIds.length; i++) {
+                ps.setInt(i + 1, Integer.parseInt(cartItemIds[i]));
+            }
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) {
-        CartDAO dao = new CartDAO();
-        // Giả sử User ID = 1 thêm Variant ID = 15 với số lượng 2
-        // Cậu chạy thử 2 lần sẽ thấy lần 1 nó báo "thêm mới", lần 2 báo "cộng dồn"
-        dao.addToCart(1, 15, 2); 
+        
     }
 }
