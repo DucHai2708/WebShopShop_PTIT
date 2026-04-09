@@ -32,8 +32,35 @@ public class ProductDAO extends DBContext {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return list;
+        return list; //Trả về danh sách cho 1 sản phẩm
+        
     }
+    //Hàm lấy 1 biến thể ra
+    public ProductVariant getVariantByColorAndSize(int productId, String color, String size) {
+    String sql = "SELECT * FROM ProductVariant WHERE product_id = ? AND color = ? AND size = ?";
+    try (Connection conn = getConnection(); 
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        
+        ps.setInt(1, productId);
+        ps.setString(2, color);
+        ps.setString(3, size);
+        
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return new ProductVariant(
+                    rs.getInt("id"),
+                    rs.getInt("product_id"),
+                    rs.getString("color"),
+                    rs.getString("size"),
+                    rs.getInt("stock_quantity")
+                );
+            }
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return null; // Trả về null nếu không tìm thấy (ví dụ khách chọn tổ hợp màu/size không tồn tại)
+}
 
     //Hàm lấy toàn bộ sản phẩm (đã đính kèm luôn danh sách các phân loại của nó).
     public List<Product> getAll() {
