@@ -55,7 +55,14 @@ public class CategoryServlet extends HttpServlet {
         request.setAttribute("sizes", sizes);
         request.setAttribute("colors", colors);
 
-        // Forward sang category.jsp để hiển thị
+        // --- BỔ SUNG LẤY DỮ LIỆU CHO MENU HEADER ---
+        com.shopshop.dao.CategoryDAO categoryDAOMenu = new com.shopshop.dao.CategoryDAO();
+        request.setAttribute("winter", categoryDAOMenu.getChildCategories(1));
+        request.setAttribute("summer", categoryDAOMenu.getChildCategories(2));
+        request.setAttribute("pant", categoryDAOMenu.getChildCategories(3));
+        request.setAttribute("accessories", categoryDAOMenu.getChildCategories(4));
+
+        // Forward (Chuyển tiếp) request sang category.jsp để hiển thị
         request.getRequestDispatcher("category.jsp").forward(request, response);
     }
 }

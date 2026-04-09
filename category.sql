@@ -1,0 +1,18 @@
+INSERT INTO `category` VALUES 
+(1,'Áo thu đông','Sản phẩm dành cho thời tiết se lạnh hoặc lạnh',1,NULL),
+(2,'Áo xuân hè','Sản phẩm dành cho thời tiết mát hoặc nóng',1,NULL),
+(3,'Quần','Mặc áo mà không mặc quần thì buồn cười lắm',1,NULL),
+(4,'Phụ kiện','Các phụ kiện đi kèm giúp outfit nổi bật hơn',1,NULL),
+(5,'Áo khoác','Sản phẩm dành cho thời tiết se lạnh hoặc lạnh',1,1),
+(6,'Quần dài','Quần dài lịch sự',1,3),
+(7,'Áo len','Sản phẩm dành cho thời tiết se lạnh hoặc lạnh',1,1),
+(8,'Áo hoodie','Sản phẩm dành cho thời tiết se lạnh hoặc lạnh',1,1),
+(9,'Áo phông','Sản phẩm dành cho thời tiết mát hoặc nóng',1,2),
+(10,'Áo polo','Sản phẩm dành cho thời tiết mát hoặc nóng',1,2),
+(11,'Áo ba lỗ','Sản phẩm dành cho thời tiết mát hoặc nóng',1,2),
+(12,'Áo sơ mi','Sản phẩm dành cho thời tiết mát hoặc nóng',1,2),
+(13,'Quần short','Quần ngắn phong cách',1,3),
+(14,'Giày','Lịch sự',1,4),
+(15,'Dép','Trẻ trung, năng động',1,4),
+(16,'Mũ','Phong cách',1,4),
+(17,'Túi','Tiện dụng',1,4);
