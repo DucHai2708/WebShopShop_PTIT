@@ -59,6 +59,20 @@ public class RegisterServlet extends HttpServlet {
             request.getRequestDispatcher("login.jsp").forward(request, response);
             return;
         }
+        
+        if (dao.checkPhoneExist(phone.trim())) {
+            request.setAttribute("registerError", "Số điện thoại \"" + phone + "\" đã được đăng ký. Vui lòng chọn số điện thoại khác.");
+            request.setAttribute("showRegister", true);
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+            return;
+        }
+        
+        if (dao.checkEmailExist(email.trim())) {
+            request.setAttribute("registerError", "Email \"" + email + "\" đã được đăng ký. Vui lòng chọn email khác.");
+            request.setAttribute("showRegister", true);
+            request.getRequestDispatcher("login.jsp").forward(request, response);
+            return;
+        }
 
         // --- 4. Tất cả hợp lệ: Thực hiện đăng ký ---
         dao.register(
