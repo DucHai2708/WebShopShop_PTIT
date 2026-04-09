@@ -111,6 +111,42 @@ public class CartDAO extends DBContext {
         }
         return list;
     }
+    
+    // Hàm lấy toàn bộ sản phẩm trong giỏ hàng của 1 User để hiển thị
+    public List<CartItem> getCartByUserId(int userId) {
+        List<CartItem> list = new ArrayList<>();
+        // JOIN 3 bảng để lấy đầy đủ Tên, Ảnh, Giá, Màu, Size
+        String sql = "SELECT c.id, c.user_id, c.variant_id, c.quantity, "
+                   + "p.name, p.image, v.color, v.size, p.price "
+                   + "FROM CartItem c "
+                   + "JOIN ProductVariant v ON c.variant_id = v.id "
+                   + "JOIN Product p ON v.product_id = p.id "
+                   + "WHERE c.user_id = ?";
+                   
+        try (Connection conn = getConnection(); 
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+             
+            ps.setInt(1, userId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    CartItem item = new CartItem(
+                            rs.getInt("id"), rs.getInt("user_id"),
+                            rs.getInt("variant_id"), rs.getInt("quantity")
+                    );
+                    item.setProductName(rs.getString("name"));
+                    item.setImage(rs.getString("image")); 
+                    item.setColor(rs.getString("color"));
+                    item.setSize(rs.getString("size"));
+                    item.setPrice(rs.getDouble("price"));
+                    
+                    list.add(item);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
 
     //Hàm xóa các món đã mua ra khỏi Giỏ hàng
     public void removeCartItems(String[] cartItemIds) {
