@@ -38,8 +38,12 @@ public class LoginServlet extends HttpServlet {
             HttpSession session = request.getSession();
             session.setAttribute("user", user);
 
-            // Chuyển hướng về trang chủ
-            response.sendRedirect("home");
+            // Chuyển hướng theo role
+            if (user.getRole() == 1) {
+                response.sendRedirect("admin/dashboard");
+            } else {
+                response.sendRedirect("home");
+            }
         } else {
             // Đăng nhập thất bại → Quay lại login.jsp kèm thông báo lỗi
             request.setAttribute("error", "Sai tên đăng nhập hoặc mật khẩu!");

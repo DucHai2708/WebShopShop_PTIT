@@ -114,12 +114,15 @@
 }
 
 .color-item {
-    width: 35px;
-    height: 35px;
+    width: 45px;
+    height: 45px;
     border-radius: 50%;
     border: 1px solid #ccc;
-    padding: 2px;
+    padding: 5px;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .color-item.active {
@@ -134,7 +137,7 @@
 }
 
 .size-item {
-    width: 45px;
+    width: 70px;
     height: 35px;
     display: flex;
     align-items: center;

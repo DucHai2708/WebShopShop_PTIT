@@ -1,9 +1,11 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
     <%@page import="com.shopshop.model.Product" %>
-        <%@page import="com.shopshop.model.Category" %>
-            <%@page import="java.util.List" %>
-                <%@page import="java.text.NumberFormat" %>
-                    <%@page import="java.util.Locale" %>
+    <%@page import="com.shopshop.model.Category" %>
+    <%@page import="com.shopshop.dao.CategoryDAO" %>
+    <%@page import="java.util.List" %>
+    <%@page import="java.util.Arrays" %>
+    <%@page import="java.text.NumberFormat" %>
+    <%@page import="java.util.Locale" %>
                         <!doctype html>
                         <html lang="vi">
 
@@ -109,43 +111,21 @@
                                                 <div class="nav-wrap">
                                                     <div class="header-nav">
                                                         <a href="./home.jsp" class="header-item">Trang chủ</a>
+                                                        <% CategoryDAO headerCatDAO = new CategoryDAO();
+                                                           List<Category> rootCats = headerCatDAO.getRootCategories();
+                                                           for (Category rc : rootCats) {
+                                                               List<Category> childCats = headerCatDAO.getChildCategories(rc.getId()); %>
                                                         <div class="nav-item-has-dropdown">
-                                                            <a href="category?id=1" class="header-item">Áo thun/Áo
-                                                                nỉ</a>
+                                                            <a href="category?id=<%= rc.getId() %>" class="header-item"><%= rc.getName() %></a>
+                                                            <% if (!childCats.isEmpty()) { %>
                                                             <div class="nav-dropdown">
-                                                                <a href="category?id=1">Áo Nỉ / Áo Thun Dài Tay</a>
-                                                                <a href="category?id=1">Áo Len</a>
-                                                                <a href="category?id=1">Áo Khoác</a>
-                                                                <a href="category?id=1">Cardigan</a>
-                                                                <a href="category?id=1">Áo Blazer / Áo Măng Tô</a>
-                                                                <a href="category?id=1">Áo Hoodie</a>
-                                                                <a href="category?id=1">Bộ thể thao thu đông</a>
+                                                                <% for (Category cc : childCats) { %>
+                                                                <a href="category?id=<%= cc.getId() %>"><%= cc.getName() %></a>
+                                                                <% } %>
                                                             </div>
+                                                            <% } %>
                                                         </div>
-                                                        <div class="nav-item-has-dropdown">
-                                                            <a href="category?id=2" class="header-item">Áo xuân hè</a>
-                                                            <div class="nav-dropdown">
-                                                                <a href="category?id=2">Áo Thun Ngắn Tay</a>
-                                                                <a href="category?id=2">Áo Polo</a>
-                                                                <a href="category?id=2">Sơ Mi</a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="nav-item-has-dropdown">
-                                                            <a href="category?id=3" class="header-item">Quần</a>
-                                                            <div class="nav-dropdown">
-                                                                <a href="category?id=3">Quần Jeans</a>
-                                                                <a href="category?id=3">Quần Kaki</a>
-                                                                <a href="category?id=3">Quần Short</a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="nav-item-has-dropdown">
-                                                            <a href="category?id=4" class="header-item">Phụ kiện</a>
-                                                            <div class="nav-dropdown">
-                                                                <a href="category?id=4">Mũ</a>
-                                                                <a href="category?id=4">Túi</a>
-                                                                <a href="category?id=4">Thắt lưng</a>
-                                                            </div>
-                                                        </div>
+                                                        <% } %>
                                                     </div>
                                                 </div>
                                             </div>
@@ -193,178 +173,72 @@
 
                                     <div class="row">
                                         <div class="col-12">
+                                            <% // Lấy lại danh sách đã chọn để giữ trạng thái
+                                               String[] selectedPrices = (String[]) request.getAttribute("priceRanges");
+                                               java.util.List<String> priceList = (selectedPrices != null) ? Arrays.asList(selectedPrices) : new java.util.ArrayList<String>();
+                                               
+                                               String[] selectedSizes = (String[]) request.getAttribute("sizes");
+                                               java.util.List<String> sizeList = (selectedSizes != null) ? Arrays.asList(selectedSizes) : new java.util.ArrayList<String>();
+                                               
+                                               String[] selectedColors = (String[]) request.getAttribute("colors");
+                                               java.util.List<String> colorList = (selectedColors != null) ? Arrays.asList(selectedColors) : new java.util.ArrayList<String>();
+
+                                               int catId = (request.getAttribute("categoryId") != null) ? (int) request.getAttribute("categoryId") : 1;
+                                            %>
                                             <div class="filter-wrap">
-                                                <div class="filter-header">
-                                                    <span class="filter-label">Bộ lọc</span>
-                                                    <div class="filter-item"> Màu sắc <i
-                                                            class="fa-solid fa-caret-down"></i> </div>
-                                                    <div class="filter-item"> Kích cỡ <i
-                                                            class="fa-solid fa-caret-down"></i> </div>
-                                                    <div class="filter-item"> Khoảng giá <i
-                                                            class="fa-solid fa-caret-down"></i> </div>
-                                                </div>
-                                                <div class="filter-dropdown">
-                                                    <div class="row">
-                                                        <div class="col-xl-4">
-                                                            <div class="color-grid">
-                                                                <div class="row">
-                                                                    <div class="col-xl-3">
-                                                                        <div class="color-box"></div>
-                                                                    </div>
-                                                                    <div class="col-xl-3">
-                                                                        <div class="color-box"></div>
-                                                                    </div>
-                                                                    <div class="col-xl-3">
-                                                                        <div class="color-box"></div>
-                                                                    </div>
-                                                                    <div class="col-xl-3">
-                                                                        <div class="color-box"></div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="row">
-                                                                    <div class="col-xl-3">
-                                                                        <div class="color-box"></div>
-                                                                    </div>
-                                                                    <div class="col-xl-3">
-                                                                        <div class="color-box"></div>
-                                                                    </div>
-                                                                    <div class="col-xl-3">
-                                                                        <div class="color-box"></div>
-                                                                    </div>
-                                                                    <div class="col-xl-3">
-                                                                        <div class="color-box"></div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="row">
-                                                                    <div class="col-xl-3">
-                                                                        <div class="color-box"></div>
-                                                                    </div>
-                                                                    <div class="col-xl-3">
-                                                                        <div class="color-box"></div>
-                                                                    </div>
-                                                                    <div class="col-xl-3">
-                                                                        <div class="color-box"></div>
-                                                                    </div>
-                                                                    <div class="col-xl-3">
-                                                                        <div class="color-box"></div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="row">
-                                                                    <div class="col-xl-3">
-                                                                        <div class="color-box"></div>
-                                                                    </div>
-                                                                    <div class="col-xl-3">
-                                                                        <div class="color-box"></div>
-                                                                    </div>
-                                                                    <div class="col-xl-3">
-                                                                        <div class="color-box"></div>
-                                                                    </div>
-                                                                    <div class="col-xl-3">
-                                                                        <div class="color-box"></div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="row">
-                                                                    <div class="col-xl-3">
-                                                                        <div class="color-box"></div>
-                                                                    </div>
-                                                                    <div class="col-xl-3">
-                                                                        <div class="color-box"></div>
-                                                                    </div>
-                                                                    <div class="col-xl-3">
-                                                                        <div class="color-box"></div>
-                                                                    </div>
-                                                                    <div class="col-xl-3">
-                                                                        <div class="color-box"></div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="row">
-                                                                    <div class="col-xl-3">
-                                                                        <div class="color-box"></div>
-                                                                    </div>
-                                                                    <div class="col-xl-3">
-                                                                        <div class="color-box"></div>
-                                                                    </div>
-                                                                    <div class="col-xl-3">
-                                                                        <div class="color-box"></div>
-                                                                    </div>
-                                                                    <div class="col-xl-3">
-                                                                        <div class="color-box"></div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="row">
-                                                                    <div class="col-xl-3">
-                                                                        <div class="color-box"></div>
-                                                                    </div>
-                                                                    <div class="col-xl-3">
-                                                                        <div class="color-box"></div>
-                                                                    </div>
-                                                                    <div class="col-xl-3">
-                                                                        <div class="color-box"></div>
-                                                                    </div>
-                                                                    <div class="col-xl-3">
-                                                                        <div class="color-box"></div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="row">
-                                                                    <div class="col-xl-3">
-                                                                        <div class="color-box"></div>
-                                                                    </div>
-                                                                    <div class="col-xl-3">
-                                                                        <div class="color-box"></div>
-                                                                    </div>
-                                                                    <div class="col-xl-3">
-                                                                        <div class="color-box"></div>
-                                                                    </div>
-                                                                    <div class="col-xl-3">
-                                                                        <div class="color-box"></div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-xl-2 size-column">
-                                                            <div class="scrollbar-fake">
-                                                                <div class="scrollbar-thumb"></div>
-                                                            </div>
-                                                            <ul class="filter-list">
-                                                                <li><input type="checkbox" id="size-5xl"> <label
-                                                                        for="size-5xl">5XL</label></li>
-                                                                <li><input type="checkbox" id="size-4xl"> <label
-                                                                        for="size-4xl">4XL</label></li>
-                                                                <li><input type="checkbox" id="size-3xl"> <label
-                                                                        for="size-3xl">3XL</label></li>
-                                                                <li><input type="checkbox" id="size-2xl"> <label
-                                                                        for="size-2xl">2XL</label></li>
-                                                                <li><input type="checkbox" id="size-xl"> <label
-                                                                        for="size-xl">XL</label></li>
-                                                                <li><input type="checkbox" id="size-l"> <label
-                                                                        for="size-l">L</label></li>
-                                                                <li><input type="checkbox" id="size-m"> <label
-                                                                        for="size-m">M</label></li>
-                                                                <li><input type="checkbox" id="size-s"> <label
-                                                                        for="size-s">S</label></li>
-                                                            </ul>
-                                                        </div>
-
-                                                        <div class="col-xl-6">
-                                                            <ul class="filter-list">
-                                                                <li><input type="checkbox" id="price-1"> <label
-                                                                        for="price-1">Dưới
-                                                                        200,000</label></li>
-                                                                <li><input type="checkbox" id="price-2"> <label
-                                                                        for="price-2">Từ 200,000 -
-                                                                        500,000</label></li>
-                                                                <li><input type="checkbox" id="price-3"> <label
-                                                                        for="price-3">Từ 500,000 -
-                                                                        1,000,000</label></li>
-                                                                <li><input type="checkbox" id="price-4"> <label
-                                                                        for="price-4">Trên
-                                                                        1,000,000</label></li>
-                                                            </ul>
-                                                        </div>
-
-                                                        <button class="filter-btn">Lọc</button>
+                                                <form action="category" method="GET" id="filterForm">
+                                                    <input type="hidden" name="id" value="<%= catId %>">
+                                                    <div class="filter-header">
+                                                        <span class="filter-label">Bộ lọc</span>
+                                                        <div class="filter-item"> Kích cỡ <i class="fa-solid fa-caret-down"></i> </div>
+                                                        <div class="filter-item"> Màu sắc <i class="fa-solid fa-caret-down"></i> </div>
+                                                        <div class="filter-item"> Khoảng giá <i class="fa-solid fa-caret-down"></i> </div>
                                                     </div>
-                                                </div>
+                                                    <div class="filter-dropdown">
+                                                        <div class="row">
+                                                            <div class="col-xl-4" style="border-right: 1px solid #eee;">
+                                                                <strong style="display:block; margin-bottom:10px;">Kích cỡ</strong>
+                                                                <ul class="filter-list" style="max-height: 200px; overflow-y: auto;">
+                                                                    <% String[] allSizes = {"s", "m", "l", "xl", "free size"};
+                                                                       for (String s : allSizes) { %>
+                                                                    <li><input type="checkbox" name="size" value="<%= s %>" id="size-<%= s.replaceAll(" ", "") %>" <%= sizeList.contains(s) ? "checked" : "" %>>
+                                                                        <label for="size-<%= s.replaceAll(" ", "") %>" style="text-transform: uppercase;"><%= s %></label></li>
+                                                                    <% } %>
+                                                                </ul>
+                                                            </div>
+                                                            <div class="col-xl-4" style="border-right: 1px solid #eee;">
+                                                                <strong style="display:block; margin-bottom:10px;">Màu sắc</strong>
+                                                                <ul class="filter-list" style="max-height: 200px; overflow-y: auto;">
+                                                                    <% String[] allColors = {"trắng", "đen", "navy", "xanh navy", "xanh rêu", "kem", "nâu", "xanh đậm", "xanh nhạt", "be", "xám"};
+                                                                       for (int i=0; i<allColors.length; i++) { 
+                                                                           String c = allColors[i]; %>
+                                                                    <li><input type="checkbox" name="color" value="<%= c %>" id="color-<%= i %>" <%= colorList.contains(c) ? "checked" : "" %>>
+                                                                        <label for="color-<%= i %>" style="text-transform: capitalize;"><%= c %></label></li>
+                                                                    <% } %>
+                                                                </ul>
+                                                            </div>
+                                                            <div class="col-xl-4">
+                                                                <strong style="display:block; margin-bottom:10px;">Khoảng giá</strong>
+                                                                <ul class="filter-list">
+                                                                    <li><input type="checkbox" name="price" value="1" id="price-1" <%= priceList.contains("1") ? "checked" : "" %>>
+                                                                        <label for="price-1">Dưới 200,000</label></li>
+                                                                    <li><input type="checkbox" name="price" value="2" id="price-2" <%= priceList.contains("2") ? "checked" : "" %>>
+                                                                        <label for="price-2">Từ 200,000 - 500k</label></li>
+                                                                    <li><input type="checkbox" name="price" value="3" id="price-3" <%= priceList.contains("3") ? "checked" : "" %>>
+                                                                        <label for="price-3">Từ 500,000 - 1Tr</label></li>
+                                                                    <li><input type="checkbox" name="price" value="4" id="price-4" <%= priceList.contains("4") ? "checked" : "" %>>
+                                                                        <label for="price-4">Trên 1,000,000</label></li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                        <div style="margin-top: 20px;">
+                                                            <button type="submit" class="filter-btn">Lọc</button>
+                                                            <% if (!priceList.isEmpty() || !sizeList.isEmpty() || !colorList.isEmpty()) { %>
+                                                            <a href="category?id=<%= catId %>" class="filter-btn" style="background:#888; margin-left:8px; text-decoration:none;">Bỏ lọc</a>
+                                                            <% } %>
+                                                        </div>
+                                                    </div>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>

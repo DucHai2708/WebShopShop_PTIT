@@ -1,9 +1,11 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
     <%@page import="com.shopshop.model.Product" %>
-        <%@page import="com.shopshop.model.ProductVariant" %>
-            <%@page import="java.util.List" %>
-                <%@page import="java.text.NumberFormat" %>
-                    <%@page import="java.util.Locale" %>
+    <%@page import="com.shopshop.model.ProductVariant" %>
+    <%@page import="com.shopshop.model.Category" %>
+    <%@page import="com.shopshop.dao.CategoryDAO" %>
+    <%@page import="java.util.List" %>
+    <%@page import="java.text.NumberFormat" %>
+    <%@page import="java.util.Locale" %>
                         <% Product product=(Product) request.getAttribute("product"); if (product==null) {
                             response.sendRedirect("home"); return; } NumberFormat nf=NumberFormat.getNumberInstance(new
                             Locale("vi", "VN" )); String formattedPrice=nf.format((long) product.getPrice());
@@ -136,58 +138,22 @@
                                                                 <div class="col-xl-7">
                                                                     <div class="nav-wrap">
                                                                         <div class="header-nav">
-                                                                            <a href="./home.jsp"
-                                                                                class="header-item">Trang chủ</a>
+                                                                            <a href="./home.jsp" class="header-item">Trang chủ</a>
+                                                                            <% CategoryDAO headerCatDAO = new CategoryDAO();
+                                                                               List<Category> rootCats = headerCatDAO.getRootCategories();
+                                                                               for (Category rc : rootCats) {
+                                                                                   List<Category> childCats = headerCatDAO.getChildCategories(rc.getId()); %>
                                                                             <div class="nav-item-has-dropdown">
-                                                                                <a href="category?id=1"
-                                                                                    class="header-item">Áo thun/Áo
-                                                                                    nỉ</a>
+                                                                                <a href="category?id=<%= rc.getId() %>" class="header-item"><%= rc.getName() %></a>
+                                                                                <% if (!childCats.isEmpty()) { %>
                                                                                 <div class="nav-dropdown">
-                                                                                    <a href="category?id=1">Áo Nỉ / Áo
-                                                                                        Thun Dài Tay</a>
-                                                                                    <a href="category?id=1">Áo Len</a>
-                                                                                    <a href="category?id=1">Áo Khoác</a>
-                                                                                    <a href="category?id=1">Cardigan</a>
-                                                                                    <a href="category?id=1">Áo Blazer /
-                                                                                        Áo Măng Tô</a>
-                                                                                    <a href="category?id=1">Áo
-                                                                                        Hoodie</a>
-                                                                                    <a href="category?id=1">Bộ thể thao
-                                                                                        thu đông</a>
+                                                                                    <% for (Category cc : childCats) { %>
+                                                                                    <a href="category?id=<%= cc.getId() %>"><%= cc.getName() %></a>
+                                                                                    <% } %>
                                                                                 </div>
+                                                                                <% } %>
                                                                             </div>
-                                                                            <div class="nav-item-has-dropdown">
-                                                                                <a href="category?id=2"
-                                                                                    class="header-item">Áo xuân hè</a>
-                                                                                <div class="nav-dropdown">
-                                                                                    <a href="category?id=2">Áo Thun Ngắn
-                                                                                        Tay</a>
-                                                                                    <a href="category?id=2">Áo Polo</a>
-                                                                                    <a href="category?id=2">Sơ Mi</a>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="nav-item-has-dropdown">
-                                                                                <a href="category?id=3"
-                                                                                    class="header-item">Quần</a>
-                                                                                <div class="nav-dropdown">
-                                                                                    <a href="category?id=3">Quần
-                                                                                        Jeans</a>
-                                                                                    <a href="category?id=3">Quần
-                                                                                        Kaki</a>
-                                                                                    <a href="category?id=3">Quần
-                                                                                        Short</a>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="nav-item-has-dropdown">
-                                                                                <a href="category?id=4"
-                                                                                    class="header-item">Phụ kiện</a>
-                                                                                <div class="nav-dropdown">
-                                                                                    <a href="category?id=4">Mũ</a>
-                                                                                    <a href="category?id=4">Túi</a>
-                                                                                    <a href="category?id=4">Thắt
-                                                                                        lưng</a>
-                                                                                </div>
-                                                                            </div>
+                                                                            <% } %>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -245,9 +211,6 @@
                                                                     <div class="img-nav next"><i
                                                                             class="fa-solid fa-chevron-right"></i></div>
                                                                 </div>
-                                                                <p class="zoom-text mt-3 text-center"><i
-                                                                        class="fa-solid fa-magnifying-glass"></i> Click
-                                                                    xem hình lớn hơn</p>
                                                             </div>
 
                                                             <div class="col-xl-5 col-lg-5 col-md-12">
@@ -275,7 +238,7 @@
                                                                                     <% boolean firstColor=true; %>
                                                                                         <% for (String color : colors) { %>
                                                                                             <div class="color-item <%= firstColor ? "active" : "" %>">
-                                                                                                <span style="padding: 4px 8px; font-size: 13px;">
+                                                                                                <span style="padding: 4px 8px; font-size: 13px; text-transform: capitalize;">
                                                                                                     <%= color %>
                                                                                                 </span>
                                                                                             </div>
@@ -297,7 +260,7 @@
                                                                                             <% boolean firstSize=true;
                                                                                                 %>
                                                                                                 <% for (String size : sizes) { %>
-                                                                                                    <div class="size-item <%= firstSize ? "active" : "" %>">
+                                                                                                    <div style="text-transform: uppercase;" class="size-item <%= firstSize ? "active" : "" %>">
                                                                                                         <%= size %>
                                                                                                     </div>
                                                                                                     <% firstSize=false; } %>
@@ -327,9 +290,6 @@
                                                                     </div>
 
                                                                     <div class="product-share mt-3 text-center">
-                                                                        <span class="mr-2"
-                                                                            style="font-size: 12px; color: #999;">CHIA
-                                                                            SẺ</span>
                                                                         <a href="#" class="share-icon"><i
                                                                                 class="fa-brands fa-facebook-f"></i></a>
                                                                     </div>

@@ -1,9 +1,11 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
     <%@page import="com.shopshop.dao.ProductDAO" %>
-        <%@page import="com.shopshop.model.Product" %>
-            <%@page import="java.util.List" %>
-                <%@page import="java.text.NumberFormat" %>
-                    <%@page import="java.util.Locale" %>
+    <%@page import="com.shopshop.dao.CategoryDAO" %>
+    <%@page import="com.shopshop.model.Product" %>
+    <%@page import="com.shopshop.model.Category" %>
+    <%@page import="java.util.List" %>
+    <%@page import="java.text.NumberFormat" %>
+    <%@page import="java.util.Locale" %>
                         <!doctype html>
                         <html lang="vi">
 
@@ -105,43 +107,21 @@
                                                 <div class="nav-wrap">
                                                     <div class="header-nav">
                                                         <a href="./home.jsp" class="header-item">Trang chủ</a>
+                                                        <% CategoryDAO headerCatDAO = new CategoryDAO();
+                                                           List<Category> rootCats = headerCatDAO.getRootCategories();
+                                                           for (Category rc : rootCats) {
+                                                               List<Category> childCats = headerCatDAO.getChildCategories(rc.getId()); %>
                                                         <div class="nav-item-has-dropdown">
-                                                            <a href="category?id=1" class="header-item">Áo thun/Áo
-                                                                nỉ</a>
+                                                            <a href="category?id=<%= rc.getId() %>" class="header-item"><%= rc.getName() %></a>
+                                                            <% if (!childCats.isEmpty()) { %>
                                                             <div class="nav-dropdown">
-                                                                <a href="category?id=1">Áo Nỉ / Áo Thun Dài Tay</a>
-                                                                <a href="category?id=1">Áo Len</a>
-                                                                <a href="category?id=1">Áo Khoác</a>
-                                                                <a href="category?id=1">Cardigan</a>
-                                                                <a href="category?id=1">Áo Blazer / Áo Măng Tô</a>
-                                                                <a href="category?id=1">Áo Hoodie</a>
-                                                                <a href="category?id=1">Bộ thể thao thu đông</a>
+                                                                <% for (Category cc : childCats) { %>
+                                                                <a href="category?id=<%= cc.getId() %>"><%= cc.getName() %></a>
+                                                                <% } %>
                                                             </div>
+                                                            <% } %>
                                                         </div>
-                                                        <div class="nav-item-has-dropdown">
-                                                            <a href="category?id=2" class="header-item">Áo xuân hè</a>
-                                                            <div class="nav-dropdown">
-                                                                <a href="category?id=2">Áo Thun Ngắn Tay</a>
-                                                                <a href="category?id=2">Áo Polo</a>
-                                                                <a href="category?id=2">Sơ Mi</a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="nav-item-has-dropdown">
-                                                            <a href="category?id=3" class="header-item">Quần</a>
-                                                            <div class="nav-dropdown">
-                                                                <a href="category?id=3">Quần Jeans</a>
-                                                                <a href="category?id=3">Quần Kaki</a>
-                                                                <a href="category?id=3">Quần Short</a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="nav-item-has-dropdown">
-                                                            <a href="category?id=4" class="header-item">Phụ kiện</a>
-                                                            <div class="nav-dropdown">
-                                                                <a href="category?id=4">Mũ</a>
-                                                                <a href="category?id=4">Túi</a>
-                                                                <a href="category?id=4">Thắt lưng</a>
-                                                            </div>
-                                                        </div>
+                                                        <% } %>
                                                     </div>
                                                 </div>
                                             </div>
@@ -179,7 +159,7 @@
                                         <div class="col-12">
                                             <div class="category-wrap">
                                                 <h2 class="category-title">Áo Thu Đông</h2>
-                                                <div class="category-nav">
+                                                <!-- <div class="category-nav">
                                                     <a href="#" class="category-item">Áo nỉ/Áo thun tay</a>
                                                     <a href="#" class="category-item">Áo len</a>
                                                     <a href="#" class="category-item">Áo khoác</a>
@@ -187,7 +167,7 @@
                                                     <a href="#" class="category-item">Áo Blazer/Áo măng tô</a>
                                                     <a href="#" class="category-item">Áo Hoodie</a>
                                                     <a href="#" class="category-item">Bộ thể thao thu đông</a>
-                                                </div>
+                                                </div> -->
                                             </div>
                                         </div>
                                     </div>
@@ -199,7 +179,7 @@
                                         %>
                                         <div class="products-wrap">
                                             <div class="row">
-                                                <% if(productList !=null){ for (Product p : productList) { if(count>= 4)
+                                                <% if(productList !=null){ for (Product p : productList) { if(count>= 12)
                                                     break;
                                                     count++;
                                                     %>

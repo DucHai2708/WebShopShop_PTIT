@@ -122,6 +122,97 @@ public class ProductDAO extends DBContext {
         return list;
     }
 
+    // Hàm lọc sản phẩm theo danh mục + khoảng giá + kích cỡ + màu sắc
+    public List<Product> getProductByCategoryIdWithFilter(int cid, String[] priceRanges, String[] sizes, String[] colors) {
+        List<Product> list = new ArrayList<>();
+        boolean needJoinVariant = (sizes != null && sizes.length > 0) || (colors != null && colors.length > 0);
+
+        StringBuilder sql = new StringBuilder();
+        sql.append("SELECT DISTINCT p.* FROM Product p ");
+
+        // JOIN với ProductVariant nếu cần lọc theo size hoặc color
+        if (needJoinVariant) {
+            sql.append("INNER JOIN ProductVariant pv ON p.id = pv.product_id ");
+        }
+
+        sql.append("WHERE (p.category_id = ? OR p.category_id IN (SELECT id FROM Category WHERE parent_id = ?))");
+
+        // Điều kiện lọc giá
+        if (priceRanges != null && priceRanges.length > 0) {
+            sql.append(" AND (");
+            List<String> conditions = new ArrayList<>();
+            for (String range : priceRanges) {
+                switch (range) {
+                    case "1": conditions.add("p.price < 200000"); break;
+                    case "2": conditions.add("(p.price >= 200000 AND p.price <= 500000)"); break;
+                    case "3": conditions.add("(p.price >= 500000 AND p.price <= 1000000)"); break;
+                    case "4": conditions.add("p.price > 1000000"); break;
+                }
+            }
+            sql.append(String.join(" OR ", conditions));
+            sql.append(")");
+        }
+
+        // Điều kiện lọc kích cỡ
+        if (sizes != null && sizes.length > 0) {
+            sql.append(" AND pv.size IN (");
+            for (int i = 0; i < sizes.length; i++) {
+                sql.append(i > 0 ? ",?" : "?");
+            }
+            sql.append(")");
+        }
+
+        // Điều kiện lọc màu sắc
+        if (colors != null && colors.length > 0) {
+            sql.append(" AND pv.color IN (");
+            for (int i = 0; i < colors.length; i++) {
+                sql.append(i > 0 ? ",?" : "?");
+            }
+            sql.append(")");
+        }
+
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql.toString())) {
+            int paramIndex = 1;
+            ps.setInt(paramIndex++, cid);
+            ps.setInt(paramIndex++, cid);
+
+            // Truyền tham số kích cỡ
+            if (sizes != null && sizes.length > 0) {
+                for (String s : sizes) {
+                    ps.setString(paramIndex++, s);
+                }
+            }
+
+            // Truyền tham số màu sắc
+            if (colors != null && colors.length > 0) {
+                for (String c : colors) {
+                    ps.setString(paramIndex++, c);
+                }
+            }
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Product p = new Product(
+                            rs.getInt("id"),
+                            rs.getString("name"),
+                            rs.getString("image"),
+                            rs.getDouble("price"),
+                            rs.getString("description"),
+                            rs.getInt("category_id"),
+                            rs.getInt("quantity")
+                    );
+                    p.setVariants(this.getVariantProductId(p.getId()));
+                    list.add(p);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
     //Hàm tìm kiếm sản phẩm theo tên
     public List<Product> searchByName(String txtSearch) {
         List<Product> list = new ArrayList<>();
@@ -240,6 +331,18 @@ public class ProductDAO extends DBContext {
             ps.setInt(6, p.getQuantity());
             ps.setInt(7, p.getId());
 
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    // Hàm xóa toàn bộ các biến thể của 1 sản phẩm (dùng khi cập nhật sản phẩm)
+    public boolean deleteVariantsByProductId(int productId) {
+        String sql = "DELETE FROM ProductVariant WHERE product_id = ?";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, productId);
             return ps.executeUpdate() > 0;
         } catch (Exception e) {
             e.printStackTrace();
