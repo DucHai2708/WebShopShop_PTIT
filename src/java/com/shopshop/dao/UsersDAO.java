@@ -44,6 +44,40 @@ public class UsersDAO extends DBContext {
         return false;
     }
 
+    public boolean checkEmailExist(String email) {
+        String sql = "SELECT * FROM Users WHERE email = ?";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, email);
+            try (ResultSet rs = ps.executeQuery()) {
+                // Nếu rs.next() là true nghĩa là đã tìm thấy user trùng tên
+                if (rs.next()) {
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+    public boolean checkPhoneExist(String phone) {
+        String sql = "SELECT * FROM Users WHERE phone = ?";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, phone);
+            try (ResultSet rs = ps.executeQuery()) {
+                // Nếu rs.next() là true nghĩa là đã tìm thấy user trùng tên
+                if (rs.next()) {
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
     public void register(String username, String password, String fullName, String email, String phone, String address) {
         String sql = "INSERT INTO Users(username, password, fullName, email, phone, address) VALUES (?,?,?,?,?,?)";
         try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
