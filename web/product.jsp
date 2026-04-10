@@ -283,37 +283,33 @@
                                                                                 <label>MÀU SẮC</label>
                                                                                 <div class="color-list">
                                                                                     <% boolean firstColor=true; %>
-                                                                                        <% for (String color : colors) { %>
-                                                                                            <div class="color-item <%= firstColor ? "active" : "" %>">
-                                                                                                <span style="padding: 4px 8px; font-size: 13px;">
-                                                                                                    <%= color %>
-                                                                                                </span>
-                                                                                            </div>
-                                                                                            <% firstColor=false; } %>
+                                                                                    <% for (String color : colors) { %>
+                                                                                        <div class="color-item <%= firstColor ? "active" : "" %>" data-color="<%= color.trim() %>" style="cursor:pointer;">
+                                                                                            <span style="padding: 4px 8px; font-size: 13px;">
+                                                                                                <%= color.trim() %>
+                                                                                            </span>
+                                                                                        </div>
+                                                                                    <% firstColor=false; } %>
                                                                                 </div>
                                                                             </div>
-                                                                            <% } %>
+                                                                        <% } %>
 
-                                                                                <% if (!sizes.isEmpty()) { %>
-                                                                                    <div class="option-group">
-                                                                                        <div
-                                                                                            class="size-label-wrap d-flex justify-content-between">
-                                                                                            <label>KÍCH THƯỚC</label>
-                                                                                            <a href="#"
-                                                                                                class="size-guide">Hướng
-                                                                                                Dẫn Chọn Size</a>
+                                                                        <% if (!sizes.isEmpty()) { %>
+                                                                            <div class="option-group">
+                                                                                <div class="size-label-wrap d-flex justify-content-between">
+                                                                                    <label>KÍCH THƯỚC</label>
+                                                                                    <a href="#" class="size-guide">Hướng Dẫn Chọn Size</a>
+                                                                                </div>
+                                                                                <div class="size-list">
+                                                                                    <% boolean firstSize=true; %>
+                                                                                    <% for (String size : sizes) { %>
+                                                                                        <div class="size-item <%= firstSize ? "active" : "" %>" data-size="<%= size.trim() %>" style="cursor:pointer;">
+                                                                                            <%= size.trim() %>
                                                                                         </div>
-                                                                                        <div class="size-list">
-                                                                                            <% boolean firstSize=true;
-                                                                                                %>
-                                                                                                <% for (String size : sizes) { %>
-                                                                                                    <div class="size-item <%= firstSize ? "active" : "" %>">
-                                                                                                        <%= size %>
-                                                                                                    </div>
-                                                                                                    <% firstSize=false; } %>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <% } %>
+                                                                                    <% firstSize=false; } %>
+                                                                                </div>
+                                                                            </div>
+                                                                        <% } %>
                                                                     </div>
 
                                                                     <div class="product-actions mt-4">
@@ -618,6 +614,49 @@
                                                     });
 
                                                     $(document).ready(function () {
+                                                        // --- BẮT ĐẦU: XỬ LÝ CHỌN MÀU SẮC VÀ KÍCH THƯỚC ---
+                                                        const variantsData = [
+                                                            <% if (variants != null) {
+                                                                for(ProductVariant v : variants) { %>
+                                                                {
+                                                                    id: <%= v.getId() %>,
+                                                                    color: '<%= v.getColor() != null ? v.getColor().trim() : "" %>',
+                                                                    size: '<%= v.getSize() != null ? v.getSize().trim() : "" %>'
+                                                                },
+                                                            <%  }
+                                                               } %>
+                                                        ];
+
+                                                        function updateVariantId() {
+                                                            let activeColorDiv = document.querySelector('.color-item.active');
+                                                            let activeSizeDiv = document.querySelector('.size-item.active');
+
+                                                            let activeColor = activeColorDiv ? activeColorDiv.getAttribute('data-color').trim() : '';
+                                                            let activeSize = activeSizeDiv ? activeSizeDiv.getAttribute('data-size').trim() : '';
+
+                                                            let matched = variantsData.find(v => v.color === activeColor && v.size === activeSize);
+
+                                                            if(matched) {
+                                                                document.getElementById('variantIdInput').value = matched.id;
+                                                                console.log("Đã đổi ID sang: " + matched.id); 
+                                                            }
+                                                        }
+
+                                                        $('.size-item').click(function () {
+                                                            $('.size-item').removeClass('active');
+                                                            $(this).addClass('active');
+                                                            updateVariantId();
+                                                        });
+
+                                                        $('.color-item').click(function () {
+                                                            $('.color-item').removeClass('active');
+                                                            $(this).addClass('active');
+                                                            updateVariantId();
+                                                        });
+
+                                                        setTimeout(updateVariantId, 100);
+                                                        // --- KẾT THÚC: XỬ LÝ CHỌN MÀU SẮC VÀ KÍCH THƯỚC ---
+                                                        // 
                                                         // --- 1. XỬ LÝ SLIDE ẢNH SẢN PHẨM ---
                                                         let images = [];
                                                         // Lấy danh sách link ảnh từ các ảnh nhỏ
