@@ -115,7 +115,7 @@
                                                                                 <div class="cart">
                                                                                     <i
                                                                                         class="fa-solid fa-cart-arrow-down cart-icon"></i>
-                                                                                    <p class="cart-text">Giỏ hàng(0)</p>
+                                                                                    <p class="cart-text">Giỏ hàng(${sessionScope.cartCount != null ? sessionScope.cartCount : 0})</p>
                                                                                 </div>
                                                             </div>
                                                         </div>
@@ -317,25 +317,37 @@
                                                                     </div>
 
                                                                     <div class="product-actions mt-4">
-                                                                        <div class="quantity-selector">
-                                                                            <button class="qty-btn minus">-</button>
-                                                                            <input type="text" value="1"
-                                                                                class="qty-input">
-                                                                            <button class="qty-btn plus">+</button>
-                                                                        </div>
+                                                                        <form action="add-to-cart" method="POST" id="addToCartForm">
 
-                                                                        <div class="action-buttons d-flex mt-3">
-                                                                            <button class="btn-add-cart w-50 mr-2">THÊM
-                                                                                VÀO GIỎ HÀNG</button>
-                                                                            <button class="btn-buy-now w-50 ml-2">MUA
-                                                                                NGAY</button>
-                                                                        </div>
+                                                                            <input type="hidden" name="variantId" id="variantIdInput" value="<%= (variants != null && !variants.isEmpty()) ? variants.get(0).getId() : 0 %>">
 
-                                                                        <button class="btn-wishlist w-100 mt-3"><i
-                                                                                class="fa-regular fa-heart"></i> YÊU
-                                                                            THÍCH</button>
+                                                                            <div class="quantity-selector">
+                                                                                <button type="button" class="qty-btn minus">-</button>
+                                                                                <input type="text" name="quantity" value="1" class="qty-input">
+                                                                                <button type="button" class="qty-btn plus">+</button>
+                                                                            </div>
+
+                                                                            <div class="action-buttons d-flex mt-3">
+                                                                                <button type="submit" class="btn-add-cart w-50 mr-2">THÊM VÀO GIỎ HÀNG</button>
+                                                                                <button type="button" class="btn-buy-now w-50 ml-2" onclick="buyNow()">MUA NGAY</button>
+                                                                            </div>
+                                                                        </form>
                                                                     </div>
 
+                                                                    <script>
+                                                                        function buyNow() {
+                                                                            const form = document.getElementById('addToCartForm');
+                                                                            // Tạo một input ẩn để báo cho AddToCartServlet biết là khách muốn Mua ngay
+                                                                            const input = document.createElement('input');
+                                                                            input.type = 'hidden';
+                                                                            input.name = 'buyNow';
+                                                                            input.value = 'true';
+                                                                            form.appendChild(input);
+
+                                                                            // Submit form
+                                                                            form.submit();
+                                                                        }
+                                                                    </script>
                                                                     <div class="product-share mt-3 text-center">
                                                                         <span class="mr-2"
                                                                             style="font-size: 12px; color: #999;">CHIA

@@ -1,0 +1,201 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@page import="com.shopshop.model.Category" %>
+<%@page import="java.util.List" %>
+
+<!doctype html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <title>Giỏ hàng - Atino</title>
+    <link rel="stylesheet" href="./assets/css/style.css">
+    <link rel="stylesheet" href="./assets/css/base.css">
+    <link rel="stylesheet" href="./assets/css/reset.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="section-one">
+        <div class="container-fluid">
+            <div class="inner-wrap">
+                <div class="phone-wrap">
+                    <i class="fa-solid fa-phone phone-icon"></i>
+                    <p class="phone-number">096728.4444</p>
+                </div>
+                <div class="account-wrap">
+                    <% com.shopshop.model.Users user = (com.shopshop.model.Users) session.getAttribute("user"); %>
+                    <% if (user != null) { %>
+                        <div class="account">
+                            <i class="fa-solid fa-person account-icon"></i>
+                            <p class="account-text"><%= user.getFullName() %></p>
+                        </div>
+                        <div class="logout" style="margin-right: 20px;">
+                            <a href="logout" style="text-decoration: none; color: #5a5a5a;">
+                                <p class="account-text" style="margin: 0;">Đăng xuất</p>
+                            </a>
+                        </div>
+                    <% } else { %>
+                        <div class="account">
+                            <i class="fa-solid fa-person account-icon"></i>
+                            <a href="login" class="account-link"><p class="account-text">Tài khoản</p></a>
+                        </div>
+                    <% } %>
+                    <a href="cart" style="text-decoration: none; color: inherit;">
+                        <div class="cart">
+                            <i class="fa-solid fa-cart-arrow-down cart-icon"></i>
+                            <p class="cart-text">Giỏ hàng(${sessionScope.cartCount != null ? sessionScope.cartCount : 0})</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <header class="header">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="header-wrap">
+                    <div class="col-xl-2">
+                        <div class="logo-wrap">
+                            <a href="home"><img src="./assets/images/logo.jpg" class="header-logo"></a>
+                        </div>
+                    </div>
+                    <div class="col-xl-7 text-center">
+                        <div class="header-nav">
+                            <a href="home" class="header-item">Trang chủ</a>
+                            <a href="category?id=1" class="header-item">Áo Thu Đông</a>
+                            <a href="category?id=2" class="header-item">Áo Xuân Hè</a>
+                            <a href="category?id=3" class="header-item">Quần</a>
+                            <a href="category?id=4" class="header-item">Phụ Kiện</a>
+                        </div>
+                    </div>
+                    <div class="col-xl-3">
+                        <form action="search" method="GET" class="search-wrap">
+                            <input type="text" name="keyword" class="form-control search-bar" placeholder="Tìm kiếm">
+                            <button type="submit" class="search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mt-5 mb-5" style="min-height: 400px;">
+        <h3 class="mb-4 font-weight-bold">GIỎ HÀNG CỦA BẠN</h3>
+        <form action="checkout" method="POST" id="cartForm"> 
+            <div class="row">
+                <div class="col-md-8">
+                    <c:if test="${empty cartList}">
+                        <div class="alert alert-light text-center py-5 border">
+                            <p class="mb-0 text-muted">Hiện chưa có sản phẩm nào trong giỏ hàng.</p>
+                        </div>
+                    </c:if>
+                    
+                    <c:forEach items="${cartList}" var="item">
+                        <div class="row border-bottom py-3 align-items-center bg-white cart-row">
+                            <div class="col-1">
+                                <input type="checkbox" name="selectedItems" value="${item.id}" class="item-checkbox">
+                            </div>
+                            <div class="col-2 text-center">
+                                <img src="${item.image}" class="img-fluid rounded border" style="max-height: 80px;">
+                            </div>
+                            <div class="col-4">
+                                <h6 class="mb-1 font-weight-bold">${item.productName}</h6>
+                                <p class="text-muted small mb-1">${item.color} / ${item.size}</p>
+                                <a href="cart?action=delete&id=${item.id}" class="text-danger small">Xóa</a>
+                            </div>
+                            <div class="col-2 text-center">
+                                <div class="d-flex border justify-content-between align-items-center px-2 py-1">
+                                    <a href="cart?action=update&id=${item.id}&qty=${item.quantity - 1}" class="text-dark font-weight-bold">-</a>
+                                    <span class="quantity-value">${item.quantity}</span>
+                                    <a href="cart?action=update&id=${item.id}&qty=${item.quantity + 1}" class="text-dark font-weight-bold">+</a>
+                                </div>
+                            </div>
+                            <div class="col-3 text-right">
+                                <b class="item-price"><fmt:formatNumber value="${item.price}" pattern="#,###"/>đ</b>
+                            </div>
+                        </div>
+                    </c:forEach>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card p-4 bg-light border-0 shadow-sm">
+                        <h5 class="font-weight-bold mb-3">TÓM TẮT ĐƠN HÀNG</h5>
+                        <hr>
+                        <div class="d-flex justify-content-between mb-4">
+                            <span>Tổng tiền tạm tính:</span>
+                            <span class="font-weight-bold text-danger h5" id="totalPriceDisplay">0đ</span>
+                        </div>
+                        <button type="submit" class="btn btn-dark w-100 py-3 font-weight-bold" ${empty cartList ? 'disabled' : ''}>
+                            TIẾN HÀNH ĐẶT HÀNG
+                        </button>
+                        <a href="home" class="btn btn-outline-dark w-100 mt-2">TIẾP TỤC MUA SẮM</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <footer class="footer mt-5">
+        <div class="container text-center py-4">
+            <hr>
+            <p class="text-muted small">© 2026 - Hộ kinh doanh ATINO - Số 110 Phố Nhổn, Hà Nội</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const checkboxes = document.querySelectorAll('.item-checkbox');
+            const totalPriceDisplay = document.getElementById('totalPriceDisplay');
+            const cartForm = document.getElementById('cartForm');
+
+            function formatMoney(amount) {
+                return new Intl.NumberFormat('vi-VN').format(amount) + 'đ';
+            }
+
+            function calculateTotal() {
+                let total = 0;
+                document.querySelectorAll('.item-checkbox:checked').forEach(checkbox => {
+                    const row = checkbox.closest('.cart-row');
+                    const price = parseInt(row.querySelector('.item-price').innerText.replace(/[^0-9]/g, ''));
+                    const qty = parseInt(row.querySelector('.quantity-value').innerText);
+                    total += price * qty;
+                });
+                totalPriceDisplay.innerText = formatMoney(total);
+            }
+
+            // Xử lý LocalStorage cho trạng thái Checkbox
+            checkboxes.forEach(checkbox => {
+                // 1. Khôi phục trạng thái từ bộ nhớ
+                const savedStatus = localStorage.getItem('cart_item_' + checkbox.value);
+                if (savedStatus === 'true') {
+                    checkbox.checked = true;
+                }
+
+                // 2. Lắng nghe thay đổi tích chọn
+                checkbox.addEventListener('change', function() {
+                    localStorage.setItem('cart_item_' + this.value, this.checked);
+                    calculateTotal();
+                });
+            });
+
+            // 3. Xóa bộ nhớ khi hoàn tất đặt hàng
+            if (cartForm) {
+                cartForm.addEventListener('submit', function() {
+                    checkboxes.forEach(cb => localStorage.removeItem('cart_item_' + cb.value));
+                });
+            }
+
+            // Tính toán lần đầu khi load trang
+            calculateTotal();
+        });
+    </script>
+</body>
+</html>

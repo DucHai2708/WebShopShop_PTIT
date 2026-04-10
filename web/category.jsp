@@ -410,15 +410,22 @@
                                                                 <p class="product-price-number"><%= nf.format((long) p.getPrice()) %></p>
                                                                 <i class="fa-solid fa-dong-sign product-price-dong"></i>
                                                             </div>
-                                                            <div class="product-button-wrap">
-                                                                <button class="product-btn">
-                                                                    <i class="fa-solid fa-cart-arrow-down product-btn-icon"></i>
-                                                                    Mua nhanh
-                                                                </button>
+                                                            <div class="product-button-wrap" style="display: flex; align-items: stretch;">
+                                                                <form action="add-to-cart" method="POST" style="flex: 1; margin: 0; padding: 0; display: flex;">
+                                                                    <input type="hidden" name="variantId" value="<%= (p.getVariants() != null && !p.getVariants().isEmpty()) ? p.getVariants().get(0).getId() : 0 %>">
+                                                                    <input type="hidden" name="quantity" value="1">
+                                                                    <input type="hidden" name="buyNow" value="true"> 
+
+                                                                    <button type="submit" class="product-btn" style="flex: 1; width: 100%; height: 100%; margin: 0; border: none; cursor: pointer; outline: none; display: flex; align-items: center; justify-content: center; gap: 5px;">
+                                                                        <i class="fa-solid fa-cart-arrow-down product-btn-icon"></i> Mua nhanh
+                                                                    </button>
+                                                                </form>
+
                                                                 <a href="product?id=<%= p.getId() %>" class="product-btn"
-                                                                    style="display:inline-flex;align-items:center;gap:5px;text-decoration:none;justify-content:center;">
+                                                                    style="flex: 1; margin: 0; height: 100%; display: flex; align-items: center; gap: 5px; text-decoration: none; justify-content: center;">
                                                                     <i class="fa-regular fa-eye"></i> Xem chi tiết
                                                                 </a>
+
                                                             </div>
                                                         </div>
                                                     </div>
