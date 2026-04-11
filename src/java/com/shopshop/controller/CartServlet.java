@@ -27,9 +27,29 @@ public class CartServlet extends HttpServlet {
             response.sendRedirect("login.jsp");
             return;
         }
+        CartDAO cartDAO = new CartDAO();
+        String action = request.getParameter("action");
+        if (action != null) {
+            String cartItemIdStr = request.getParameter("id");
+            if (cartItemIdStr != null) {
+                int cartItemId = Integer.parseInt(cartItemIdStr);
+                if (action.equals("delete")) {
+                    cartDAO.deleteCartItem(cartItemId);
+                } else if (action.equals("update")) {
+                    String qtyStr = request.getParameter("qty");
+                    if(qtyStr != null) {
+                        int quantity = Integer.parseInt(qtyStr);
+                        cartDAO.updateQuantity(cartItemId, quantity);
+                    }
+                }
+            }
+            // Xử lý xong thì redirect lại trang giỏ hàng để tránh lỗi F5 gửi lại form
+            response.sendRedirect("cart");
+            return;
+        }
 
         // 2. Lấy danh sách Giỏ hàng của người dùng này
-        CartDAO cartDAO = new CartDAO();
+        
         List<CartItem> cartItems = cartDAO.getCartByUserId(user.getId());
         
         // 3. Tính Tổng tiền tạm tính
