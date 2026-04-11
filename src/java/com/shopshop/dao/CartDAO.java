@@ -76,9 +76,9 @@ public class CartDAO extends DBContext {
         // Mẹo tạo chuỗi "?, ?, ?" tương ứng với số lượng ID khách chọn
         String placeholders = String.join(",", Collections.nCopies(cartItemIds.length, "?"));
 
-        // Câu lệnh JOIN 3 bảng thần thánh
+        // Câu lệnh JOIN 3 bảng
         String sql = "SELECT c.id, c.user_id, c.variant_id, c.quantity, "
-                + "p.name, v.color, v.size, p.price "
+                + "p.name, v.color, v.size, p.price, p.image "
                 + "FROM CartItem c "
                 + "JOIN ProductVariant v ON c.variant_id = v.id "
                 + "JOIN Product p ON v.product_id = p.id "
@@ -102,6 +102,7 @@ public class CartDAO extends DBContext {
                     item.setColor(rs.getString("color"));
                     item.setSize(rs.getString("size"));
                     item.setPrice(rs.getDouble("price"));
+                    item.setImage(rs.getString("image"));
 
                     list.add(item);
                 }
@@ -111,21 +112,20 @@ public class CartDAO extends DBContext {
         }
         return list;
     }
-    
+
     // Hàm lấy toàn bộ sản phẩm trong giỏ hàng của 1 User để hiển thị
     public List<CartItem> getCartByUserId(int userId) {
         List<CartItem> list = new ArrayList<>();
         // JOIN 3 bảng để lấy đầy đủ Tên, Ảnh, Giá, Màu, Size
         String sql = "SELECT c.id, c.user_id, c.variant_id, c.quantity, "
-                   + "p.name, p.image, v.color, v.size, p.price "
-                   + "FROM CartItem c "
-                   + "JOIN ProductVariant v ON c.variant_id = v.id "
-                   + "JOIN Product p ON v.product_id = p.id "
-                   + "WHERE c.user_id = ?";
-                   
-        try (Connection conn = getConnection(); 
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-             
+                + "p.name, p.image, v.color, v.size, p.price "
+                + "FROM CartItem c "
+                + "JOIN ProductVariant v ON c.variant_id = v.id "
+                + "JOIN Product p ON v.product_id = p.id "
+                + "WHERE c.user_id = ?";
+
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
             ps.setInt(1, userId);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
@@ -134,11 +134,11 @@ public class CartDAO extends DBContext {
                             rs.getInt("variant_id"), rs.getInt("quantity")
                     );
                     item.setProductName(rs.getString("name"));
-                    item.setImage(rs.getString("image")); 
+                    item.setImage(rs.getString("image"));
                     item.setColor(rs.getString("color"));
                     item.setSize(rs.getString("size"));
                     item.setPrice(rs.getDouble("price"));
-                    
+
                     list.add(item);
                 }
             }
@@ -168,7 +168,81 @@ public class CartDAO extends DBContext {
         }
     }
 
+    //Xóa một sản phẩm cụ thể khỏi giỏ hàng
+    public void deleteCartItem(int cartItemId) {
+        String sql = "DELETE FROM cartitem WHERE id = ?";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, cartItemId);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    //Cập nhật số lượng (+ / -)
+    public void updateQuantity(int cartItemId, int quantity) {
+        // Nếu giảm số lượng về 0 hoặc âm thì xóa luôn sản phẩm đó
+        if (quantity <= 0) {
+            deleteCartItem(cartItemId);
+            return;
+        }
+        String sql = "UPDATE cartitem SET quantity = ? WHERE id = ?";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, quantity);
+            ps.setInt(2, cartItemId);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Hàm Lấy thông tin chính xác từ ID được tích chọn
+    public CartItem getCartItemById(int cartItemId) {
+        String sql = "SELECT c.id, c.user_id, c.variant_id, c.quantity, "
+                + "p.name, v.color, v.size, p.price, p.image "
+                + "FROM cartitem c "
+                + "JOIN productvariant v ON c.variant_id = v.id "
+                + "JOIN product p ON v.product_id = p.id "
+                + "WHERE c.id = ?";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, cartItemId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    CartItem item = new CartItem(
+                            rs.getInt("id"), rs.getInt("user_id"),
+                            rs.getInt("variant_id"), rs.getInt("quantity")
+                    );
+                    item.setProductName(rs.getString("name"));
+                    item.setColor(rs.getString("color"));
+                    item.setSize(rs.getString("size"));
+                    item.setPrice(rs.getDouble("price"));
+                    item.setImage(rs.getString("image"));
+                    return item;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    //Hàm đếm tổng số lượng sản phẩm trong giỏ của User
+    public int getCartCount(int userId) {
+        String sql = "SELECT SUM(quantity) FROM cartitem WHERE user_id = ?";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
     public static void main(String[] args) {
-        
+
     }
 }
