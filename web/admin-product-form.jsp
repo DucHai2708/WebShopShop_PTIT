@@ -13,6 +13,14 @@
     Product product = (Product) request.getAttribute("product");
     List<Category> categories = (List<Category>) request.getAttribute("categories");
     boolean editMode = Boolean.TRUE.equals(request.getAttribute("editMode"));
+    // Xây dựng map lưu stock_quantity hiện tại: key = "color|size"
+    java.util.Map<String, Integer> variantStockMap = new java.util.HashMap<>();
+    if (editMode && product.getVariants() != null) {
+        for (com.shopshop.model.ProductVariant pv : product.getVariants()) {
+            String key = pv.getColor().toLowerCase() + "|" + pv.getSize().toLowerCase();
+            variantStockMap.put(key, pv.getStock_quantity());
+        }
+    }
 %>
 <!doctype html>
 <html lang="vi">
@@ -97,9 +105,11 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label>Số lượng <span style="color:#e74c3c">*</span></label>
-                                <input type="number" name="quantity" class="form-control" required min="0"
-                                       value="<%= editMode ? product.getQuantity() : "" %>">
+                                <label>Số lượng tồn kho</label>
+                                <input type="text" class="form-control" disabled
+                                       value="<%= editMode ? product.getQuantity() + " (tự động tính từ biến thể)" : "Sẽ tự tính sau khi chọn biến thể" %>"
+                                       style="background:#f0f0f0; color:#888; cursor:not-allowed;">
+                                <small style="color:#888; font-size:11px;">Số lượng = Tổng tất cả các biến thể. Không chỉnh sửa trực tiếp.</small>
                             </div>
                         </div>
                     </div>
@@ -159,6 +169,14 @@
                         </div>
                     </div>
 
+                    <div class="form-group" id="variantStockSection" style="margin-top:20px; display:none;">
+                        <label><i class="fa-solid fa-table"></i> Số lượng kho theo tổ hợp biến thể <span style="color:#e74c3c">*</span></label>
+                        <div style="font-size:12px; color:#888; margin-bottom:8px;">
+                            Nhập số lượng tồn kho cho từng tổ hợp Màu × Size. Hệ thống sẽ tự tính tổng.
+                        </div>
+                        <div id="variantStockTable"></div>
+                    </div>
+
                     <div class="form-group">
                         <label>Mô tả</label>
                         <textarea name="description" class="form-control" rows="4"
@@ -180,6 +198,13 @@
     </div>
 </div>
 <script>
+    // Dữ liệu tồn kho hiện tại (chế độ sửa)
+    const existingStock = {
+        <% for (java.util.Map.Entry<String, Integer> entry : variantStockMap.entrySet()) { %>
+            "<%= entry.getKey() %>": <%= entry.getValue() %>,
+        <% } %>
+    };
+
     // Preview ảnh khi nhập URL
     document.getElementById('imgInput').addEventListener('input', function() {
         var preview = document.getElementById('imgPreview');
@@ -191,6 +216,53 @@
             preview.style.display = 'none';
         }
     });
+
+    // Sinh bảng nhập số lượng kho theo biến thể
+    function updateVariantStockTable() {
+        const checkedSizes = [...document.querySelectorAll('input[name="sizes"]:checked')].map(el => el.value);
+        const checkedColors = [...document.querySelectorAll('input[name="colors"]:checked')].map(el => el.value);
+        const section = document.getElementById('variantStockSection');
+        const tableDiv = document.getElementById('variantStockTable');
+
+        if (checkedSizes.length === 0 || checkedColors.length === 0) {
+            section.style.display = 'none';
+            tableDiv.innerHTML = '';
+            return;
+        }
+
+        section.style.display = 'block';
+
+        // Xây dựng bảng HTML
+        let html = '<table class="table table-bordered table-sm" style="background:#fff; font-size:13px;">';
+        html += '<thead class="thead-light"><tr><th style="min-width:80px;">Màu / Size</th>';
+        for (const size of checkedSizes) {
+            html += '<th class="text-center">' + size.toUpperCase() + '</th>';
+        }
+        html += '</tr></thead><tbody>';
+
+        for (const color of checkedColors) {
+            html += '<tr><td class="font-weight-bold" style="text-transform:capitalize;">' + color + '</td>';
+            for (const size of checkedSizes) {
+                const key = color.toLowerCase() + '|' + size.toLowerCase();
+                const currentVal = (existingStock[key] !== undefined) ? existingStock[key] : 0;
+                html += '<td><input type="number" name="stockQtys" min="0" value="' + currentVal + '"'
+                     +  ' style="width:100%; border:none; text-align:center; font-size:13px; background:transparent;"'
+                     +  ' placeholder="0"></td>';
+            }
+            html += '</tr>';
+        }
+
+        html += '</tbody></table>';
+        tableDiv.innerHTML = html;
+    }
+
+    // Gắn sự kiện cho tất cả checkbox
+    document.querySelectorAll('input[name="sizes"], input[name="colors"]').forEach(cb => {
+        cb.addEventListener('change', updateVariantStockTable);
+    });
+
+    // Gọi ngay khi load (cho chế độ sửa)
+    updateVariantStockTable();
 </script>
 </body>
 </html>

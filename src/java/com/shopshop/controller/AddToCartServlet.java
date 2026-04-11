@@ -28,14 +28,34 @@ public class AddToCartServlet extends HttpServlet {
         try {
             int variantId = Integer.parseInt(request.getParameter("variantId"));
             int quantity = Integer.parseInt(request.getParameter("quantity"));
-            
+            String productUrl = request.getHeader("Referer"); // URL để quay về trang sản phẩm khi lỗi
+
             CartDAO dao = new CartDAO();
+
+            // === KIỂM TRA TỒN KHO NGAY KHI THÊM VÀO GIỎ ===
+            int stockQty = dao.getStockQuantityByVariantId(variantId);
+            // Tính tổng số lượng: đã có trong giỏ + số lượng muốn thêm
+            CartItem existItem = dao.checkCartItemExist(user.getId(), variantId);
+            int currentQtyInCart = (existItem != null) ? existItem.getQuantity() : 0;
+            int totalAfterAdd = currentQtyInCart + quantity;
+
+            if (totalAfterAdd > stockQty) {
+                int canAdd = stockQty - currentQtyInCart;
+                String msg = canAdd <= 0
+                        ? "Sản phẩm này đã đạt giới hạn tồn kho (" + stockQty + " sản phẩm) trong giỏ hàng của bạn!"
+                        : "Chỉ có thể thêm tối đa " + canAdd + " sản phẩm nữa (tồn kho: " + stockQty + ").";
+                session.setAttribute("cartError", msg);
+                response.sendRedirect(productUrl != null ? productUrl : "home");
+                return;
+            }
+
             // 2. Add vào database
             dao.addToCart(user.getId(), variantId, quantity);
-            
+
             // 3. Đếm lại tổng số lượng và lưu vào SESSION
             int total = dao.getCartCount(user.getId());
             session.setAttribute("cartCount", total);
+            session.removeAttribute("cartError"); // Xóa lỗi cũ nếu thêm thành công
 
             // 4. Kiểm tra xem khách bấm nút nào (Mua ngay hay Thêm giỏ)
             String buyNow = request.getParameter("buyNow");

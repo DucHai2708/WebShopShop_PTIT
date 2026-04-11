@@ -9,6 +9,7 @@
     }
     List<Users> userList = (List<Users>) request.getAttribute("userList");
     String success = request.getParameter("success");
+    String error = request.getParameter("error");
 %>
 <!doctype html>
 <html lang="vi">
@@ -33,6 +34,7 @@
             <a href="products"><i class="fa-solid fa-shirt"></i> Sản phẩm</a>
             <a href="categories"><i class="fa-solid fa-tags"></i> Danh mục</a>
             <a href="users" class="active"><i class="fa-solid fa-users"></i> Người dùng</a>
+            <a href="orders"><i class="fa-solid fa-cart-shopping"></i> Đơn hàng</a>
         </nav>
         <div class="sidebar-footer">
             <a href="../home"><i class="fa-solid fa-store"></i> Xem trang web</a>
@@ -54,6 +56,16 @@
             <% if ("delete".equals(success)) { %>
             <div class="admin-alert admin-alert-success">
                 <i class="fa-solid fa-circle-check"></i> Xóa tài khoản thành công!
+            </div>
+            <% } else if ("self".equals(error)) { %>
+            <div class="admin-alert admin-alert-warning" style="background:#fff3cd; color:#856404; border-left:4px solid #ffc107;">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+                Không thể xóa tài khoản của chính bạn!
+            </div>
+            <% } else if ("unknown".equals(error)) { %>
+            <div class="admin-alert admin-alert-warning" style="background:#f8d7da; color:#721c24; border-left:4px solid #f5c6cb;">
+                <i class="fa-solid fa-circle-xmark"></i>
+                Xóa tài khoản thất bại! Vui lòng thử lại.
             </div>
             <% } %>
 

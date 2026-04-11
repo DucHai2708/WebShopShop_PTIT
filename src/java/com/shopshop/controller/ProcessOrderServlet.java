@@ -69,6 +69,29 @@ public class ProcessOrderServlet extends HttpServlet {
                 return;
             }
 
+            // ===== KIỂM TRA TỒN KHO TRƯỚC KHI ĐẶT ĐƠN =====
+            for (CartItem item : itemsToBuy) {
+                // Lấy số lượng tồn kho thực tế từ DB
+                int stockQty = cartDAO.getStockQuantityByVariantId(item.getVariant_id());
+                if (item.getQuantity() > stockQty) {
+                    // Thiếu hàng: trả về trang checkout với thông báo lỗi
+                    String errorMsg = "Sản phẩm \"" + item.getProductName()
+                            + "\" (" + item.getColor() + " - " + item.getSize() + ")"
+                            + " chỉ còn " + stockQty + " sản phẩm trong kho. Vui lòng giảm số lượng.";
+                    request.setAttribute("errorMessage", errorMsg);
+                    // Load lại dữ liệu cần thiết cho trang checkout
+                    String[] selectedIds = request.getParameterValues("cartItemIds");
+                    request.setAttribute("checkoutList", cartDAO.getSelectedCartItems(selectedIds));
+                    com.shopshop.dao.CategoryDAO catDAO = new com.shopshop.dao.CategoryDAO();
+                    request.setAttribute("winter", catDAO.getChildCategories(1));
+                    request.setAttribute("summer", catDAO.getChildCategories(2));
+                    request.setAttribute("pant", catDAO.getChildCategories(3));
+                    request.setAttribute("accessories", catDAO.getChildCategories(4));
+                    request.getRequestDispatcher("checkout.jsp").forward(request, response);
+                    return;
+                }
+            }
+
             // 4. TẠO ORDER 
             Orders order = new Orders();
             // Lưu ý: Cậu kiểm tra trong class Orders, nếu hàm setter là setUserId thì đổi lại cho đúng nhé
@@ -77,7 +100,7 @@ public class ProcessOrderServlet extends HttpServlet {
             order.setShipName(name);
             order.setShipAddress(address);
             order.setShipPhone(phone);
-            order.setStatus(1); // 1: Chờ xử lý
+            order.setStatus(0); // 0: Chờ xử lý
             order.setNote(note);
 
             int orderId = ordersDAO.insertOrder(order);
@@ -99,6 +122,13 @@ public class ProcessOrderServlet extends HttpServlet {
                 request.setAttribute("shipPhone", phone);
                 request.setAttribute("shipAddress", address);
                 
+                // (Bắt buộc) Gửi dữ liệu cho thanh Menu Động
+                com.shopshop.dao.CategoryDAO categoryDAOMenu = new com.shopshop.dao.CategoryDAO();
+                request.setAttribute("winter", categoryDAOMenu.getChildCategories(1));
+                request.setAttribute("summer", categoryDAOMenu.getChildCategories(2));
+                request.setAttribute("pant", categoryDAOMenu.getChildCategories(3));
+                request.setAttribute("accessories", categoryDAOMenu.getChildCategories(4));
+
                 request.getRequestDispatcher("order-success.jsp").forward(request, response);
             } else {
                 response.sendRedirect("cart");

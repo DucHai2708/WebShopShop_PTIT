@@ -18,6 +18,7 @@ public class Orders {
     private Timestamp orderDate;
     private int status; 
     private String note;
+    private String userFullName; // Thêm để hiển thị tên chủ tài khoản trong Admin
     
     public Orders(){
         
@@ -107,6 +108,14 @@ public class Orders {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public String getUserFullName() {
+        return userFullName;
+    }
+
+    public void setUserFullName(String userFullName) {
+        this.userFullName = userFullName;
     }
     
     

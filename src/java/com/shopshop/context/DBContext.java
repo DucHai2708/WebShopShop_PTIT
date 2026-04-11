@@ -10,7 +10,7 @@ public class DBContext {
     private final String dbName = "shopshop";
     private final String portNumber = "3306";
     private final String userId = "root";
-    private final String password = "admin";
+    private final String password = "123456";
 
     public Connection getConnection() throws Exception {
         String url = "jdbc:mysql://" + serverName + ":" + portNumber + "/" + dbName;

@@ -50,15 +50,26 @@ public class OrdersDAO extends DBContext {
         }
     }
 
-    //Hàm cập nhật lại kho hàng nếu chốt đơn thành công
+    //Hàm cập nhật lại kho hàng nếu chốt đơn thành công (Cập nhật cả bảng con và bảng cha)
     public void updateStock(int variant_id, int quantityBought) {
-        String sql = "UPDATE ProductVariant SET stock_quantity = stock_quantity - ? WHERE id = ?";
-        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, quantityBought);
-            ps.setInt(2, variant_id);
+        String sqlVariant = "UPDATE ProductVariant SET stock_quantity = stock_quantity - ? WHERE id = ?";
+        String sqlProduct = "UPDATE Product SET quantity = quantity - ? WHERE id = (SELECT product_id FROM ProductVariant WHERE id = ?)";
+        
+        try (Connection conn = getConnection(); 
+             PreparedStatement psVariant = conn.prepareStatement(sqlVariant);
+             PreparedStatement psProduct = conn.prepareStatement(sqlProduct)) {
+             
+            // 1. Cập nhật số lượng của biến thể cụ thể
+            psVariant.setInt(1, quantityBought);
+            psVariant.setInt(2, variant_id);
+            psVariant.executeUpdate();
 
-            ps.executeUpdate();
-//            System.out.println("Da cap nhat lai kho hang");
+            // 2. Cập nhật tổng số lượng của sản phẩm mẹ
+            psProduct.setInt(1, quantityBought);
+            psProduct.setInt(2, variant_id);
+            psProduct.executeUpdate();
+            
+            System.out.println("Đã đồng bộ cập nhật kho cho cả Biến thể và Sản phẩm mẹ.");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -88,6 +99,33 @@ public class OrdersDAO extends DBContext {
                 e.printStackTrace();
             }
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    // Lấy toàn bộ danh sách đơn hàng (Dùng cho Admin)
+    public List<Orders> getAllOrders() {
+        List<Orders> list = new ArrayList<>();
+        String sql = "SELECT o.*, u.fullName FROM Orders o JOIN Users u ON o.user_id = u.id ORDER BY o.orderDate DESC";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                Orders order = new Orders(
+                        rs.getInt("id"),
+                        rs.getInt("user_id"),
+                        rs.getDouble("totalPrice"),
+                        rs.getString("shipName"),
+                        rs.getString("shipAddress"),
+                        rs.getString("shipPhone"),
+                        rs.getTimestamp("orderDate"),
+                        rs.getInt("status"),
+                        rs.getString("note")
+                );
+                order.setUserFullName(rs.getString("fullName"));
+                list.add(order);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

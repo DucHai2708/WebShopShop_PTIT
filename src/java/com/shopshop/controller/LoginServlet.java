@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import com.shopshop.dao.UsersDAO;
+import com.shopshop.dao.CartDAO;
 import com.shopshop.model.Users;
 import java.util.Map;
 
@@ -62,6 +63,10 @@ public class LoginServlet extends HttpServlet {
             // Đăng nhập thành công → Lưu user vào Session
             HttpSession session = request.getSession();
             session.setAttribute("user", user);
+            
+            CartDAO cartDAO = new CartDAO();
+            int limit = cartDAO.getCartCount(user.getId());
+            session.setAttribute("cartCount", limit);
 
             // Chuyển hướng theo role
             if (user.getRole() == 1) {

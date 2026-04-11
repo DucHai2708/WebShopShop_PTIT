@@ -117,15 +117,53 @@ public class UsersDAO extends DBContext {
     }
 
     // Xóa user theo ID (dùng cho trang Admin)
-    public boolean deleteUser(int id) {
-        String sql = "DELETE FROM Users WHERE id = ?";
-        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, id);
-            return ps.executeUpdate() > 0;
+    // Trả về: 1 = xóa thành công, -1 = lỗi
+    public int deleteUser(int id) {
+        // CÁC CÂU LỆNH XÓA DÂY CHUYỀN (CASCADE DELETE)
+        
+        // 1. Xóa chi tiết đơn hàng (OrderDetail) - phải xóa trước vì nó tham chiếu đến Orders
+        String sqlOrderDetail = "DELETE FROM OrderDetail WHERE order_id IN (SELECT id FROM Orders WHERE user_id = ?)";
+        
+        // 2. Xóa đơn hàng (Orders) - tham chiếu đến Users
+        String sqlOrders = "DELETE FROM Orders WHERE user_id = ?";
+        
+        // 3. Xóa giỏ hàng (cartitem) - tham chiếu đến Users
+        String sqlCart = "DELETE FROM cartitem WHERE user_id = ?";
+        
+        // 4. Xóa chính người dùng
+        String sqlUser = "DELETE FROM Users WHERE id = ?";
+        
+        try (Connection conn = getConnection()) {
+            conn.setAutoCommit(false); // Bắt đầu Transaction
+            
+            try (PreparedStatement psOD = conn.prepareStatement(sqlOrderDetail);
+                 PreparedStatement psO = conn.prepareStatement(sqlOrders);
+                 PreparedStatement psC = conn.prepareStatement(sqlCart);
+                 PreparedStatement psU = conn.prepareStatement(sqlUser)) {
+                
+                // Set ID cho tất cả các câu lệnh
+                psOD.setInt(1, id);
+                psO.setInt(1, id);
+                psC.setInt(1, id);
+                psU.setInt(1, id);
+                
+                // Thực thi theo đúng thứ tự ràng buộc khóa ngoại
+                psOD.executeUpdate();
+                psO.executeUpdate();
+                psC.executeUpdate();
+                int affectedRows = psU.executeUpdate();
+                
+                conn.commit(); // Thành công hết thì mới lưu xuống DB
+                return affectedRows > 0 ? 1 : -1;
+                
+            } catch (Exception e) {
+                conn.rollback(); // Nếu bất kỳ bước nào lỗi, khôi phục lại trạng thái ban đầu
+                e.printStackTrace();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return false;
+        return -1;
     }
 
     // Lấy 1 user theo ID (dùng cho admin edit)
