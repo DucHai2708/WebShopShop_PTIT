@@ -1,9 +1,10 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
     <%@page import="com.shopshop.model.Product" %>
-        <%@page import="com.shopshop.model.Category" %>
-            <%@page import="java.util.List" %>
-                <%@page import="java.text.NumberFormat" %>
-                    <%@page import="java.util.Locale" %>
+    <%@page import="com.shopshop.model.Category" %>
+    <%@page import="com.shopshop.dao.CategoryDAO" %>
+    <%@page import="java.util.List" %>
+    <%@page import="java.text.NumberFormat" %>
+    <%@page import="java.util.Locale" %>
                         <!doctype html>
                         <html lang="vi">
 
@@ -399,8 +400,10 @@
                                                 <% if (pList !=null && !pList.isEmpty()) { for (Product p : pList) { %>
                                                     <div class="col-xl-3">
                                                         <div class="product-wrap">
-                                                            <img src="<%= p.getImage() %>" alt="<%= p.getName() %>"
-                                                                class="product-img">
+                                                            <a href="product?id=<%= p.getId() %>">
+                                                                <img src="<%= p.getImage() %>" alt="<%= p.getName() %>"
+                                                                    class="product-img">
+                                                            </a>
                                                             <h4 class="product-title">
                                                                 <%= p.getName() %>
                                                             </h4>

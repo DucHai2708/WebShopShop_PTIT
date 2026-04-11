@@ -44,6 +44,40 @@ public class UsersDAO extends DBContext {
         return false;
     }
 
+    public boolean checkEmailExist(String email) {
+        String sql = "SELECT * FROM Users WHERE email = ?";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, email);
+            try (ResultSet rs = ps.executeQuery()) {
+                // Nếu rs.next() là true nghĩa là đã tìm thấy user trùng tên
+                if (rs.next()) {
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+    public boolean checkPhoneExist(String phone) {
+        String sql = "SELECT * FROM Users WHERE phone = ?";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, phone);
+            try (ResultSet rs = ps.executeQuery()) {
+                // Nếu rs.next() là true nghĩa là đã tìm thấy user trùng tên
+                if (rs.next()) {
+                    return true;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
     public void register(String username, String password, String fullName, String email, String phone, String address) {
         String sql = "INSERT INTO Users(username, password, fullName, email, phone, address) VALUES (?,?,?,?,?,?)";
         try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -61,6 +95,55 @@ public class UsersDAO extends DBContext {
             System.out.println("Loi dang ky");
             e.printStackTrace();
         }
+    }
+
+    // Lấy toàn bộ danh sách user (dùng cho trang Admin)
+    public java.util.List<Users> getAllUsers() {
+        java.util.List<Users> list = new java.util.ArrayList<>();
+        String sql = "SELECT * FROM Users ORDER BY id DESC";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                list.add(new Users(
+                    rs.getInt("id"), rs.getString("username"), rs.getString("password"),
+                    rs.getString("fullName"), rs.getString("email"),
+                    rs.getString("phone"), rs.getString("address"), rs.getInt("role")
+                ));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    // Xóa user theo ID (dùng cho trang Admin)
+    public boolean deleteUser(int id) {
+        String sql = "DELETE FROM Users WHERE id = ?";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    // Lấy 1 user theo ID (dùng cho admin edit)
+    public Users getUserById(int id) {
+        String sql = "SELECT * FROM Users WHERE id = ?";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return new Users(rs.getInt("id"), rs.getString("username"), rs.getString("password"),
+                        rs.getString("fullName"), rs.getString("email"),
+                        rs.getString("phone"), rs.getString("address"), rs.getInt("role"));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public static void main(String[] args) {

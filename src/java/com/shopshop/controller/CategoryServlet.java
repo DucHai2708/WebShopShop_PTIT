@@ -18,7 +18,7 @@ public class CategoryServlet extends HttpServlet {
             throws ServletException, IOException {
 
         String cid_raw = request.getParameter("id");
-        int cid = 1; // Mặc định là danh mục 1 (Áo Thu Đông) nếu không có tham số
+        int cid = 1; // Mặc định là danh mục 1 nếu không có tham số
         try {
             if (cid_raw != null && !cid_raw.isEmpty()) {
                 cid = Integer.parseInt(cid_raw);
@@ -27,16 +27,33 @@ public class CategoryServlet extends HttpServlet {
             e.printStackTrace();
         }
 
-        ProductDAO productDao = new ProductDAO();
-        List<Product> list = productDao.getProductByCategoryId(cid);
+        // Đọc các tham số lọc giá, kích cỡ, màu sắc
+        String[] priceRanges = request.getParameterValues("price");
+        String[] sizes = request.getParameterValues("size");
+        String[] colors = request.getParameterValues("color");
 
-        // Fix: get category info
+        ProductDAO productDao = new ProductDAO();
+        List<Product> list;
+
+        // Nếu có filter → dùng method lọc tổng hợp, ngược lại lấy hết
+        if ((priceRanges != null && priceRanges.length > 0) || 
+            (sizes != null && sizes.length > 0) || 
+            (colors != null && colors.length > 0)) {
+            list = productDao.getProductByCategoryIdWithFilter(cid, priceRanges, sizes, colors);
+        } else {
+            list = productDao.getProductByCategoryId(cid);
+        }
+
+        // Lấy thông tin category
         com.shopshop.dao.CategoryDAO categoryDao = new com.shopshop.dao.CategoryDAO();
         com.shopshop.model.Category category = categoryDao.getCategoryById(cid);
 
         request.setAttribute("productList", list);
         request.setAttribute("categoryId", cid);
         request.setAttribute("category", category);
+        request.setAttribute("priceRanges", priceRanges); // Truyền lại để giữ trạng thái
+        request.setAttribute("sizes", sizes);
+        request.setAttribute("colors", colors);
 
         // --- BỔ SUNG LẤY DỮ LIỆU CHO MENU HEADER ---
         com.shopshop.dao.CategoryDAO categoryDAOMenu = new com.shopshop.dao.CategoryDAO();
