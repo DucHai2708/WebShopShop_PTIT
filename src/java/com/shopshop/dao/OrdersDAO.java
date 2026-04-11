@@ -8,9 +8,10 @@ import java.util.*;
 
 public class OrdersDAO extends DBContext {
 
-    //Hàm tạo đơn hàng và trả về id của đơn hàng đó
+   //Hàm tạo đơn hàng và trả về id của đơn hàng đó
     public int insertOrder(Orders order) {
-        String sql = "INSERT INTO Orders (user_id, totalPrice, shipName, shipAddress, shipPhone, status, note) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        // Tớ đã thêm orderDate và NOW() vào câu SQL này nhé
+        String sql = "INSERT INTO Orders (user_id, totalPrice, shipName, shipAddress, shipPhone, status, note, orderDate) VALUES (?, ?, ?, ?, ?, ?, ?, NOW())";
         try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setInt(1, order.getUser_id());
             ps.setDouble(2, order.getTotalPrice());
@@ -227,7 +228,7 @@ public class OrdersDAO extends DBContext {
             }
 
         } else {
-            System.out.println("❌ Thất bại ngay từ bước tạo đơn. Hải nhớ chạy file SQL nạp User/Product trước nhé!");
+            System.out.println(" Thất bại ngay từ bước tạo đơn. Hải nhớ chạy file SQL nạp User/Product trước nhé!");
         }
     }
 }

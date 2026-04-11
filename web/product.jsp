@@ -115,7 +115,7 @@
                                                                                 <div class="cart">
                                                                                     <i
                                                                                         class="fa-solid fa-cart-arrow-down cart-icon"></i>
-                                                                                    <p class="cart-text">Giỏ hàng(0)</p>
+                                                                                    <p class="cart-text">Giỏ hàng(${sessionScope.cartCount != null ? sessionScope.cartCount : 0})</p>
                                                                                 </div>
                                                             </div>
                                                         </div>
@@ -280,53 +280,73 @@
                                                                                 <label>MÀU SẮC</label>
                                                                                 <div class="color-list">
                                                                                     <% boolean firstColor=true; %>
-                                                                                        <% for (String color : colors) { %>
-                                                                                            <div class="color-item <%= firstColor ? "active" : "" %>">
-                                                                                                <span style="padding: 4px 8px; font-size: 13px; text-transform: capitalize;">
-                                                                                                    <%= color %>
-                                                                                                </span>
-                                                                                            </div>
-                                                                                            <% firstColor=false; } %>
+                                                                                    <% for (String color : colors) { %>
+                                                                                        <div class="color-item <%= firstColor ? "active" : "" %>" data-color="<%= color.trim() %>" style="cursor:pointer;">
+                                                                                            <span style="padding: 4px 8px; font-size: 13px;">
+                                                                                                <%= color.trim() %>
+                                                                                            </span>
+                                                                                        </div>
+                                                                                    <% firstColor=false; } %>
                                                                                 </div>
                                                                             </div>
-                                                                            <% } %>
+                                                                        <% } %>
 
-                                                                                <% if (!sizes.isEmpty()) { %>
-                                                                                    <div class="option-group">
-                                                                                        <div
-                                                                                            class="size-label-wrap d-flex justify-content-between">
-                                                                                            <label>KÍCH THƯỚC</label>
-                                                                                            <a href="#"
-                                                                                                class="size-guide">Hướng
-                                                                                                Dẫn Chọn Size</a>
+<% if (!sizes.isEmpty()) { %>
+                                                                            <div class="option-group">
+                                                                                                                                                        <div class="size-label-wrap d-flex justify-content-between">
+                                                                                    <label>KÍCH THƯỚC</label>
+                                                                                    <a href="#" class="size-guide">Hướng Dẫn Chọn Size</a>
+                                                                                </div>
+                                                                                <div class="size-list">
+                                                                                    <% boolean firstSize=true; %>
+                                                                                    <% for (String size : sizes) { %>
+                                                                                        <div class="size-item <%= firstSize ? "active" : "" %>" data-size="<%= size.trim() %>" style="cursor:pointer;">
+                                                                                            <%= size.trim() %>
                                                                                         </div>
-                                                                                        <div class="size-list">
-                                                                                            <% boolean firstSize=true;
-                                                                                                %>
-                                                                                                <% for (String size : sizes) { %>
-                                                                                                    <div style="text-transform: uppercase;" class="size-item <%= firstSize ? "active" : "" %>">
-                                                                                                        <%= size %>
-                                                                                                    </div>
-                                                                                                    <% firstSize=false; } %>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <% } %>
+                                                                                    <% firstSize=false; } %>
+                                                                                </div>
+                                                                            </div>
+                                                                        <% } %>
                                                                     </div>
 
                                                                     <div class="product-actions mt-4">
-                                                                        <div class="quantity-selector">
-                                                                            <button class="qty-btn minus">-</button>
-                                                                            <input type="text" value="1"
-                                                                                class="qty-input">
-                                                                            <button class="qty-btn plus">+</button>
-                                                                        </div>
+                                                                        <form action="add-to-cart" method="POST" id="addToCartForm">
 
-                                                                        <div class="action-buttons d-flex mt-3">
-                                                                            <button class="btn-add-cart w-50 mr-2">THÊM
-                                                                                VÀO GIỎ HÀNG</button>
-                                                                            <button class="btn-buy-now w-50 ml-2">MUA
-                                                                                NGAY</button>
-                                                                        </div>
+                                                                            <input type="hidden" name="variantId" id="variantIdInput" value="<%= (variants != null && !variants.isEmpty()) ? variants.get(0).getId() : 0 %>">
+
+                                                                            <div class="quantity-selector">
+                                                                                <button type="button" class="qty-btn minus">-</button>
+                                                                                <input type="text" name="quantity" value="1" class="qty-input">
+                                                                                <button type="button" class="qty-btn plus">+</button>
+                                                                            </div>
+
+                                                                            <div class="action-buttons d-flex mt-3">
+                                                                                <button type="submit" class="btn-add-cart w-50 mr-2">THÊM VÀO GIỎ HÀNG</button>
+                                                                                <button type="button" class="btn-buy-now w-50 ml-2" onclick="buyNow()">MUA NGAY</button>
+                                                                            </div>
+                                                                        </form>
+                                                                    </div>
+
+                                                                    <script>
+                                                                        function buyNow() {
+                                                                            const form = document.getElementById('addToCartForm');
+                                                                            // Tạo một input ẩn để báo cho AddToCartServlet biết là khách muốn Mua ngay
+                                                                            const input = document.createElement('input');
+                                                                            input.type = 'hidden';
+                                                                            input.name = 'buyNow';
+                                                                            input.value = 'true';
+                                                                            form.appendChild(input);
+
+                                                                            // Submit form
+                                                                            form.submit();
+                                                                        }
+                                                                    </script>
+                                                                    <div class="product-share mt-3 text-center">
+                                                                        <span class="mr-2"
+                                                                            style="font-size: 12px; color: #999;">CHIA
+                                                                            SẺ</span>
+                                                                        <a href="#" class="share-icon"><i
+                                                                                class="fa-brands fa-facebook-f"></i></a>
                                                                     </div>
 
                                                                     <!-- <div class="store-availability mt-4">
@@ -591,6 +611,49 @@
                                                     });
 
                                                     $(document).ready(function () {
+                                                        // --- BẮT ĐẦU: XỬ LÝ CHỌN MÀU SẮC VÀ KÍCH THƯỚC ---
+                                                        const variantsData = [
+                                                            <% if (variants != null) {
+                                                                for(ProductVariant v : variants) { %>
+                                                                {
+                                                                    id: <%= v.getId() %>,
+                                                                    color: '<%= v.getColor() != null ? v.getColor().trim() : "" %>',
+                                                                    size: '<%= v.getSize() != null ? v.getSize().trim() : "" %>'
+                                                                },
+                                                            <%  }
+                                                               } %>
+                                                        ];
+
+                                                        function updateVariantId() {
+                                                            let activeColorDiv = document.querySelector('.color-item.active');
+                                                            let activeSizeDiv = document.querySelector('.size-item.active');
+
+                                                            let activeColor = activeColorDiv ? activeColorDiv.getAttribute('data-color').trim() : '';
+                                                            let activeSize = activeSizeDiv ? activeSizeDiv.getAttribute('data-size').trim() : '';
+
+                                                            let matched = variantsData.find(v => v.color === activeColor && v.size === activeSize);
+
+                                                            if(matched) {
+                                                                document.getElementById('variantIdInput').value = matched.id;
+                                                                console.log("Đã đổi ID sang: " + matched.id); 
+                                                            }
+                                                        }
+
+                                                        $('.size-item').click(function () {
+                                                            $('.size-item').removeClass('active');
+                                                            $(this).addClass('active');
+                                                            updateVariantId();
+                                                        });
+
+                                                        $('.color-item').click(function () {
+                                                            $('.color-item').removeClass('active');
+                                                            $(this).addClass('active');
+                                                            updateVariantId();
+                                                        });
+
+                                                        setTimeout(updateVariantId, 100);
+                                                        // --- KẾT THÚC: XỬ LÝ CHỌN MÀU SẮC VÀ KÍCH THƯỚC ---
+                                                        // 
                                                         // --- 1. XỬ LÝ SLIDE ẢNH SẢN PHẨM ---
                                                         let images = [];
                                                         // Lấy danh sách link ảnh từ các ảnh nhỏ

@@ -3,6 +3,8 @@ package com.shopshop.controller;
 import com.shopshop.dao.CartDAO;
 import com.shopshop.model.CartItem;
 import com.shopshop.model.Users;
+import java.io.IOException;
+import java.util.List;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -59,7 +61,7 @@ public class CartServlet extends HttpServlet {
         }
 
         // 4. Gửi dữ liệu sang JSP
-        request.setAttribute("cartItems", cartItems);
+        request.setAttribute("cartList", cartItems);
         request.setAttribute("totalMoney", totalMoney);
         
         // (Bắt buộc) Gửi dữ liệu cho thanh Menu Động

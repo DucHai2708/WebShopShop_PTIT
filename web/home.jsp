@@ -82,10 +82,12 @@
                                                             </a>
                                                         </div>
                                                         <% } %>
-                                                            <div class="cart">
-                                                                <i class="fa-solid fa-cart-arrow-down cart-icon"></i>
-                                                                <p class="cart-text">Giỏ hàng(0)</p>
-                                                            </div>
+                                                            <a href="cart" style="text-decoration: none; color: inherit;">
+                                                                <div class="cart">
+                                                                    <i class="fa-solid fa-cart-arrow-down cart-icon"></i>
+                                                                    <p class="cart-text mb-0">Giỏ hàng(${sessionScope.cartCount != null ? sessionScope.cartCount : 0})</p>
+                                                                </div>
+                                                            </a>
                                         </div>
                                     </div>
                                 </div>
