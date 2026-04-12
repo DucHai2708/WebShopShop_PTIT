@@ -66,7 +66,7 @@ public class CartDAO extends DBContext {
         }
     }
 
-    // Hàm lấy ra các món hàng được chọn cho việc thanh toán
+    //Hàm lấy ra các món hàng được chọn cho việc thanh toán
     public List<CartItem> getSelectedCartItems(String[] cartItemIds) {
         List<CartItem> list = new ArrayList<>();
         if (cartItemIds == null || cartItemIds.length == 0) {
@@ -76,12 +76,12 @@ public class CartDAO extends DBContext {
         // Mẹo tạo chuỗi "?, ?, ?" tương ứng với số lượng ID khách chọn
         String placeholders = String.join(",", Collections.nCopies(cartItemIds.length, "?"));
 
-        // Câu lệnh JOIN 3 bảng thần thánh (Sửa lại tên bảng cho chuẩn chữ thường)
+        // Câu lệnh JOIN 3 bảng
         String sql = "SELECT c.id, c.user_id, c.variant_id, c.quantity, "
                 + "p.name, v.color, v.size, p.price, p.image "
-                + "FROM cartitem c "
-                + "JOIN productvariant v ON c.variant_id = v.id "
-                + "JOIN product p ON v.product_id = p.id "
+                + "FROM CartItem c "
+                + "JOIN ProductVariant v ON c.variant_id = v.id "
+                + "JOIN Product p ON v.product_id = p.id "
                 + "WHERE c.id IN (" + placeholders + ")";
 
         try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -113,14 +113,49 @@ public class CartDAO extends DBContext {
         return list;
     }
 
-    // Hàm xóa các món đã mua ra khỏi Giỏ hàng (dùng khi hủy chọn nhiều)
+    // Hàm lấy toàn bộ sản phẩm trong giỏ hàng của 1 User để hiển thị
+    public List<CartItem> getCartByUserId(int userId) {
+        List<CartItem> list = new ArrayList<>();
+        // JOIN 3 bảng để lấy đầy đủ Tên, Ảnh, Giá, Màu, Size
+        String sql = "SELECT c.id, c.user_id, c.variant_id, c.quantity, "
+                + "p.name, p.image, v.color, v.size, p.price "
+                + "FROM CartItem c "
+                + "JOIN ProductVariant v ON c.variant_id = v.id "
+                + "JOIN Product p ON v.product_id = p.id "
+                + "WHERE c.user_id = ?";
+
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setInt(1, userId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    CartItem item = new CartItem(
+                            rs.getInt("id"), rs.getInt("user_id"),
+                            rs.getInt("variant_id"), rs.getInt("quantity")
+                    );
+                    item.setProductName(rs.getString("name"));
+                    item.setImage(rs.getString("image"));
+                    item.setColor(rs.getString("color"));
+                    item.setSize(rs.getString("size"));
+                    item.setPrice(rs.getDouble("price"));
+
+                    list.add(item);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    //Hàm xóa các món đã mua ra khỏi Giỏ hàng
     public void removeCartItems(String[] cartItemIds) {
         if (cartItemIds == null || cartItemIds.length == 0) {
             return;
         }
 
         String placeholders = String.join(",", Collections.nCopies(cartItemIds.length, "?"));
-        String sql = "DELETE FROM cartitem WHERE id IN (" + placeholders + ")";
+        String sql = "DELETE FROM CartItem WHERE id IN (" + placeholders + ")";
 
         try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
@@ -133,38 +168,7 @@ public class CartDAO extends DBContext {
         }
     }
 
-    // 1. Lấy toàn bộ danh sách giỏ hàng của User để hiển thị lên cart.jsp
-    public List<CartItem> getCartByUserId(int userId) {
-        List<CartItem> list = new ArrayList<>();
-        String sql = "SELECT c.id, c.user_id, c.variant_id, c.quantity, "
-                   + "p.name, v.color, v.size, p.price, p.image "
-                   + "FROM cartitem c "
-                   + "JOIN productvariant v ON c.variant_id = v.id "
-                   + "JOIN product p ON v.product_id = p.id "
-                   + "WHERE c.user_id = ?";
-        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, userId);
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    CartItem item = new CartItem(
-                            rs.getInt("id"), rs.getInt("user_id"),
-                            rs.getInt("variant_id"), rs.getInt("quantity")
-                    );
-                    item.setProductName(rs.getString("name"));
-                    item.setColor(rs.getString("color"));
-                    item.setSize(rs.getString("size"));
-                    item.setPrice(rs.getDouble("price"));
-                    item.setImage(rs.getString("image")); // Lấy thêm ảnh để hiển thị giỏ hàng
-                    list.add(item);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return list;
-    }
-
-    // 2. Xóa một sản phẩm cụ thể khỏi giỏ hàng
+    //Xóa một sản phẩm cụ thể khỏi giỏ hàng
     public void deleteCartItem(int cartItemId) {
         String sql = "DELETE FROM cartitem WHERE id = ?";
         try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -175,7 +179,7 @@ public class CartDAO extends DBContext {
         }
     }
 
-    // 3. Cập nhật số lượng (+ / -)
+    //Cập nhật số lượng (+ / -)
     public void updateQuantity(int cartItemId, int quantity) {
         // Nếu giảm số lượng về 0 hoặc âm thì xóa luôn sản phẩm đó
         if (quantity <= 0) {
@@ -192,14 +196,14 @@ public class CartDAO extends DBContext {
         }
     }
 
-    // Hàm cực quan trọng: Lấy thông tin chính xác từ ID được tích chọn
+    // Hàm Lấy thông tin chính xác từ ID được tích chọn
     public CartItem getCartItemById(int cartItemId) {
         String sql = "SELECT c.id, c.user_id, c.variant_id, c.quantity, "
-                   + "p.name, v.color, v.size, p.price, p.image "
-                   + "FROM cartitem c "
-                   + "JOIN productvariant v ON c.variant_id = v.id "
-                   + "JOIN product p ON v.product_id = p.id "
-                   + "WHERE c.id = ?";
+                + "p.name, v.color, v.size, p.price, p.image "
+                + "FROM cartitem c "
+                + "JOIN productvariant v ON c.variant_id = v.id "
+                + "JOIN product p ON v.product_id = p.id "
+                + "WHERE c.id = ?";
         try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, cartItemId);
             try (ResultSet rs = ps.executeQuery()) {
@@ -212,7 +216,7 @@ public class CartDAO extends DBContext {
                     item.setColor(rs.getString("color"));
                     item.setSize(rs.getString("size"));
                     item.setPrice(rs.getDouble("price"));
-                    item.setImage(rs.getString("image")); 
+                    item.setImage(rs.getString("image"));
                     return item;
                 }
             }
@@ -222,7 +226,7 @@ public class CartDAO extends DBContext {
         return null;
     }
 
-    // Hàm đếm tổng số lượng sản phẩm trong giỏ của User
+    //Hàm đếm tổng số lượng sản phẩm trong giỏ của User
     public int getCartCount(int userId) {
         String sql = "SELECT SUM(quantity) FROM cartitem WHERE user_id = ?";
         try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -239,6 +243,6 @@ public class CartDAO extends DBContext {
     }
 
     public static void main(String[] args) {
-        // Cậu có thể test hàm tại đây
+
     }
 }

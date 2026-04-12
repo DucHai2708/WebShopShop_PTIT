@@ -255,9 +255,6 @@
                                                                     <div class="img-nav next"><i
                                                                             class="fa-solid fa-chevron-right"></i></div>
                                                                 </div>
-                                                                <p class="zoom-text mt-3 text-center"><i
-                                                                        class="fa-solid fa-magnifying-glass"></i> Click
-                                                                    xem hình lớn hơn</p>
                                                             </div>
 
                                                             <div class="col-xl-5 col-lg-5 col-md-12">
@@ -294,9 +291,9 @@
                                                                             </div>
                                                                         <% } %>
 
-                                                                        <% if (!sizes.isEmpty()) { %>
+<% if (!sizes.isEmpty()) { %>
                                                                             <div class="option-group">
-                                                                                <div class="size-label-wrap d-flex justify-content-between">
+                                                                                                                                                        <div class="size-label-wrap d-flex justify-content-between">
                                                                                     <label>KÍCH THƯỚC</label>
                                                                                     <a href="#" class="size-guide">Hướng Dẫn Chọn Size</a>
                                                                                 </div>
@@ -352,7 +349,7 @@
                                                                                 class="fa-brands fa-facebook-f"></i></a>
                                                                     </div>
 
-                                                                    <div class="store-availability mt-4">
+                                                                    <!-- <div class="store-availability mt-4">
                                                                         <div class="store-header">Cửa hàng còn sản phẩm
                                                                             này</div>
                                                                         <select class="form-control store-select">
@@ -386,7 +383,7 @@
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-                                                                    </div>
+                                                                    </div> -->
                                                                 </div>
                                                             </div>
                                                         </div>
