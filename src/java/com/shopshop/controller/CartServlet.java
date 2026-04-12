@@ -99,5 +99,13 @@ public class CartServlet extends HttpServlet {
         request.setAttribute("accessories", categoryDAOMenu.getChildCategories(4));
 
         request.getRequestDispatcher("cart.jsp").forward(request, response);
+        // (Bắt buộc) Gửi dữ liệu cho thanh Menu Động
+        com.shopshop.dao.CategoryDAO categoryDAOMenu = new com.shopshop.dao.CategoryDAO();
+        request.setAttribute("winter", categoryDAOMenu.getChildCategories(1));
+        request.setAttribute("summer", categoryDAOMenu.getChildCategories(2));
+        request.setAttribute("pant", categoryDAOMenu.getChildCategories(3));
+        request.setAttribute("accessories", categoryDAOMenu.getChildCategories(4));
+
+        request.getRequestDispatcher("cart.jsp").forward(request, response);
     }
 }
