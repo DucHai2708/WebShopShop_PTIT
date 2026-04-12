@@ -88,8 +88,9 @@ public class AdminProductServlet extends HttpServlet {
                     String[] stockQtys = request.getParameterValues("stockQtys"); // số lượng kho từng biến thể
                     if (sizes != null && colors != null) {
                         int idx = 0;
-                        for (String size : sizes) {
-                            for (String color : colors) {
+                        // Thứ tự phải khớp với frontend: color (hàng ngoài) × size (cột trong)
+                        for (String color : colors) {
+                            for (String size : sizes) {
                                 int variantStock = (stockQtys != null && idx < stockQtys.length)
                                         ? Integer.parseInt(stockQtys[idx++]) : 0;
                                 com.shopshop.model.ProductVariant pv = new com.shopshop.model.ProductVariant(
@@ -121,8 +122,9 @@ public class AdminProductServlet extends HttpServlet {
                     String[] stockQtys = request.getParameterValues("stockQtys");
                     if (sizes != null && colors != null) {
                         int idx = 0;
-                        for (String size : sizes) {
-                            for (String color : colors) {
+                        // Thứ tự phải khớp với frontend: color (hàng ngoài) × size (cột trong)
+                        for (String color : colors) {
+                            for (String size : sizes) {
                                 int variantStock = (stockQtys != null && idx < stockQtys.length)
                                         ? Integer.parseInt(stockQtys[idx++]) : 0;
                                 com.shopshop.model.ProductVariant pv = new com.shopshop.model.ProductVariant(
