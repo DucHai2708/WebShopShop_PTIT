@@ -1,63 +1,67 @@
 package com.shopshop.controller;
 
 import com.shopshop.dao.CartDAO;
-import com.shopshop.dao.ProductDAO;
-import com.shopshop.model.ProductVariant;
+import com.shopshop.model.CartItem;
 import com.shopshop.model.Users;
+import java.io.IOException;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.io.IOException;
 
-@WebServlet(name = "AddToCartServlet", urlPatterns = {"/add-to-cart"})
 public class AddToCartServlet extends HttpServlet {
-
+    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        // 1. Kiểm tra xem người dùng đã đăng nhập chưa
+        
         HttpSession session = request.getSession();
         Users user = (Users) session.getAttribute("user");
-        
+
+        // 1. Nếu chưa đăng nhập thì bắt đi đăng nhập
         if (user == null) {
-            // Chưa đăng nhập thì bắt quay về trang đăng nhập
             response.sendRedirect("login.jsp");
             return;
         }
 
-        // 2. Lấy thông tin từ giao diện (product.jsp) gửi lên
-        String productIdRaw = request.getParameter("productId");
-        String color = request.getParameter("color");
-        String size = request.getParameter("size");
-        String quantityRaw = request.getParameter("quantity");
-
         try {
-            int productId = Integer.parseInt(productIdRaw);
-            int quantity = Integer.parseInt(quantityRaw);
+            int variantId = Integer.parseInt(request.getParameter("variantId"));
+            int quantity = Integer.parseInt(request.getParameter("quantity"));
+            
+            CartDAO dao = new CartDAO();
+            // 2. Add vào database
+            dao.addToCart(user.getId(), variantId, quantity);
+            
+            // 3. Đếm lại tổng số lượng và lưu vào SESSION
+            int total = dao.getCartCount(user.getId());
+            session.setAttribute("cartCount", total);
 
-            // 3. Dùng hàm team bạn vừa viết để chốt xem khách lấy Biến thể nào
-            ProductDAO productDAO = new ProductDAO();
-            ProductVariant variant = productDAO.getVariantByColorAndSize(productId, color, size);
-
-            if (variant != null) {
-                // 4. Nếu có hàng -> Ném vào Giỏ hàng
-                CartDAO cartDAO = new CartDAO();
-                cartDAO.addToCart(user.getId(), variant.getId(), quantity);
-
-                // 5. Quay lại trang sản phẩm và báo thành công trên URL (?success=1)
-                response.sendRedirect("product?id=" + productId + "&success=1");
+            // 4. Kiểm tra xem khách bấm nút nào (Mua ngay hay Thêm giỏ)
+            String buyNow = request.getParameter("buyNow");
+            if ("true".equals(buyNow)) {
+                // MUA NGAY: Lấy ID của món hàng vừa đưa vào giỏ để gửi đi thanh toán
+                CartItem item = dao.checkCartItemExist(user.getId(), variantId);
+                if (item != null) {
+                    response.sendRedirect("checkout?selectedItems=" + item.getId());
+                } else {
+                    response.sendRedirect("cart");
+                }
             } else {
-                // Trường hợp khách cố tình chọn tổ hợp màu/size không tồn tại
-                response.sendRedirect("product?id=" + productId + "&error=1");
+                // THÊM VÀO GIỎ: Mặc định về trang cart
+                response.sendRedirect("cart");
             }
 
         } catch (Exception e) {
             e.printStackTrace();
             response.sendRedirect("home");
         }
+    }
+
+    // Thêm hàm doGet để bắt lỗi nếu request bị chuyển thành GET
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        doPost(request, response);
     }
 }
