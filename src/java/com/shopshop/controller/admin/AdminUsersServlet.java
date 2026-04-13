@@ -43,12 +43,22 @@ public class AdminUsersServlet extends HttpServlet {
 
         if ("delete".equals(action)) {
             int id = Integer.parseInt(request.getParameter("id"));
-            // Không cho phép admin xóa chính mình
             Users currentAdmin = (Users) request.getSession().getAttribute("user");
-            if (currentAdmin.getId() != id) {
-                usersDAO.deleteUser(id);
+
+            if (currentAdmin.getId() == id) {
+                // Không cho phép admin xóa chính mình
+                response.sendRedirect(request.getContextPath() + "/admin/users?error=self");
+                return;
             }
+
+            int result = usersDAO.deleteUser(id);
+            if (result == 1) {
+                response.sendRedirect(request.getContextPath() + "/admin/users?success=delete");
+            } else {
+                response.sendRedirect(request.getContextPath() + "/admin/users?error=unknown");
+            }
+            return;
         }
-        response.sendRedirect(request.getContextPath() + "/admin/users?success=delete");
+        response.sendRedirect(request.getContextPath() + "/admin/users");
     }
 }

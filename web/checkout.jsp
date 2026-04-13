@@ -18,7 +18,18 @@
 <body style="background-color: #f8f9fa;">
     <div class="container mt-5">
         <h2 class="text-center mb-4 font-weight-bold">Thanh Toán</h2>
-        
+
+        <%-- Hiển thị lỗi vượt tồn kho nếu có --%>
+        <c:if test="${not empty requestScope.errorMessage}">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="fa-solid fa-triangle-exclamation mr-2"></i>
+                ${requestScope.errorMessage}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        </c:if>
+
         <form action="process-order" method="POST">
             <div class="row">
                 <div class="col-md-7">
@@ -90,7 +101,12 @@
                             </span>
                         </div>
 
-                        <button type="submit" class="btn btn-info btn-block py-3 font-weight-bold">HOÀN TẤT ĐƠN HÀNG</button>
+                        <div class="d-flex mt-2">
+                            <a href="cart" class="btn btn-outline-secondary btn-block py-3 font-weight-bold mr-2">
+                                ← Quay lại giỏ hàng
+                            </a>
+                            <button type="submit" class="btn btn-info btn-block py-3 font-weight-bold ml-2">HOÀN TẤT ĐƠN HÀNG</button>
+                        </div>
                     </div>
                 </div>
             </div>

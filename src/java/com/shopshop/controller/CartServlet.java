@@ -1,6 +1,7 @@
 package com.shopshop.controller;
 
 import com.shopshop.dao.CartDAO;
+import com.shopshop.dao.CategoryDAO;
 import com.shopshop.model.CartItem;
 import com.shopshop.model.Users;
 import jakarta.servlet.ServletException;
@@ -9,6 +10,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import com.shopshop.dao.OrdersDAO;
+import com.shopshop.model.Orders;
 import java.io.IOException;
 import java.util.List;
 
@@ -30,21 +33,39 @@ public class CartServlet extends HttpServlet {
         CartDAO cartDAO = new CartDAO();
         String action = request.getParameter("action");
         if (action != null) {
-            String cartItemIdStr = request.getParameter("id");
-            if (cartItemIdStr != null) {
-                int cartItemId = Integer.parseInt(cartItemIdStr);
+            String idStr = request.getParameter("id");
+            if (idStr != null) {
+                int id = Integer.parseInt(idStr);
                 if (action.equals("delete")) {
-                    cartDAO.deleteCartItem(cartItemId);
+                    cartDAO.deleteCartItem(id);
+                } else if (action.equals("cancelOrder")) {
+                    OrdersDAO ordersDAO = new OrdersDAO();
+                    ordersDAO.cancelOrder(id);
                 } else if (action.equals("update")) {
                     String qtyStr = request.getParameter("qty");
-                    if(qtyStr != null) {
+                    if (qtyStr != null) {
                         int quantity = Integer.parseInt(qtyStr);
-                        cartDAO.updateQuantity(cartItemId, quantity);
+                        boolean updated = cartDAO.updateQuantity(id, quantity);
+                        if (!updated) {
+                            int stock = cartDAO.getStockQuantityByVariantId(
+                                    cartDAO.getCartItemById(id).getVariant_id());
+                            session.setAttribute("cartError",
+                                    "Số lượng vượt quá tồn kho! Sản phẩm này chỉ còn " + stock + " cái.");
+                        } else {
+                            session.removeAttribute("cartError");
+                        }
                     }
                 }
             }
-            // Xử lý xong thì redirect lại trang giỏ hàng để tránh lỗi F5 gửi lại form
-            response.sendRedirect("cart");
+            // Gán lại cartCount vào session
+            session.setAttribute("cartCount", cartDAO.getCartCount(user.getId()));
+            
+            // Nếu là hành động hủy đơn, redirect về tab order
+            if ("cancelOrder".equals(action)) {
+                response.sendRedirect("cart?tab=order");
+            } else {
+                response.sendRedirect("cart");
+            }
             return;
         }
 
@@ -56,11 +77,18 @@ public class CartServlet extends HttpServlet {
         double totalMoney = 0;
         for (CartItem item : cartItems) {
             totalMoney += item.getPrice() * item.getQuantity();
+            item.setColor(item.getColor().toUpperCase());
+            item.setSize(item.getSize().toUpperCase());
         }
 
-        // 4. Gửi dữ liệu sang JSP
+        // 4. Lấy danh sách Đơn hàng của người dùng
+        OrdersDAO ordersDAO = new OrdersDAO();
+        List<Orders> orderList = ordersDAO.getOrdersByUserId(user.getId());
+
+        // 5. Gửi dữ liệu sang JSP
         request.setAttribute("cartList", cartItems);
         request.setAttribute("totalMoney", totalMoney);
+        request.setAttribute("orderList", orderList);
         
         // (Bắt buộc) Gửi dữ liệu cho thanh Menu Động
         com.shopshop.dao.CategoryDAO categoryDAOMenu = new com.shopshop.dao.CategoryDAO();

@@ -9,6 +9,10 @@ import java.util.*;
 
 public class CategoryDAO extends DBContext {
 
+    public CategoryDAO() {
+    }
+    
+
     // Hàm lấy tất cả các danh mục đang hoạt động
     public List<Category> getAll() {
         List<Category> list = new ArrayList<>();

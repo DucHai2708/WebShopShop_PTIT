@@ -37,6 +37,7 @@
             <a href="products"><i class="fa-solid fa-shirt"></i> Sản phẩm</a>
             <a href="categories"><i class="fa-solid fa-tags"></i> Danh mục</a>
             <a href="users"><i class="fa-solid fa-users"></i> Người dùng</a>
+            <a href="orders"><i class="fa-solid fa-cart-shopping"></i> Đơn hàng</a>
         </nav>
         <div class="sidebar-footer">
             <a href="../home"><i class="fa-solid fa-store"></i> Xem trang web</a>

@@ -64,6 +64,11 @@ public class CheckoutServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
+        String[] selectedIds = request.getParameterValues("selectedItems");
+        if (selectedIds != null && selectedIds.length > 0) {
+            doPost(request, response);
+            return;
+        }
         response.sendRedirect("cart");
     }
 }
