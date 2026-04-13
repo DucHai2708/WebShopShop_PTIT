@@ -3,8 +3,6 @@ package com.shopshop.controller;
 import com.shopshop.dao.CartDAO;
 import com.shopshop.model.CartItem;
 import com.shopshop.model.Users;
-import java.io.IOException;
-import java.util.List;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -64,14 +62,6 @@ public class CartServlet extends HttpServlet {
         request.setAttribute("cartList", cartItems);
         request.setAttribute("totalMoney", totalMoney);
         
-        // (Bắt buộc) Gửi dữ liệu cho thanh Menu Động
-        com.shopshop.dao.CategoryDAO categoryDAOMenu = new com.shopshop.dao.CategoryDAO();
-        request.setAttribute("winter", categoryDAOMenu.getChildCategories(1));
-        request.setAttribute("summer", categoryDAOMenu.getChildCategories(2));
-        request.setAttribute("pant", categoryDAOMenu.getChildCategories(3));
-        request.setAttribute("accessories", categoryDAOMenu.getChildCategories(4));
-
-        request.getRequestDispatcher("cart.jsp").forward(request, response);
         // (Bắt buộc) Gửi dữ liệu cho thanh Menu Động
         com.shopshop.dao.CategoryDAO categoryDAOMenu = new com.shopshop.dao.CategoryDAO();
         request.setAttribute("winter", categoryDAOMenu.getChildCategories(1));

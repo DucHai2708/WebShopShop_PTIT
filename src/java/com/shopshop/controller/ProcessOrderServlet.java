@@ -99,6 +99,16 @@ public class ProcessOrderServlet extends HttpServlet {
                 request.setAttribute("shipPhone", phone);
                 request.setAttribute("shipAddress", address);
                 
+                // DÒNG NÀY RẤT QUAN TRỌNG: Gửi danh sách món hàng khách vừa mua sang JSP
+                request.setAttribute("orderedItems", itemsToBuy);
+                
+                // BỔ SUNG LẠI: Gửi dữ liệu cho thanh Menu Động để menu không bị trống
+                com.shopshop.dao.CategoryDAO categoryDAOMenu = new com.shopshop.dao.CategoryDAO();
+                request.setAttribute("winter", categoryDAOMenu.getChildCategories(1));
+                request.setAttribute("summer", categoryDAOMenu.getChildCategories(2));
+                request.setAttribute("pant", categoryDAOMenu.getChildCategories(3));
+                request.setAttribute("accessories", categoryDAOMenu.getChildCategories(4));
+                
                 request.getRequestDispatcher("order-success.jsp").forward(request, response);
             } else {
                 response.sendRedirect("cart");
