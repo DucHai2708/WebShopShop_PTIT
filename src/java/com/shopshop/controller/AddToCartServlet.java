@@ -32,7 +32,7 @@ public class AddToCartServlet extends HttpServlet {
 
             CartDAO dao = new CartDAO();
 
-            // === KIỂM TRA TỒN KHO NGAY KHI THÊM VÀO GIỎ ===
+            // Kiểm tra tồn kho trước khi thêm vào giỏ hàng
             int stockQty = dao.getStockQuantityByVariantId(variantId);
             // Tính tổng số lượng: đã có trong giỏ + số lượng muốn thêm
             CartItem existItem = dao.checkCartItemExist(user.getId(), variantId);

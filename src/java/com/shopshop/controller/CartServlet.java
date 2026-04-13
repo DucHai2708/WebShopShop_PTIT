@@ -90,7 +90,7 @@ public class CartServlet extends HttpServlet {
         request.setAttribute("totalMoney", totalMoney);
         request.setAttribute("orderList", orderList);
         
-        // (Bắt buộc) Gửi dữ liệu cho thanh Menu Động
+        // Gửi dữ liệu cho thanh Menu Động
         com.shopshop.dao.CategoryDAO categoryDAOMenu = new com.shopshop.dao.CategoryDAO();
         request.setAttribute("winter", categoryDAOMenu.getChildCategories(1));
         request.setAttribute("summer", categoryDAOMenu.getChildCategories(2));

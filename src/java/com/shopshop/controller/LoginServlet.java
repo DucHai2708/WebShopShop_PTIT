@@ -31,30 +31,8 @@ public class LoginServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         
         String username = request.getParameter("username");
-   //     System.out.println(username);
         String password = request.getParameter("password");
-   //     System.out.println(password);    
-        
-//        StringBuilder url = new StringBuilder(request.getRequestURL());
-//
-//        Map<String,String[]> params = request.getParameterMap();
-//
-//        if(!params.isEmpty())
-//        {
-//            url.append("?");
-//
-//            params.forEach((k,v)->
-//                url.append(k)
-//                   .append("=")
-//                   .append(v[0])
-//                   .append("&")
-//            );
-//
-//            url.deleteCharAt(url.length()-1);
-//        }
-//
-//        System.out.println(url.toString());
-//        
+ 
         
         UsersDAO dao = new UsersDAO();
         Users user = dao.login(username, password);
@@ -75,7 +53,7 @@ public class LoginServlet extends HttpServlet {
                 response.sendRedirect("home");
             }
         } else {
-            // Đăng nhập thất bại → Quay lại login.jsp kèm thông báo lỗi
+            // Đăng nhập thất bại -> Quay lại login.jsp kèm thông báo lỗi
             request.setAttribute("error", "Sai tên đăng nhập hoặc mật khẩu!");
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }

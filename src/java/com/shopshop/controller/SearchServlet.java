@@ -26,7 +26,7 @@ public class SearchServlet extends HttpServlet {
             request.setAttribute("productList", listProducts);
             request.setAttribute("keyword", keyword);
             
-            // --- BỔ SUNG LẤY DỮ LIỆU CHO MENU HEADER ---
+            // GỬI DỮ LIỆU CHO MENU
             com.shopshop.dao.CategoryDAO categoryDAOMenu = new com.shopshop.dao.CategoryDAO();
             request.setAttribute("winter", categoryDAOMenu.getChildCategories(1));
             request.setAttribute("summer", categoryDAOMenu.getChildCategories(2));

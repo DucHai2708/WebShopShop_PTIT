@@ -69,7 +69,7 @@ public class ProcessOrderServlet extends HttpServlet {
                 return;
             }
 
-            // ===== KIỂM TRA TỒN KHO TRƯỚC KHI ĐẶT ĐƠN =====
+            // Kiểm tra tồn kho trước khi đặt đơn
             for (CartItem item : itemsToBuy) {
                 // Lấy số lượng tồn kho thực tế từ DB
                 int stockQty = cartDAO.getStockQuantityByVariantId(item.getVariant_id());
@@ -94,7 +94,7 @@ public class ProcessOrderServlet extends HttpServlet {
 
             // 4. TẠO ORDER 
             Orders order = new Orders();
-            // Lưu ý: Cậu kiểm tra trong class Orders, nếu hàm setter là setUserId thì đổi lại cho đúng nhé
+            
             order.setUser_id(user.getId()); 
             order.setTotalPrice(totalItemPrice + 20000); // Tiền hàng + Phí ship 20k
             order.setShipName(name);
@@ -106,7 +106,7 @@ public class ProcessOrderServlet extends HttpServlet {
             int orderId = ordersDAO.insertOrder(order);
 
             if (orderId > 0) {
-                // 5. LƯU CHI TIẾT, TRỪ KHO VÀ XÓA GIỎ HÀNG
+                // Lưu chi tiết + trừ kho + xóa giỏ hàng
                 for (CartItem item : itemsToBuy) {
                     ordersDAO.insertOrderDetail(orderId, item.getVariant_id(), item.getQuantity(), item.getPrice());
                     ordersDAO.updateStock(item.getVariant_id(), item.getQuantity());
@@ -122,8 +122,7 @@ public class ProcessOrderServlet extends HttpServlet {
                 request.setAttribute("shipPhone", phone);
                 request.setAttribute("shipAddress", address);
                 
-                // DÒNG NÀY RẤT QUAN TRỌNG: Gửi danh sách món hàng khách vừa mua sang JSP
-                
+                // Gửi danh sách món hàng khách vừa mua sang JSP
                 for (CartItem item : itemsToBuy) {
                     item.setColor(item.getColor().toUpperCase());
                     item.setSize(item.getSize().toUpperCase());
@@ -131,7 +130,7 @@ public class ProcessOrderServlet extends HttpServlet {
                 
                 request.setAttribute("orderedItems", itemsToBuy);
                 
-                // BỔ SUNG LẠI: Gửi dữ liệu cho thanh Menu Động để menu không bị trống
+                //Gửi dữ liệu cho thanh Menu
                 com.shopshop.dao.CategoryDAO categoryDAOMenu = new com.shopshop.dao.CategoryDAO();
                 request.setAttribute("winter", categoryDAOMenu.getChildCategories(1));
                 request.setAttribute("summer", categoryDAOMenu.getChildCategories(2));

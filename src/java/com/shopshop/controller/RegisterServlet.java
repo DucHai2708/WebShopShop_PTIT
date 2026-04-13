@@ -32,7 +32,7 @@ public class RegisterServlet extends HttpServlet {
         String password = request.getParameter("password");
         String confirmPassword = request.getParameter("confirmPassword");
 
-        // --- 1. Validate: Kiểm tra các trường bắt buộc ---
+        //Kiểm tra các trường bắt buộc
         if (fullName == null || fullName.trim().isEmpty() ||
             username == null || username.trim().isEmpty() ||
             password == null || password.trim().isEmpty()) {
@@ -43,7 +43,7 @@ public class RegisterServlet extends HttpServlet {
             return;
         }
 
-        // --- 2. Validate: Kiểm tra mật khẩu khớp ---
+        // Kiểm tra mật khẩu khớp
         if (!password.equals(confirmPassword)) {
             request.setAttribute("registerError", "Mật khẩu xác nhận không khớp.");
             request.setAttribute("showRegister", true);
@@ -51,7 +51,7 @@ public class RegisterServlet extends HttpServlet {
             return;
         }
 
-        // --- 3. Validate: Kiểm tra username đã tồn tại chưa ---
+        // Kiểm tra username đã tồn tại chưa
         UsersDAO dao = new UsersDAO();
         if (dao.checkUserExist(username.trim())) {
             request.setAttribute("registerError", "Tên đăng nhập \"" + username + "\" đã tồn tại. Vui lòng chọn tên khác.");
@@ -59,14 +59,14 @@ public class RegisterServlet extends HttpServlet {
             request.getRequestDispatcher("login.jsp").forward(request, response);
             return;
         }
-        
+        // Kiểm tra phone đã tồn tại chưa
         if (dao.checkPhoneExist(phone.trim())) {
             request.setAttribute("registerError", "Số điện thoại \"" + phone + "\" đã được đăng ký. Vui lòng chọn số điện thoại khác.");
             request.setAttribute("showRegister", true);
             request.getRequestDispatcher("login.jsp").forward(request, response);
             return;
         }
-        
+        // Kiểm tra email đã tồn tại chưa
         if (dao.checkEmailExist(email.trim())) {
             request.setAttribute("registerError", "Email \"" + email + "\" đã được đăng ký. Vui lòng chọn email khác.");
             request.setAttribute("showRegister", true);
@@ -74,7 +74,7 @@ public class RegisterServlet extends HttpServlet {
             return;
         }
 
-        // --- 4. Tất cả hợp lệ: Thực hiện đăng ký ---
+        // Tất cả hợp lệ: Thực hiện đăng ký
         dao.register(
             username.trim(),
             password,
@@ -84,7 +84,7 @@ public class RegisterServlet extends HttpServlet {
             "" // address để trống, user cập nhật sau
         );
 
-        // --- 5. Đăng ký thành công: Chuyển về trang đăng nhập với thông báo ---
+        // Đăng ký thành công: Chuyển về trang đăng nhập với thông báo
         response.sendRedirect("login?registerSuccess=true");
     }
 }
