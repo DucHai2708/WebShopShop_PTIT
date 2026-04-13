@@ -39,7 +39,8 @@ public class AdminProductServlet extends HttpServlet {
         switch (action) {
             case "add":
                 // Hiển thị form thêm sản phẩm
-                List<Category> categories = categoryDAO.getAll();
+                List<Category> tmp = categoryDAO.getAll();
+                List<Category> categories = tmp.subList(4, tmp.size());
                 request.setAttribute("categories", categories);
                 request.getRequestDispatcher("/admin-product-form.jsp").forward(request, response);
                 break;
@@ -48,7 +49,8 @@ public class AdminProductServlet extends HttpServlet {
                 // Hiển thị form sửa sản phẩm
                 int editId = Integer.parseInt(request.getParameter("id"));
                 Product editProduct = productDAO.getProductById(editId);
-                List<Category> catsForEdit = categoryDAO.getAll();
+                List<Category> temp = categoryDAO.getAll();
+                List<Category> catsForEdit = temp.subList(4, temp.size());
                 request.setAttribute("product", editProduct);
                 request.setAttribute("categories", catsForEdit);
                 request.setAttribute("editMode", true);

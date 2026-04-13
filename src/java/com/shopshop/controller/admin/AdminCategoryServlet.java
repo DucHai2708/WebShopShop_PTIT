@@ -36,7 +36,8 @@ public class AdminCategoryServlet extends HttpServlet {
         switch (action) {
             case "add":
                 // Chuyển đến form thêm — lấy danh sách danh mục gốc để chọn parent
-                List<Category> parents = categoryDAO.getAll();
+                List<Category> tmp = categoryDAO.getAll();
+                List<Category> parents = tmp.subList(0, 4);
                 request.setAttribute("categories", parents);
                 request.getRequestDispatcher("/admin-category-form.jsp").forward(request, response);
                 break;
@@ -44,7 +45,8 @@ public class AdminCategoryServlet extends HttpServlet {
             case "edit":
                 int editId = Integer.parseInt(request.getParameter("id"));
                 Category editCat = categoryDAO.getCategoryById(editId);
-                List<Category> allCats = categoryDAO.getAll();
+                List<Category> temp = categoryDAO.getAll();
+                List<Category> allCats = temp.subList(0, 4);
                 request.setAttribute("category", editCat);
                 request.setAttribute("categories", allCats);
                 request.setAttribute("editMode", true);
@@ -66,7 +68,7 @@ public class AdminCategoryServlet extends HttpServlet {
 
         String action = request.getParameter("action");
 
-        // CategoryDAO hiện tại chưa có insert/update/delete → chúng ta sẽ thực hiện trực tiếp
+        // 
         String sql_add    = "INSERT INTO Category (name, description, status, parent_id) VALUES (?,?,?,?)";
         String sql_edit   = "UPDATE Category SET name=?, description=?, status=?, parent_id=? WHERE id=?";
         String sql_delete = "DELETE FROM Category WHERE id=?";
