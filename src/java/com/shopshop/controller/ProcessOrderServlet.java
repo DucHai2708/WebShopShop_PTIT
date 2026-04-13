@@ -123,6 +123,12 @@ public class ProcessOrderServlet extends HttpServlet {
                 request.setAttribute("shipAddress", address);
                 
                 // DÒNG NÀY RẤT QUAN TRỌNG: Gửi danh sách món hàng khách vừa mua sang JSP
+                
+                for (CartItem item : itemsToBuy) {
+                    item.setColor(item.getColor().toUpperCase());
+                    item.setSize(item.getSize().toUpperCase());
+                }
+                
                 request.setAttribute("orderedItems", itemsToBuy);
                 
                 // BỔ SUNG LẠI: Gửi dữ liệu cho thanh Menu Động để menu không bị trống
