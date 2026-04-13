@@ -4,8 +4,6 @@ import com.shopshop.dao.CartDAO;
 import com.shopshop.dao.CategoryDAO;
 import com.shopshop.model.CartItem;
 import com.shopshop.model.Users;
-import java.io.IOException;
-import java.util.List;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;

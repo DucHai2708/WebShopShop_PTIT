@@ -156,10 +156,29 @@
                     <p class="text-muted mb-4">Cảm ơn bạn đã mua sắm tại Atino. Đơn hàng của bạn đã được ghi nhận và đang chờ xử lý.</p>
                     
                     <div class="bg-light p-4 text-left rounded mb-4" style="border: 1px dashed #ddd;">
-                        <h5 class="font-weight-bold mb-3">Thông tin đơn hàng #ATINO-${orderId}</h5>
+                        <h5 class="font-weight-bold mb-3 border-bottom pb-2">Thông tin đơn hàng</h5>
                         <p class="mb-1"><b>Người nhận:</b> ${shipName}</p>
                         <p class="mb-1"><b>Số điện thoại:</b> ${shipPhone}</p>
-                        <p class="mb-0"><b>Địa chỉ nhận hàng:</b> ${shipAddress}</p>
+                        <p class="mb-4"><b>Địa chỉ nhận hàng:</b> ${shipAddress}</p>
+
+                        <h5 class="font-weight-bold mb-3 border-bottom pb-2">Sản phẩm đã đặt</h5>
+
+                        <%-- Vòng lặp lấy dữ liệu từ Servlet ném sang --%>
+                        <c:forEach items="${orderedItems}" var="item">
+                            <%-- justify-content-between để đẩy ảnh và chữ về 2 phía, ml-auto trên ảnh để ảnh nằm bên phải --%>
+                            <div class="d-flex align-items-center justify-content-between mb-3 pb-3 border-bottom">
+                                <%-- flex-grow-1 để phần văn bản chiếm hết không gian bên trái, pr-3 để tạo khoảng cách --%>
+                                <div class="flex-grow-1 pr-3">
+                                    <h6 class="font-weight-bold mb-1 text-dark">${item.productName}</h6>
+                                    <p class="text-muted mb-1" style="font-size: 14px;">${item.color} / ${item.size}</p>
+                                    <p class="mb-0 text-muted" style="font-size: 14px;">Số lượng: x${item.quantity}</p>
+                                </div>
+
+                                <div class="ml-auto">
+                                    <img src="${item.image}" alt="${item.productName}" class="rounded border" style="width: 70px; height: 70px; object-fit: cover;">
+                                </div>
+                            </div>
+                        </c:forEach>
                     </div>
 
                     <div class="alert alert-warning text-left p-3 mb-4" style="font-size: 14px; border-left: 4px solid #ffc107;">
