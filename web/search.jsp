@@ -227,7 +227,7 @@
                         %>
                         <div class="filter-wrap">
                             <form action="search" method="GET" id="filterForm">
-                                <input type="hidden" name="keyword" value="<%= searchKw != null ? searchKw : "" %>">
+                                <input type="hidden" name="keyword" value="<%= searchKw != null ? searchKw : ""%>">
                                 <div class="filter-header">
                                     <span class="filter-label">Bộ lọc</span>
                                     <div class="filter-item"> Kích cỡ <i class="fa-solid fa-caret-down"></i> </div>
@@ -240,7 +240,7 @@
                                             <strong style="display:block; margin-bottom:10px;">Kích cỡ</strong>
                                             <ul class="filter-list" style="max-height: 200px; overflow-y: auto;">
                                                 <% String[] allSizes = {"s", "m", "l", "xl", "free size"};
-                                                                        for (String s : allSizes) {%>
+                                                    for (String s : allSizes) {%>
                                                 <li><input type="checkbox" name="size" value="<%= s%>" id="size-<%= s.replaceAll(" ", "")%>" <%= sizeList.contains(s) ? "checked" : ""%>>
                                                     <label for="size-<%= s.replaceAll(" ", "")%>" style="text-transform: uppercase;"><%= s%></label></li>
                                                     <% } %>
@@ -250,8 +250,8 @@
                                             <strong style="display:block; margin-bottom:10px;">Màu sắc</strong>
                                             <ul class="filter-list" style="max-height: 200px; overflow-y: auto;">
                                                 <% String[] allColors = {"trắng", "đen", "navy", "xanh navy", "xanh rêu", "kem", "nâu", "xanh đậm", "xanh nhạt", "be", "xám"};
-                                                                        for (int i = 0; i < allColors.length; i++) {
-                                                                            String c = allColors[i];%>
+                                                    for (int i = 0; i < allColors.length; i++) {
+                                                        String c = allColors[i];%>
                                                 <li><input type="checkbox" name="color" value="<%= c%>" id="color-<%= i%>" <%= colorList.contains(c) ? "checked" : ""%>>
                                                     <label for="color-<%= i%>" style="text-transform: capitalize;"><%= c%></label></li>
                                                     <% }%>
@@ -274,255 +274,249 @@
                                     <div style="margin-top: 20px;">
                                         <button type="submit" class="filter-btn">Lọc</button>
                                         <% if (!priceList.isEmpty() || !sizeList.isEmpty() || !colorList.isEmpty()) {%>
-                                        <a href="search?keyword=<%= searchKw != null ? searchKw : "" %>" class="filter-btn" style="background:#888; margin-left:8px; text-decoration:none;">Bỏ lọc</a>
+                                        <a href="search?keyword=<%= searchKw != null ? searchKw : ""%>" class="filter-btn" style="background:#888; margin-left:8px; text-decoration:none;">Bỏ lọc</a>
                                         <% } %>
                                     </div>
                                 </div>
                             </form>
                         </div>
-            <!-- Grid Sản phẩm -->
-            <% NumberFormat nf = NumberFormat.getNumberInstance(new Locale("vi", "VN")); %>
-            <div class="products-wrap">
-                <div class="container-fluid">
-                    <div class="row">
-                        <% if (pList != null && !pList.isEmpty()) {
-                                                        for (Product p : pList) {%>
-                        <div class="col-xl-3">
-                            <div class="product-wrap">
-                                <a href="product?id=<%= p.getId()%>">
-                                    <img src="<%= p.getImage()%>" alt="<%= p.getName()%>"
-                                         class="product-img">
-                                </a>
-                                <h4 class="product-title">
-                                    <%= p.getName()%>
-                                </h4>
-                                <div class="product-price-wrap">
-                                    <p class="product-price-number">
-                                        <%= nf.format(p.getPrice())%>
-                                    </p>
-                                    <i class="fa-solid fa-dong-sign product-price-dong"></i>
-                                </div>
+                        <!-- Grid Sản phẩm -->
+                        <% NumberFormat nf = NumberFormat.getNumberInstance(new Locale("vi", "VN")); %>
+                        <div class="products-wrap">
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <% if (pList != null && !pList.isEmpty()) {
+                                for (Product p : pList) {%>
+                                    <div class="col-xl-3">
+                                        <div class="product-wrap">
+                                            <a href="product?id=<%= p.getId()%>">
+                                                <img src="<%= p.getImage()%>" alt="<%= p.getName()%>"
+                                                     class="product-img">
+                                            </a>
+                                            <h4 class="product-title">
+                                                <%= p.getName()%>
+                                            </h4>
+                                            <div class="product-price-wrap">
+                                                <p class="product-price-number">
+                                                    <%= nf.format(p.getPrice())%>
+                                                </p>
+                                                <i class="fa-solid fa-dong-sign product-price-dong"></i>
+                                            </div>
 
-                                <div class="product-button-wrap" style="display: flex; align-items: stretch;">
-                                    <a href="product?id=<%= p.getId()%>" class="product-btn"
-                                       style="flex: 1; margin: 0; height: 100%; display: flex; align-items: center; gap: 5px; text-decoration: none; justify-content: center;">
-                                        <i class="fa-regular fa-eye"></i> Xem chi tiết
-                                    </a>
+                                            <div class="product-button-wrap" style="display: flex; align-items: stretch;">
+                                                <a href="product?id=<%= p.getId()%>" class="product-btn"
+                                                   style="flex: 1; margin: 0; height: 100%; display: flex; align-items: center; gap: 5px; text-decoration: none; justify-content: center;">
+                                                    <i class="fa-regular fa-eye"></i> Xem chi tiết
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <% }
+                        } else { %>
+                                    <div class="col-12 text-center mt-5 mb-5">
+                                        <h5>Không tìm thấy sản phẩm nào phù hợp với từ khóa của bạn.
+                                        </h5>
+                                    </div>
+                                    <% }%>
                                 </div>
                             </div>
                         </div>
-                        <% }
-                                                    } else { %>
-                        <div class="col-12 text-center mt-5 mb-5">
-                            <h5>Không tìm thấy sản phẩm nào phù hợp với từ khóa của bạn.
-                            </h5>
-                        </div>
-                        <% }%>
-                    </div>
-                </div>
-            </div>
 
-            <div class="horizontal-ruler">
-                <div class="container">
-                    <div class="row">
-                        <hr class="hr">
-                    </div>
-                </div>
-            </div>
-
-            <div class="customer-service">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-xl-4">
-                            <h3 class="customer-title">
-                                GỌI MUA HÀNG (8:30 - 22:20)
-                            </h3>
-                            <p class="customer-call-number">0967.284.444</p>
-                            <p class="customer-desc">Tất cả các ngày trong tuần</p>
-                        </div>
-                        <div class="col-xl-4">
-                            <h3 class="customer-title">
-                                GÓP Ý, KHIẾU NẠI (8:00 - 17:00)
-                            </h3>
-                            <p class="customer-call-number">0968.959.050</p>
-                            <p class="customer-desc">Các ngày trong tuần (trừ ngày lễ)</p>
-                        </div>
-                        <div class="col-xl-4">
-                            <h3 class="customer-title">
-                                Theo dõi chúng tôi
-                            </h3>
-                            <div class="customer-socials-wrap">
-                                <a href="https://www.facebook.com/Atino.vn" class="customer-socials-item">
-                                    <i class="fa-brands fa-facebook-f"></i>
-                                </a>
-                                <a href="https://www.instagram.com/atino.vn/" class="customer-socials-item">
-                                    <i class="fa-brands fa-instagram"></i>
-                                </a>
-                                <a href="https://shopee.vn/atino.vn" class="customer-socials-item">
-                                    <i class="fa-solid fa-shop"></i>
-                                </a>
+                        <div class="horizontal-ruler">
+                            <div class="container">
+                                <div class="row">
+                                    <hr class="hr">
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
 
-            </div>
+                        <div class="customer-service">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-xl-4">
+                                        <h3 class="customer-title">
+                                            GỌI MUA HÀNG (8:30 - 22:20)
+                                        </h3>
+                                        <p class="customer-call-number">0967.284.444</p>
+                                        <p class="customer-desc">Tất cả các ngày trong tuần</p>
+                                    </div>
+                                    <div class="col-xl-4">
+                                        <h3 class="customer-title">
+                                            GÓP Ý, KHIẾU NẠI (8:00 - 17:00)
+                                        </h3>
+                                        <p class="customer-call-number">0968.959.050</p>
+                                        <p class="customer-desc">Các ngày trong tuần (trừ ngày lễ)</p>
+                                    </div>
+                                    <div class="col-xl-4">
+                                        <h3 class="customer-title">
+                                            Theo dõi chúng tôi
+                                        </h3>
+                                        <div class="customer-socials-wrap">
+                                            <a href="https://www.facebook.com/Atino.vn" class="customer-socials-item">
+                                                <i class="fa-brands fa-facebook-f"></i>
+                                            </a>
+                                            <a href="https://www.instagram.com/atino.vn/" class="customer-socials-item">
+                                                <i class="fa-brands fa-instagram"></i>
+                                            </a>
+                                            <a href="https://shopee.vn/atino.vn" class="customer-socials-item">
+                                                <i class="fa-solid fa-shop"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-            <footer class="footer">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-xl-3">
-                            <h3 class="footer-item-title">Hỗ trợ khách hàng</h3>
-                            <a href="#" class="footer-item-link">Hướng dẫn mua hàng</a> <br>
-                            <a href="#" class="footer-item-link">Hướng dẫn chọn size</a>
-                            <br>
-                            <a href="#" class="footer-item-link">Phương thức</a> <br>
-                            <a href="#" class="footer-item-link">Chính sách vận chuyển</a>
-                            <br>
-                            <a href="#" class="footer-item-link">Chính sách bảo mật</a> <br>
-                            <a href="#" class="footer-item-link">Qui định đổi trả</a> <br>
-                            <a href="#" class="footer-item-link">Chính sách xử lý khiếu
-                                nại</a>
                         </div>
-                        <div class="col-xl-3">
-                            <h3 class="footer-item-title">Về chúng tôi</h3>
-                            <p class="footer-item-text">Hộ kinh doanh atino</p>
-                            <p style="font-size: 14px; margin-bottom: 5px;"><b>Địa chỉ:
-                                </b>Số 110 Phố Nhổn, Phường Tây Tựu,
-                                Quận Bắc Từ Liêm, Tp. Hà Nộ</p>
-                            <p style="font-size: 14px; margin-bottom: 5px;"><b>Mã Số Doanh
-                                    Nghiệp: </b>01D-8004624</p>
-                            <p style="font-size: 14px; margin-bottom: 5px;"><b>Email:
-                                </b>cntt@atino.vn</p>
-                        </div>
-                        <div class="col-xl-3">
-                            <h3 class="footer-item-title">Hệ thống cửa hàng</h3>
-                            <h4 class="footer-list-title">Thành phố Hà Nội</h4>
-                            <ul class="footer-item-list">
-                                <li class="footer-item">
-                                    110 Phố Nhổn
-                                </li>
-                                <li class="footer-item">
-                                    1221 Giải Phóng
-                                </li>
-                                <li class="footer-item">
-                                    154 Quang Trung, Hà Đông
-                                </li>
-                                <li class="footer-item">
-                                    34 Trần Phú, Hà Đông
-                                </li>
-                                <li class="footer-item">
-                                    208 Bạch Mai
-                                </li>
-                                <li class="footer-item">
-                                    175 Chùa Bộc
-                                </li>
-                                <li class="footer-item">
-                                    116 Cầu Giấy
-                                </li>
-                                <li class="footer-item">
-                                    290 Nguyễn Trãi, Trung Văn (Gần Đại học Hà Nội)
-                                </li>
-                                <li class="footer-item">
-                                    312 Khu 6 Trạm Trôi, Hoài Đức
-                                </li>
-                                <li class="footer-item">
-                                    195 Quang Trung, Tx.Sơn Tây
-                                </li>
-                            </ul>
 
-                            <h4 class="footer-list-title">Khu vực miền Nam:</h4>
-                            <ul class="footer-item-list">
-                                <li class="footer-item">
-                                    225 Võ Văn Ngân, Thủ Đức, HCM
-                                </li>
-                                <li class="footer-item">
-                                    567 Quang Trung, P10, Gò Vấp, HCM
-                                </li>
-                                <li class="footer-item">
-                                    242 Nguyễn Trãi, P5, Q5, HCM
-                                </li>
-                                <li class="footer-item">
-                                    TP. Biên Hoà: 1363 Phạm Văn Thuận
-                                </li>
-                                <li class="footer-item">
-                                    Bình Dương: 93 Yersin, TP Thủ Dầu Một
-                                </li>
-                                <li class="footer-item">
-                                    Cần Thơ: 73 Nguyễn Việt Hồng
-                                </li>
-                            </ul>
+                        <footer class="footer">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-xl-3">
+                                        <h3 class="footer-item-title">Hỗ trợ khách hàng</h3>
+                                        <a href="https://atino.vn/huong-dan-mua-hang-n46558.html" class="footer-item-link">Hướng dẫn mua hàng</a> <br>
+                                        <a href="https://atino.vn/chinh-sach-van-chuyen-n46550.html" class="footer-item-link">Chính sách vận chuyển</a> <br>
+                                        <a href="https://atino.vn/chinh-sach-bao-mat-thong-tin-n46562.html" class="footer-item-link">Chính sách bảo mật</a> <br>
+                                        <a href="https://atino.vn/chinh-sach-doi-hang-n46551.html" class="footer-item-link">Qui định đổi trả</a> <br>
+                                    </div>
+                                    <div class="col-xl-3">
+                                        <h3 class="footer-item-title">Về chúng tôi</h3>
+                                        <p class="footer-item-text">Hộ kinh doanh atino</p>
+                                        <p style="font-size: 14px; margin-bottom: 5px;"><b>Địa chỉ:
+                                            </b>Số 110 Phố Nhổn, Phường Tây Tựu,
+                                            Quận Bắc Từ Liêm, Tp. Hà Nộ</p>
+                                        <p style="font-size: 14px; margin-bottom: 5px;"><b>Mã Số Doanh
+                                                Nghiệp: </b>01D-8004624</p>
+                                        <p style="font-size: 14px; margin-bottom: 5px;"><b>Email:
+                                            </b>cntt@atino.vn</p>
+                                    </div>
+                                    <div class="col-xl-3">
+                                        <h3 class="footer-item-title">Hệ thống cửa hàng</h3>
+                                        <h4 class="footer-list-title">Thành phố Hà Nội</h4>
+                                        <ul class="footer-item-list">
+                                            <li class="footer-item">
+                                                110 Phố Nhổn
+                                            </li>
+                                            <li class="footer-item">
+                                                1221 Giải Phóng
+                                            </li>
+                                            <li class="footer-item">
+                                                154 Quang Trung, Hà Đông
+                                            </li>
+                                            <li class="footer-item">
+                                                34 Trần Phú, Hà Đông
+                                            </li>
+                                            <li class="footer-item">
+                                                208 Bạch Mai
+                                            </li>
+                                            <li class="footer-item">
+                                                175 Chùa Bộc
+                                            </li>
+                                            <li class="footer-item">
+                                                116 Cầu Giấy
+                                            </li>
+                                            <li class="footer-item">
+                                                290 Nguyễn Trãi, Trung Văn (Gần Đại học Hà Nội)
+                                            </li>
+                                            <li class="footer-item">
+                                                312 Khu 6 Trạm Trôi, Hoài Đức
+                                            </li>
+                                            <li class="footer-item">
+                                                195 Quang Trung, Tx.Sơn Tây
+                                            </li>
+                                        </ul>
 
-                            <h4 class="footer-list-title">Các tỉnh & thành phố khác:</h4>
-                            <ul class="footer-item-list">
-                                <li class="footer-item">
-                                    TP. Thanh Hoá: 236-238 Lê Hoàn
-                                </li>
-                                <li class="footer-item">
-                                    TP. Vinh: 167 Nguyễn Văn Cừ, TP Vinh
-                                </li>
-                                <li class="footer-item">
-                                    TP. Bắc Ninh: 128 Trần Hưng Đạo
-                                </li>
-                                <li class="footer-item">
-                                    TP. Thái Nguyên: 156 Lương Ngọc Quyến
-                                </li>
-                                <li class="footer-item">
-                                    TP. Hải Phòng: 300 Lê Lợi
-                                </li>
-                                <li class="footer-item">
-                                    TP. Huế: 42 Bến Nghé
-                                </li>
-                                <li class="footer-item">
-                                    TP. Đà Nẵng: 436 Lê Duẩn
-                                </li>
-                                <li class="footer-item">
-                                    TP. Nam Định: 57 Hàn Thuyên
-                                </li>
-                                <li class="footer-item">
-                                    TP. Hạ Long: 581 Lê Thánh Tông
-                                </li>
-                                <li class="footer-item">
-                                    TP. Hải Dương: 58 Trần Hưng Đạo
-                                </li>
-                                <li class="footer-item">
-                                    TP. Thái Bình: 122 Trần Hưng Đạo
-                                </li>
-                                <li class="footer-item">
-                                    TP. Ninh Bình: 61 Đinh Tiên Hoàng
-                                </li>
-                                <li class="footer-item">
-                                    TP. Việt Trì: 2145 Đại Lộ Hùng Vương, Phú Thọ
-                                </li>
-                                <li class="footer-item">
-                                    TP. Bắc Giang: 206 Hoàng Văn Thụ, Bắc Giang
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="col-xl-3">
-                            <iframe
-                                src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FAtino.vn&tabs=timeline&width=340&height=250&small_header=true&adapt_container_width=true&hide_cover=true&show_facepile=false"
-                                width="100%" height="250" style="border:none;overflow:hidden"
-                                scrolling="no" frameborder="0" allowfullscreen="true"
-                                allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
-                        </div>
-                    </div>
-                </div>
-            </footer>
+                                        <h4 class="footer-list-title">Khu vực miền Nam:</h4>
+                                        <ul class="footer-item-list">
+                                            <li class="footer-item">
+                                                225 Võ Văn Ngân, Thủ Đức, HCM
+                                            </li>
+                                            <li class="footer-item">
+                                                567 Quang Trung, P10, Gò Vấp, HCM
+                                            </li>
+                                            <li class="footer-item">
+                                                242 Nguyễn Trãi, P5, Q5, HCM
+                                            </li>
+                                            <li class="footer-item">
+                                                TP. Biên Hoà: 1363 Phạm Văn Thuận
+                                            </li>
+                                            <li class="footer-item">
+                                                Bình Dương: 93 Yersin, TP Thủ Dầu Một
+                                            </li>
+                                            <li class="footer-item">
+                                                Cần Thơ: 73 Nguyễn Việt Hồng
+                                            </li>
+                                        </ul>
 
-            <script>
-                window.addEventListener('scroll', function () {
-                    const header = document.querySelector('.header');
+                                        <h4 class="footer-list-title">Các tỉnh & thành phố khác:</h4>
+                                        <ul class="footer-item-list">
+                                            <li class="footer-item">
+                                                TP. Thanh Hoá: 236-238 Lê Hoàn
+                                            </li>
+                                            <li class="footer-item">
+                                                TP. Vinh: 167 Nguyễn Văn Cừ, TP Vinh
+                                            </li>
+                                            <li class="footer-item">
+                                                TP. Bắc Ninh: 128 Trần Hưng Đạo
+                                            </li>
+                                            <li class="footer-item">
+                                                TP. Thái Nguyên: 156 Lương Ngọc Quyến
+                                            </li>
+                                            <li class="footer-item">
+                                                TP. Hải Phòng: 300 Lê Lợi
+                                            </li>
+                                            <li class="footer-item">
+                                                TP. Huế: 42 Bến Nghé
+                                            </li>
+                                            <li class="footer-item">
+                                                TP. Đà Nẵng: 436 Lê Duẩn
+                                            </li>
+                                            <li class="footer-item">
+                                                TP. Nam Định: 57 Hàn Thuyên
+                                            </li>
+                                            <li class="footer-item">
+                                                TP. Hạ Long: 581 Lê Thánh Tông
+                                            </li>
+                                            <li class="footer-item">
+                                                TP. Hải Dương: 58 Trần Hưng Đạo
+                                            </li>
+                                            <li class="footer-item">
+                                                TP. Thái Bình: 122 Trần Hưng Đạo
+                                            </li>
+                                            <li class="footer-item">
+                                                TP. Ninh Bình: 61 Đinh Tiên Hoàng
+                                            </li>
+                                            <li class="footer-item">
+                                                TP. Việt Trì: 2145 Đại Lộ Hùng Vương, Phú Thọ
+                                            </li>
+                                            <li class="footer-item">
+                                                TP. Bắc Giang: 206 Hoàng Văn Thụ, Bắc Giang
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-xl-3">
+                                        <iframe
+                                            src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FAtino.vn&tabs=timeline&width=340&height=250&small_header=true&adapt_container_width=true&hide_cover=true&show_facepile=false"
+                                            width="100%" height="250" style="border:none;overflow:hidden"
+                                            scrolling="no" frameborder="0" allowfullscreen="true"
+                                            allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+                                    </div>
+                                </div>
+                            </div>
+                        </footer>
 
-                    // Bạn có thể thay đổi số 150 này. 
-                    // Đây là mốc (tính bằng pixel) khi bạn cuộn qua, header sẽ trượt xuống.
-                    if (window.scrollY > 150) {
-                        header.classList.add('sticky');
-                    } else {
-                        header.classList.remove('sticky');
-                    }
-                });
-            </script>
-    </body>
+                        <script>
+                            window.addEventListener('scroll', function () {
+                                const header = document.querySelector('.header');
 
-</html>
+                                // Bạn có thể thay đổi số 150 này. 
+                                // Đây là mốc (tính bằng pixel) khi bạn cuộn qua, header sẽ trượt xuống.
+                                if (window.scrollY > 150) {
+                                    header.classList.add('sticky');
+                                } else {
+                                    header.classList.remove('sticky');
+                                }
+                            });
+                        </script>
+                        </body>
+
+                        </html>

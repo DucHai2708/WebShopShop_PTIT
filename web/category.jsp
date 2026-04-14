@@ -191,7 +191,7 @@
         <div class="breadcrumb-section">
             <div class="container-fluid">
                 <% Category category = (Category) request.getAttribute("category");
-                                        String cateName = category != null ? category.getName() : "Danh mục";%>
+                    String cateName = category != null ? category.getName() : "Danh mục";%>
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb custom-breadcrumb">
                         <li class="breadcrumb-item"><a href="home">Trang chủ</a></li>
@@ -245,7 +245,7 @@
                                             <strong style="display:block; margin-bottom:10px;">Kích cỡ</strong>
                                             <ul class="filter-list" style="max-height: 200px; overflow-y: auto;">
                                                 <% String[] allSizes = {"s", "m", "l", "xl", "free size"};
-                                                                        for (String s : allSizes) {%>
+                                                    for (String s : allSizes) {%>
                                                 <li><input type="checkbox" name="size" value="<%= s%>" id="size-<%= s.replaceAll(" ", "")%>" <%= sizeList.contains(s) ? "checked" : ""%>>
                                                     <label for="size-<%= s.replaceAll(" ", "")%>" style="text-transform: uppercase;"><%= s%></label></li>
                                                     <% } %>
@@ -255,8 +255,8 @@
                                             <strong style="display:block; margin-bottom:10px;">Màu sắc</strong>
                                             <ul class="filter-list" style="max-height: 200px; overflow-y: auto;">
                                                 <% String[] allColors = {"trắng", "đen", "navy", "xanh navy", "xanh rêu", "kem", "nâu", "xanh đậm", "xanh nhạt", "be", "xám"};
-                                                                        for (int i = 0; i < allColors.length; i++) {
-                                                                            String c = allColors[i];%>
+                                                    for (int i = 0; i < allColors.length; i++) {
+                                                        String c = allColors[i];%>
                                                 <li><input type="checkbox" name="color" value="<%= c%>" id="color-<%= i%>" <%= colorList.contains(c) ? "checked" : ""%>>
                                                     <label for="color-<%= i%>" style="text-transform: capitalize;"><%= c%></label></li>
                                                     <% }%>
@@ -296,7 +296,7 @@
                 <div class="products-wrap">
                     <div class="row">
                         <% if (productList != null && !productList.isEmpty()) {
-                                                            for (Product p : productList) {%>
+                                for (Product p : productList) {%>
                         <div class="col-xl-3">
                             <div class="product-wrap">
                                 <a href="product?id=<%= p.getId()%>">
@@ -318,7 +318,7 @@
                             </div>
                         </div>
                         <% }
-                                                    } else { %>
+                        } else { %>
                         <div class="col-12 text-center" style="padding: 40px 0;">
                             <p style="font-size: 16px; color: #888;">Không có sản phẩm nào trong danh mục này.</p>
                         </div>
@@ -378,16 +378,10 @@
                     <div class="row">
                         <div class="col-xl-3">
                             <h3 class="footer-item-title">Hỗ trợ khách hàng</h3>
-                            <a href="#" class="footer-item-link">Hướng dẫn mua hàng</a> <br>
-                            <a href="#" class="footer-item-link">Hướng dẫn chọn size</a>
-                            <br>
-                            <a href="#" class="footer-item-link">Phương thức</a> <br>
-                            <a href="#" class="footer-item-link">Chính sách vận chuyển</a>
-                            <br>
-                            <a href="#" class="footer-item-link">Chính sách bảo mật</a> <br>
-                            <a href="#" class="footer-item-link">Qui định đổi trả</a> <br>
-                            <a href="#" class="footer-item-link">Chính sách xử lý khiếu
-                                nại</a>
+                            <a href="https://atino.vn/huong-dan-mua-hang-n46558.html" class="footer-item-link">Hướng dẫn mua hàng</a> <br>
+                            <a href="https://atino.vn/chinh-sach-van-chuyen-n46550.html" class="footer-item-link">Chính sách vận chuyển</a> <br>
+                            <a href="https://atino.vn/chinh-sach-bao-mat-thong-tin-n46562.html" class="footer-item-link">Chính sách bảo mật</a> <br>
+                            <a href="https://atino.vn/chinh-sach-doi-hang-n46551.html" class="footer-item-link">Qui định đổi trả</a> <br>
                         </div>
                         <div class="col-xl-3">
                             <h3 class="footer-item-title">Về chúng tôi</h3>

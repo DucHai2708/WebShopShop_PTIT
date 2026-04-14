@@ -243,13 +243,10 @@
                                     <div class="row">
                                         <div class="col-xl-3">
                                             <h3 class="footer-item-title">Hỗ trợ khách hàng</h3>
-                                            <a href="#" class="footer-item-link">Hướng dẫn mua hàng</a> <br>
-                                            <a href="#" class="footer-item-link">Hướng dẫn chọn size</a> <br>
-                                            <a href="#" class="footer-item-link">Phương thức</a> <br>
-                                            <a href="#" class="footer-item-link">Chính sách vận chuyển</a> <br>
-                                            <a href="#" class="footer-item-link">Chính sách bảo mật</a> <br>
-                                            <a href="#" class="footer-item-link">Qui định đổi trả</a> <br>
-                                            <a href="#" class="footer-item-link">Chính sách xử lý khiếu nại</a>
+                                            <a href="https://atino.vn/huong-dan-mua-hang-n46558.html" class="footer-item-link">Hướng dẫn mua hàng</a> <br>
+                                            <a href="https://atino.vn/chinh-sach-van-chuyen-n46550.html" class="footer-item-link">Chính sách vận chuyển</a> <br>
+                                            <a href="https://atino.vn/chinh-sach-bao-mat-thong-tin-n46562.html" class="footer-item-link">Chính sách bảo mật</a> <br>
+                                            <a href="https://atino.vn/chinh-sach-doi-hang-n46551.html" class="footer-item-link">Qui định đổi trả</a> <br>
                                         </div>
                                         <div class="col-xl-3">
                                             <h3 class="footer-item-title">Về chúng tôi</h3>
