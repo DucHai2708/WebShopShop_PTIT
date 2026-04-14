@@ -108,65 +108,65 @@
                                                 <div class="nav-wrap">
                                                     <div class="header-nav">
                                                         <a href="home" class="header-item">Trang chủ</a>
-                                                       <div class="nav-item-has-dropdown">
-    <a href="category?id=1" class="header-item">Áo Thu Đông</a>
-    <div class="nav-dropdown">
-        <% 
-            List<Category> listWinter = (List<Category>) request.getAttribute("winter");
-            if (listWinter != null) {
-                for (Category c : listWinter) { 
-        %>
-            <a href="category?id=<%= c.getId() %>"><%= c.getName() %></a>
-        <%      }
-            } 
-        %>
-    </div>
-</div>
+                                                        <div class="nav-item-has-dropdown">
+                                                            <a href="category?id=1" class="header-item">Áo Thu Đông</a>
+                                                            <div class="nav-dropdown">
+                                                                <% 
+                                                                    List<Category> listWinter = (List<Category>) request.getAttribute("winter");
+                                                                    if (listWinter != null) {
+                                                                        for (Category c : listWinter) { 
+                                                                %>
+                                                                    <a href="category?id=<%= c.getId() %>"><%= c.getName() %></a>
+                                                                <%      }
+                                                                    } 
+                                                                %>
+                                                            </div>
+                                                        </div>
 
-<div class="nav-item-has-dropdown">
-    <a href="category?id=2" class="header-item">Áo xuân hè</a>
-    <div class="nav-dropdown">
-        <% 
-            List<Category> listSummer = (List<Category>) request.getAttribute("summer");
-            if (listSummer != null) {
-                for (Category c : listSummer) { 
-        %>
-            <a href="category?id=<%= c.getId() %>"><%= c.getName() %></a>
-        <%      }
-            } 
-        %>
-    </div>
-</div>
+                                                        <div class="nav-item-has-dropdown">
+                                                            <a href="category?id=2" class="header-item">Áo xuân hè</a>
+                                                            <div class="nav-dropdown">
+                                                                <% 
+                                                                    List<Category> listSummer = (List<Category>) request.getAttribute("summer");
+                                                                    if (listSummer != null) {
+                                                                        for (Category c : listSummer) { 
+                                                                %>
+                                                                    <a href="category?id=<%= c.getId() %>"><%= c.getName() %></a>
+                                                                <%      }
+                                                                    } 
+                                                                %>
+                                                            </div>
+                                                        </div>
 
-<div class="nav-item-has-dropdown">
-    <a href="category?id=3" class="header-item">Quần</a>
-    <div class="nav-dropdown">
-        <% 
-            List<Category> listPant = (List<Category>) request.getAttribute("pant");
-            if (listPant != null) {
-                for (Category c : listPant) { 
-        %>
-            <a href="category?id=<%= c.getId() %>"><%= c.getName() %></a>
-        <%      }
-            } 
-        %>
-    </div>
-</div>
+                                                        <div class="nav-item-has-dropdown">
+                                                            <a href="category?id=3" class="header-item">Quần</a>
+                                                            <div class="nav-dropdown">
+                                                                <% 
+                                                                    List<Category> listPant = (List<Category>) request.getAttribute("pant");
+                                                                    if (listPant != null) {
+                                                                        for (Category c : listPant) { 
+                                                                %>
+                                                                    <a href="category?id=<%= c.getId() %>"><%= c.getName() %></a>
+                                                                <%      }
+                                                                    } 
+                                                                %>
+                                                            </div>
+                                                        </div>
 
-<div class="nav-item-has-dropdown">
-    <a href="category?id=4" class="header-item">Phụ kiện</a>
-    <div class="nav-dropdown">
-        <% 
-            List<Category> listAcc = (List<Category>) request.getAttribute("accessories");
-            if (listAcc != null) {
-                for (Category c : listAcc) { 
-        %>
-            <a href="category?id=<%= c.getId() %>"><%= c.getName() %></a>
-        <%      }
-            } 
-        %>
-    </div>
-</div>
+                                                        <div class="nav-item-has-dropdown">
+                                                            <a href="category?id=4" class="header-item">Phụ kiện</a>
+                                                            <div class="nav-dropdown">
+                                                                <% 
+                                                                    List<Category> listAcc = (List<Category>) request.getAttribute("accessories");
+                                                                    if (listAcc != null) {
+                                                                        for (Category c : listAcc) { 
+                                                                %>
+                                                                    <a href="category?id=<%= c.getId() %>"><%= c.getName() %></a>
+                                                                <%      }
+                                                                    } 
+                                                                %>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
