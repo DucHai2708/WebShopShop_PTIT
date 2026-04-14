@@ -413,8 +413,7 @@
             window.addEventListener('scroll', function () {
                 const header = document.querySelector('.header');
 
-                // Bạn có thể thay đổi số 150 này. 
-                // Đây là mốc (tính bằng pixel) khi bạn cuộn qua, header sẽ trượt xuống.
+                // Đây là mốc (tính bằng pixel) khi cuộn qua, header sẽ trượt xuống.
                 if (window.scrollY > 150) {
                     header.classList.add('sticky');
                 } else {
