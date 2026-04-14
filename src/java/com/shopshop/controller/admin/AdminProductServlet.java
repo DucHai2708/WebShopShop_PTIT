@@ -39,7 +39,8 @@ public class AdminProductServlet extends HttpServlet {
         switch (action) {
             case "add":
                 // Hiển thị form thêm sản phẩm
-                List<Category> categories = categoryDAO.getAll();
+                List<Category> tmp = categoryDAO.getAll();
+                List<Category> categories = tmp.subList(4, tmp.size());
                 request.setAttribute("categories", categories);
                 request.getRequestDispatcher("/admin-product-form.jsp").forward(request, response);
                 break;
@@ -48,7 +49,8 @@ public class AdminProductServlet extends HttpServlet {
                 // Hiển thị form sửa sản phẩm
                 int editId = Integer.parseInt(request.getParameter("id"));
                 Product editProduct = productDAO.getProductById(editId);
-                List<Category> catsForEdit = categoryDAO.getAll();
+                List<Category> temp = categoryDAO.getAll();
+                List<Category> catsForEdit = temp.subList(4, temp.size());
                 request.setAttribute("product", editProduct);
                 request.setAttribute("categories", catsForEdit);
                 request.setAttribute("editMode", true);
@@ -78,21 +80,29 @@ public class AdminProductServlet extends HttpServlet {
                 double price = Double.parseDouble(request.getParameter("price"));
                 String description = request.getParameter("description");
                 int categoryId = Integer.parseInt(request.getParameter("category_id"));
-                int quantity = Integer.parseInt(request.getParameter("quantity"));
-                Product p = new Product(0, name, image, price, description, categoryId, quantity);
-                
+                // quantity ban đầu = 0, sẽ tự cập nhật sau khi lưu biến thể
+                Product p = new Product(0, name, image, price, description, categoryId, 0);
+
                 int newProductId = productDAO.insertProduct(p);
                 if (newProductId > 0) {
                     String[] sizes = request.getParameterValues("sizes");
                     String[] colors = request.getParameterValues("colors");
+                    String[] stockQtys = request.getParameterValues("stockQtys"); // số lượng kho từng biến thể
                     if (sizes != null && colors != null) {
-                        for (String size : sizes) {
-                            for (String color : colors) {
-                                com.shopshop.model.ProductVariant pv = new com.shopshop.model.ProductVariant(0, newProductId, color, size, quantity);
+                        int idx = 0;
+                        // Thứ tự phải khớp với frontend: color (hàng ngoài) × size (cột trong)
+                        for (String color : colors) {
+                            for (String size : sizes) {
+                                int variantStock = (stockQtys != null && idx < stockQtys.length)
+                                        ? Integer.parseInt(stockQtys[idx++]) : 0;
+                                com.shopshop.model.ProductVariant pv = new com.shopshop.model.ProductVariant(
+                                        0, newProductId, color, size, variantStock);
                                 productDAO.insertVariant(pv);
                             }
                         }
                     }
+                    // Đồng bộ lại quantity của Product = Tổng biến thể
+                    productDAO.syncProductQuantity(newProductId);
                 }
                 response.sendRedirect(request.getContextPath() + "/admin/products?success=add");
                 break;
@@ -104,21 +114,29 @@ public class AdminProductServlet extends HttpServlet {
                 double price = Double.parseDouble(request.getParameter("price"));
                 String description = request.getParameter("description");
                 int categoryId = Integer.parseInt(request.getParameter("category_id"));
-                int quantity = Integer.parseInt(request.getParameter("quantity"));
-                Product p = new Product(id, name, image, price, description, categoryId, quantity);
-                
+                // quantity sẽ được tự đồng bộ, không cần lấy từ form
+                Product p = new Product(id, name, image, price, description, categoryId, 0);
+
                 if (productDAO.updateProduct(p)) {
                     productDAO.deleteVariantsByProductId(id);
                     String[] sizes = request.getParameterValues("sizes");
                     String[] colors = request.getParameterValues("colors");
+                    String[] stockQtys = request.getParameterValues("stockQtys");
                     if (sizes != null && colors != null) {
-                        for (String size : sizes) {
-                            for (String color : colors) {
-                                com.shopshop.model.ProductVariant pv = new com.shopshop.model.ProductVariant(0, id, color, size, quantity);
+                        int idx = 0;
+                        // Thứ tự phải khớp với frontend: color (hàng ngoài) × size (cột trong)
+                        for (String color : colors) {
+                            for (String size : sizes) {
+                                int variantStock = (stockQtys != null && idx < stockQtys.length)
+                                        ? Integer.parseInt(stockQtys[idx++]) : 0;
+                                com.shopshop.model.ProductVariant pv = new com.shopshop.model.ProductVariant(
+                                        0, id, color, size, variantStock);
                                 productDAO.insertVariant(pv);
                             }
                         }
                     }
+                    // Đồng bộ lại quantity của Product = Tổng biến thể
+                    productDAO.syncProductQuantity(id);
                 }
                 response.sendRedirect(request.getContextPath() + "/admin/products?success=edit");
                 break;

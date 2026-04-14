@@ -35,7 +35,7 @@ public class CategoryServlet extends HttpServlet {
         ProductDAO productDao = new ProductDAO();
         List<Product> list;
 
-        // Nếu có filter → dùng method lọc tổng hợp, ngược lại lấy hết
+        // Nếu có filter thì dùng method lọc tổng hợp, ngược lại lấy hết
         if ((priceRanges != null && priceRanges.length > 0) || 
             (sizes != null && sizes.length > 0) || 
             (colors != null && colors.length > 0)) {
@@ -55,7 +55,7 @@ public class CategoryServlet extends HttpServlet {
         request.setAttribute("sizes", sizes);
         request.setAttribute("colors", colors);
 
-        // --- BỔ SUNG LẤY DỮ LIỆU CHO MENU HEADER ---
+        // LẤY DỮ LIỆU CHO MENU HEADER
         com.shopshop.dao.CategoryDAO categoryDAOMenu = new com.shopshop.dao.CategoryDAO();
         request.setAttribute("winter", categoryDAOMenu.getChildCategories(1));
         request.setAttribute("summer", categoryDAOMenu.getChildCategories(2));

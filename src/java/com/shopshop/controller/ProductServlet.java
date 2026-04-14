@@ -38,7 +38,7 @@ public class ProductServlet extends HttpServlet {
             // Đẩy sản phẩm vào request
             request.setAttribute("product", product);
 
-            // --- BỔ SUNG LẤY DỮ LIỆU CHO MENU HEADER ---
+            // Gửi dữ liệu cho thanh Menu
             com.shopshop.dao.CategoryDAO categoryDAOMenu = new com.shopshop.dao.CategoryDAO();
             request.setAttribute("winter", categoryDAOMenu.getChildCategories(1));
             request.setAttribute("summer", categoryDAOMenu.getChildCategories(2));

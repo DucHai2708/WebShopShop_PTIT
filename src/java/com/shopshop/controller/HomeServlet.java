@@ -6,8 +6,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
-// Import đầy đủ các class cần thiết
 import com.shopshop.dao.CategoryDAO;
 import com.shopshop.dao.ProductDAO;
 import com.shopshop.model.Category;

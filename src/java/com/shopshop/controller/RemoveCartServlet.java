@@ -20,7 +20,7 @@ public class RemoveCartServlet extends HttpServlet {
 
         if (cartItemId != null && !cartItemId.isEmpty()) {
             CartDAO cartDAO = new CartDAO();
-            // Hàm của nhóm bạn yêu cầu truyền vào 1 mảng String
+
             String[] idsToRemove = { cartItemId }; 
             cartDAO.removeCartItems(idsToRemove);
         }

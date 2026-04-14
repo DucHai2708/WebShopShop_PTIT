@@ -108,65 +108,65 @@
                                                 <div class="nav-wrap">
                                                     <div class="header-nav">
                                                         <a href="home" class="header-item">Trang chủ</a>
-                                                       <div class="nav-item-has-dropdown">
-    <a href="category?id=1" class="header-item">Áo Thu Đông</a>
-    <div class="nav-dropdown">
-        <% 
-            List<Category> listWinter = (List<Category>) request.getAttribute("winter");
-            if (listWinter != null) {
-                for (Category c : listWinter) { 
-        %>
-            <a href="category?id=<%= c.getId() %>"><%= c.getName() %></a>
-        <%      }
-            } 
-        %>
-    </div>
-</div>
+                                                        <div class="nav-item-has-dropdown">
+                                                            <a href="category?id=1" class="header-item">Áo Thu Đông</a>
+                                                            <div class="nav-dropdown">
+                                                                <% 
+                                                                    List<Category> listWinter = (List<Category>) request.getAttribute("winter");
+                                                                    if (listWinter != null) {
+                                                                        for (Category c : listWinter) { 
+                                                                %>
+                                                                    <a href="category?id=<%= c.getId() %>"><%= c.getName() %></a>
+                                                                <%      }
+                                                                    } 
+                                                                %>
+                                                            </div>
+                                                        </div>
 
-<div class="nav-item-has-dropdown">
-    <a href="category?id=2" class="header-item">Áo xuân hè</a>
-    <div class="nav-dropdown">
-        <% 
-            List<Category> listSummer = (List<Category>) request.getAttribute("summer");
-            if (listSummer != null) {
-                for (Category c : listSummer) { 
-        %>
-            <a href="category?id=<%= c.getId() %>"><%= c.getName() %></a>
-        <%      }
-            } 
-        %>
-    </div>
-</div>
+                                                        <div class="nav-item-has-dropdown">
+                                                            <a href="category?id=2" class="header-item">Áo xuân hè</a>
+                                                            <div class="nav-dropdown">
+                                                                <% 
+                                                                    List<Category> listSummer = (List<Category>) request.getAttribute("summer");
+                                                                    if (listSummer != null) {
+                                                                        for (Category c : listSummer) { 
+                                                                %>
+                                                                    <a href="category?id=<%= c.getId() %>"><%= c.getName() %></a>
+                                                                <%      }
+                                                                    } 
+                                                                %>
+                                                            </div>
+                                                        </div>
 
-<div class="nav-item-has-dropdown">
-    <a href="category?id=3" class="header-item">Quần</a>
-    <div class="nav-dropdown">
-        <% 
-            List<Category> listPant = (List<Category>) request.getAttribute("pant");
-            if (listPant != null) {
-                for (Category c : listPant) { 
-        %>
-            <a href="category?id=<%= c.getId() %>"><%= c.getName() %></a>
-        <%      }
-            } 
-        %>
-    </div>
-</div>
+                                                        <div class="nav-item-has-dropdown">
+                                                            <a href="category?id=3" class="header-item">Quần</a>
+                                                            <div class="nav-dropdown">
+                                                                <% 
+                                                                    List<Category> listPant = (List<Category>) request.getAttribute("pant");
+                                                                    if (listPant != null) {
+                                                                        for (Category c : listPant) { 
+                                                                %>
+                                                                    <a href="category?id=<%= c.getId() %>"><%= c.getName() %></a>
+                                                                <%      }
+                                                                    } 
+                                                                %>
+                                                            </div>
+                                                        </div>
 
-<div class="nav-item-has-dropdown">
-    <a href="category?id=4" class="header-item">Phụ kiện</a>
-    <div class="nav-dropdown">
-        <% 
-            List<Category> listAcc = (List<Category>) request.getAttribute("accessories");
-            if (listAcc != null) {
-                for (Category c : listAcc) { 
-        %>
-            <a href="category?id=<%= c.getId() %>"><%= c.getName() %></a>
-        <%      }
-            } 
-        %>
-    </div>
-</div>
+                                                        <div class="nav-item-has-dropdown">
+                                                            <a href="category?id=4" class="header-item">Phụ kiện</a>
+                                                            <div class="nav-dropdown">
+                                                                <% 
+                                                                    List<Category> listAcc = (List<Category>) request.getAttribute("accessories");
+                                                                    if (listAcc != null) {
+                                                                        for (Category c : listAcc) { 
+                                                                %>
+                                                                    <a href="category?id=<%= c.getId() %>"><%= c.getName() %></a>
+                                                                <%      }
+                                                                    } 
+                                                                %>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -190,7 +190,7 @@
                                         <div class="col-12">
                                             <div class="slide-wrap">
                                                 <a href="#">
-                                                    <img src="./assets/images/slide.jpg" alt="" class="slide-img">
+                                                    <img src="./assets/images/banner.png" alt="" class="slide-img">
                                                 </a>
                                             </div>
                                         </div>
@@ -203,44 +203,33 @@
                             <div class="customer-service">
                                 <div class="container">
                                     <div class="row">
-                                        <div class="col-xl-3">
+                                        <div class="col-xl-4">
                                             <h3 class="customer-title">
                                                 GỌI MUA HÀNG (8:30 - 22:20)
                                             </h3>
                                             <p class="customer-call-number">0967.284.444</p>
                                             <p class="customer-desc">Tất cả các ngày trong tuần</p>
                                         </div>
-                                        <div class="col-xl-3">
+                                        <div class="col-xl-4">
                                             <h3 class="customer-title">
                                                 GÓP Ý, KHIẾU NẠI (8:00 - 17:00)
                                             </h3>
                                             <p class="customer-call-number">0968.959.050</p>
                                             <p class="customer-desc">Các ngày trong tuần (trừ ngày lễ)</p>
                                         </div>
-                                        <div class="col-xl-3">
-                                            <h3 class="customer-title">Đăng ký nhận thông tin mới</h3>
-                                            <div class="form-wrap">
-                                                <input type="text" class="form-control" id="customer-email"
-                                                    placeholder="Nhập email của bạn tại đây...">
-                                                <button class="form-control" id="customer-btn">Đăng ký</button>
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-3">
+                                        <div class="col-xl-4">
                                             <h3 class="customer-title">
                                                 Theo dõi chúng tôi
                                             </h3>
                                             <div class="customer-socials-wrap">
-                                                <a href="#" class="customer-socials-item">
+                                                <a href="https://www.facebook.com/Atino.vn" class="customer-socials-item">
                                                     <i class="fa-brands fa-facebook-f"></i>
                                                 </a>
-                                                <a href="#" class="customer-socials-item">
+                                                <a href="https://www.instagram.com/atino.vn/" class="customer-socials-item">
                                                     <i class="fa-brands fa-instagram"></i>
                                                 </a>
-                                                <a href="#" class="customer-socials-item">
+                                                <a href="https://shopee.vn/atino.vn" class="customer-socials-item">
                                                     <i class="fa-solid fa-shop"></i>
-                                                </a>
-                                                <a href="#" class="customer-socials-item">
-                                                    <i class="fa-brands fa-twitter"></i>
                                                 </a>
                                             </div>
                                         </div>

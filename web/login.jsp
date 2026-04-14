@@ -2,8 +2,8 @@
 <%@page import="com.shopshop.dao.CategoryDAO" %>
 <%@page import="com.shopshop.model.Category" %>
 <%@page import="java.util.List" %>
-    <!doctype html>
-    <html lang="vi">
+<!doctype html>
+<html lang="vi">
 
     <head>
         <!-- Required meta tags -->
@@ -12,7 +12,7 @@
 
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
-            integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+              integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
 
         <title>Atino</title>
         <!-- CSS -->
@@ -22,20 +22,20 @@
         <link rel="stylesheet" href="./assets/css/login.css">
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
-            integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w=="
-            crossorigin="anonymous" referrerpolicy="no-referrer" />
+              integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w=="
+              crossorigin="anonymous" referrerpolicy="no-referrer" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
-            integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
-            crossorigin="anonymous" referrerpolicy="no-referrer" />
+              integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+              crossorigin="anonymous" referrerpolicy="no-referrer" />
     </head>
 
     <body>
         <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
-            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
-            </script>
+                integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+        </script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous">
-            </script>
+                integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous">
+        </script>
 
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -45,46 +45,47 @@
 
 
         <div class="section-one">
-                                <div class="container-fluid">
-                                    <div class="inner-wrap">
-                                        <div class="phone-wrap">
-                                            <i class="fa-solid fa-phone phone-icon"></i>
-                                            <p class="phone-number">096728.4444</p>
-                                        </div>
-                                        <div class="account-wrap">
-                                            <% com.shopshop.model.Users user=(com.shopshop.model.Users)
-                                                session.getAttribute("user"); %>
-                                                <% if (user !=null) { %>
-                                                    <div class="account">
-                                                        <i class="fa-solid fa-person account-icon"></i>
-                                                        <p class="account-text">
-                                                            <%= user.getFullName() %>
-                                                        </p>
-                                                    </div>
-                                                    <div class="logout" style="margin-right: 20px;">
-                                                        <i class="fa-solid fa-right-from-bracket"
-                                                            style="margin-right: 5px;"></i>
-                                                        <a href="logout" class="account-link"
-                                                            style="text-decoration: none; color: #5a5a5a;">
-                                                            <p class="account-text" style="margin: 0;">Đăng xuất</p>
-                                                        </a>
-                                                    </div>
-                                                    <% } else { %>
-                                                        <div class="account">
-                                                            <i class="fa-solid fa-person account-icon"></i>
-                                                            <a href="login" class="account-link">
-                                                                <p class="account-text">Tài khoản</p>
-                                                            </a>
-                                                        </div>
-                                                        <% } %>
-                                                            <div class="cart">
-                                                                <i class="fa-solid fa-cart-arrow-down cart-icon"></i>
-                                                                <p class="cart-text">Giỏ hàng(0)</p>
-                                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+            <div class="container-fluid">
+                <div class="inner-wrap">
+                    <div class="phone-wrap">
+                        <i class="fa-solid fa-phone phone-icon"></i>
+                        <p class="phone-number">096728.4444</p>
+                    </div>
+                    <div class="account-wrap">
+                        <% com.shopshop.model.Users user = (com.shopshop.model.Users) session.getAttribute("user"); %>
+                        <% if (user != null) {%>
+                        <div class="account">
+                            <i class="fa-solid fa-person account-icon"></i>
+                            <p class="account-text">
+                                <%= user.getFullName()%>
+                            </p>
+                        </div>
+                        <div class="logout" style="margin-right: 20px;">
+                            <i class="fa-solid fa-right-from-bracket"
+                               style="margin-right: 5px;"></i>
+                            <a href="logout" class="account-link"
+                               style="text-decoration: none; color: #5a5a5a;">
+                                <p class="account-text" style="margin: 0;">Đăng xuất</p>
+                            </a>
+                        </div>
+                        <% } else { %>
+                        <div class="account">
+                            <i class="fa-solid fa-person account-icon"></i>
+                            <a href="login" class="account-link">
+                                <p class="account-text">Tài khoản</p>
+                            </a>
+                        </div>
+                        <% } %>
+                        <a href="cart" style="text-decoration: none; color: inherit;">
+                            <div class="cart">
+                                <i class="fa-solid fa-cart-arrow-down cart-icon"></i>
+                                <p class="cart-text mb-0">Giỏ hàng(${sessionScope.cartCount != null ? sessionScope.cartCount : 0})</p>
                             </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <header class="header">
             <div class="container-fluid">
@@ -102,15 +103,15 @@
                                 <div class="header-nav">
                                     <a href="./home" class="header-item">Trang chủ</a>
                                     <% CategoryDAO headerCatDAO = new CategoryDAO();
-                                       List<Category> rootCats = headerCatDAO.getRootCategories();
-                                       for (Category rc : rootCats) {
-                                           List<Category> childCats = headerCatDAO.getChildCategories(rc.getId()); %>
+                                        List<Category> rootCats = headerCatDAO.getRootCategories();
+                                        for (Category rc : rootCats) {
+                                            List<Category> childCats = headerCatDAO.getChildCategories(rc.getId());%>
                                     <div class="nav-item-has-dropdown">
-                                        <a href="category?id=<%= rc.getId() %>" class="header-item"><%= rc.getName() %></a>
+                                        <a href="category?id=<%= rc.getId()%>" class="header-item"><%= rc.getName()%></a>
                                         <% if (!childCats.isEmpty()) { %>
                                         <div class="nav-dropdown">
-                                            <% for (Category cc : childCats) { %>
-                                            <a href="category?id=<%= cc.getId() %>"><%= cc.getName() %></a>
+                                            <% for (Category cc : childCats) {%>
+                                            <a href="category?id=<%= cc.getId()%>"><%= cc.getName()%></a>
                                             <% } %>
                                         </div>
                                         <% } %>
@@ -122,7 +123,7 @@
                         <div class="col-xl-3">
                             <form action="search" method="GET" class="search-wrap">
                                 <input type="text" name="keyword" class="form-control search-bar" placeholder="Tìm kiếm"
-                                    required>
+                                       required>
                                 <button type="submit" class="search-btn">
                                     <i class="fa-solid fa-magnifying-glass search-icon"></i>
                                 </button>
@@ -140,119 +141,86 @@
             <div class="container">
                 <div class="login-wrapper">
                     <div class="login-box">
-                        <% String error=(String) request.getAttribute("error"); %>
-                            <% String registerError=(String) request.getAttribute("registerError"); %>
-                                <% boolean showRegister=request.getAttribute("showRegister") !=null; %>
-                                    <% String registerSuccess=request.getParameter("registerSuccess"); %>
-                                        <div class="login-tabs d-flex">
-                                            <div class="tab-item <%= showRegister ? "" : " active" %>"
-                                                id="tab-login">Đăng nhập</div>
-                                            <div class="tab-item <%= showRegister ? " active" : "" %>"
-                                                id="tab-register">Đăng ký</div>
-                                        </div>
+                        <% String error = (String) request.getAttribute("error"); %>
+                        <% String registerError = (String) request.getAttribute("registerError"); %>
+                        <% boolean showRegister = request.getAttribute("showRegister") != null; %>
+                        <% String registerSuccess = request.getParameter("registerSuccess");%>
+                        <div class="login-tabs d-flex">
+                            <div class="tab-item <%= showRegister ? "" : " active"%>"
+                                 id="tab-login">Đăng nhập</div>
+                            <div class="tab-item <%= showRegister ? " active" : ""%>"
+                                 id="tab-register">Đăng ký</div>
+                        </div>
 
-                                        <div class="login-form-body" id="form-login"
-                                            style="display: <%= showRegister ? " none" : "block" %>">
-                                            <form action="login" method="POST">
-                                                <% if ("true".equals(registerSuccess)) { %>
-                                                    <div class="alert alert-success" style="font-size: 14px;">
-                                                        Đăng ký thành công! Vui lòng đăng nhập.
-                                                    </div>
-                                                    <% } %>
-                                                        <% if (error !=null) { %>
-                                                            <div class="alert alert-danger" style="font-size: 14px;">
-                                                                <%= error %>
-                                                            </div>
-                                                            <% } %>
-                                                                <div class="form-group mb-4">
-                                                                    <input type="text" name="username"
-                                                                        class="form-control"
-                                                                        placeholder="Nhập email hoặc Tên đăng nhập">
-                                                                </div>
-                                                                <div class="form-group mb-4">
-                                                                    <input type="password" name="password"
-                                                                        class="form-control" placeholder="Mật khẩu">
-                                                                </div>
-                                                                <button type="submit"
-                                                                    class="btn btn-login-submit mb-3 col-12">ĐĂNG
-                                                                    NHẬP</button>
+                        <div class="login-form-body" id="form-login"
+                             style="display: <%= showRegister ? " none" : "block"%>">
+                            <form action="login" method="POST">
+                                <% if ("true".equals(registerSuccess)) { %>
+                                <div class="alert alert-success" style="font-size: 14px;">
+                                    Đăng ký thành công! Vui lòng đăng nhập.
+                                </div>
+                                <% } %>
+                                <% if (error != null) {%>
+                                <div class="alert alert-danger" style="font-size: 14px;">
+                                    <%= error%>
+                                </div>
+                                <% }%>
+                                <div class="form-group mb-4">
+                                    <input type="text" name="username"
+                                           class="form-control"
+                                           placeholder="Nhập email hoặc Tên đăng nhập">
+                                </div>
+                                <div class="form-group mb-4">
+                                    <input type="password" name="password"
+                                           class="form-control" placeholder="Mật khẩu">
+                                </div>
+                                <button type="submit"
+                                        class="btn btn-login-submit mb-3 col-12">ĐĂNG
+                                    NHẬP</button>
 
-                                                                <div class="text-center mt-2 mb-3">
-                                                                    <a href="#"
-                                                                        style="color: #4285f4; font-size: 14px; text-decoration: none;">Quên
-                                                                        mật
-                                                                        khẩu?</a>
-                                                                    <!-- <p class="mt-2 text-muted" style="font-size: 14px;">
-                                                                        Hoặc đăng nhập
-                                                                        với</p> -->
-                                                                </div>
+                            </form>
+                        </div>
 
-                                                                <!-- <div class="row px-2">
-                                                                    <div class="col-6 px-2">
-                                                                        <a href="#" class="social-btn btn-fb w-100">
-                                                                            <div class="icon-box">
-                                                                                <i class="fa-brands fa-facebook-f"></i>
-                                                                            </div>
-                                                                            <span class="flex-grow-1 text-center">Đăng
-                                                                                nhập bằng
-                                                                                Facebook</span>
-                                                                        </a>
-                                                                    </div>
-                                                                    <div class="col-6 px-2">
-                                                                        <a href="#" class="social-btn btn-gg w-100">
-                                                                            <div class="icon-box">
-                                                                                <i class="fa-brands fa-google text-dark bg-white"
-                                                                                    style="display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; font-size: 12px;"></i>
-                                                                            </div>
-                                                                            <span class="flex-grow-1 text-center">Đăng
-                                                                                nhập bằng
-                                                                                Google</span>
-                                                                        </a>
-                                                                    </div>
-                                                                </div> -->
-                                            </form>
-                                        </div>
-
-                                        <div class="login-form-body" id="form-register"
-                                            style="display: <%= showRegister ? " block" : "none" %>;">
-                                            <form action="register" method="POST">
-                                                <%-- Hiển thị lỗi đăng ký nếu có --%>
-                                                    <% if (registerError !=null) { %>
-                                                        <div class="alert alert-danger" style="font-size: 14px;">
-                                                            <%= registerError %>
-                                                        </div>
-                                                        <% } %>
-                                                            <div class="form-group mb-4">
-                                                                <input type="text" name="fullName" class="form-control"
-                                                                    placeholder="Họ và tên *" required>
-                                                            </div>
-                                                            <div class="form-group mb-4">
-                                                                <input type="text" name="username" class="form-control"
-                                                                    placeholder="Tên đăng nhập *" required>
-                                                            </div>
-                                                            <div class="form-group mb-4">
-                                                                <input type="text" name="phone" class="form-control"
-                                                                    placeholder="Số điện thoại">
-                                                            </div>
-                                                            <div class="form-group mb-4">
-                                                                <input type="email" name="email" class="form-control"
-                                                                    placeholder="Email">
-                                                            </div>
-                                                            <div class="form-group mb-4">
-                                                                <input type="password" name="password"
-                                                                    class="form-control" placeholder="Mật khẩu *"
-                                                                    required>
-                                                            </div>
-                                                            <div class="form-group mb-4">
-                                                                <input type="password" name="confirmPassword"
-                                                                    class="form-control"
-                                                                    placeholder="Xác nhận mật khẩu *" required>
-                                                            </div>
-                                                            <button type="submit"
-                                                                class="btn btn-login-submit mb-3 w-100">ĐĂNG KÝ TÀI
-                                                                KHOẢN</button>
-                                            </form>
-                                        </div>
+                        <div class="login-form-body" id="form-register"
+                             style="display: <%= showRegister ? " block" : "none"%>;">
+                            <form action="register" method="POST">
+                                <%-- Hiển thị lỗi đăng ký nếu có --%>
+                                <% if (registerError != null) {%>
+                                <div class="alert alert-danger" style="font-size: 14px;">
+                                    <%= registerError%>
+                                </div>
+                                <% }%>
+                                <div class="form-group mb-4">
+                                    <input type="text" name="fullName" class="form-control"
+                                           placeholder="Họ và tên *" required>
+                                </div>
+                                <div class="form-group mb-4">
+                                    <input type="text" name="username" class="form-control"
+                                           placeholder="Tên đăng nhập *" required>
+                                </div>
+                                <div class="form-group mb-4">
+                                    <input type="text" name="phone" class="form-control"
+                                           placeholder="Số điện thoại">
+                                </div>
+                                <div class="form-group mb-4">
+                                    <input type="email" name="email" class="form-control"
+                                           placeholder="Email">
+                                </div>
+                                <div class="form-group mb-4">
+                                    <input type="password" name="password"
+                                           class="form-control" placeholder="Mật khẩu *"
+                                           required>
+                                </div>
+                                <div class="form-group mb-4">
+                                    <input type="password" name="confirmPassword"
+                                           class="form-control"
+                                           placeholder="Xác nhận mật khẩu *" required>
+                                </div>
+                                <button type="submit"
+                                        class="btn btn-login-submit mb-3 w-100">ĐĂNG KÝ TÀI
+                                    KHOẢN</button>
+                            </form>
+                        </div>
 
                     </div>
                 </div>
@@ -270,44 +238,33 @@
         <div class="customer-service">
             <div class="container">
                 <div class="row">
-                    <div class="col-xl-3">
+                    <div class="col-xl-4">
                         <h3 class="customer-title">
                             GỌI MUA HÀNG (8:30 - 22:20)
                         </h3>
                         <p class="customer-call-number">0967.284.444</p>
                         <p class="customer-desc">Tất cả các ngày trong tuần</p>
                     </div>
-                    <div class="col-xl-3">
+                    <div class="col-xl-4">
                         <h3 class="customer-title">
                             GÓP Ý, KHIẾU NẠI (8:00 - 17:00)
                         </h3>
                         <p class="customer-call-number">0968.959.050</p>
                         <p class="customer-desc">Các ngày trong tuần (trừ ngày lễ)</p>
                     </div>
-                    <div class="col-xl-3">
-                        <h3 class="customer-title">Đăng ký nhận thông tin mới</h3>
-                        <div class="form-wrap">
-                            <input type="text" class="form-control" id="customer-email"
-                                placeholder="Nhập email của bạn tại đây...">
-                            <button class="form-control" id="customer-btn">Đăng ký</button>
-                        </div>
-                    </div>
-                    <div class="col-xl-3">
+                    <div class="col-xl-4">
                         <h3 class="customer-title">
                             Theo dõi chúng tôi
                         </h3>
                         <div class="customer-socials-wrap">
-                            <a href="#" class="customer-socials-item">
+                            <a href="https://www.facebook.com/Atino.vn" class="customer-socials-item">
                                 <i class="fa-brands fa-facebook-f"></i>
                             </a>
-                            <a href="#" class="customer-socials-item">
+                            <a href="https://www.instagram.com/atino.vn/" class="customer-socials-item">
                                 <i class="fa-brands fa-instagram"></i>
                             </a>
-                            <a href="#" class="customer-socials-item">
+                            <a href="https://shopee.vn/atino.vn" class="customer-socials-item">
                                 <i class="fa-solid fa-shop"></i>
-                            </a>
-                            <a href="#" class="customer-socials-item">
-                                <i class="fa-brands fa-twitter"></i>
                             </a>
                         </div>
                     </div>
@@ -456,8 +413,7 @@
             window.addEventListener('scroll', function () {
                 const header = document.querySelector('.header');
 
-                // Bạn có thể thay đổi số 150 này. 
-                // Đây là mốc (tính bằng pixel) khi bạn cuộn qua, header sẽ trượt xuống.
+                // Đây là mốc (tính bằng pixel) khi cuộn qua, header sẽ trượt xuống.
                 if (window.scrollY > 150) {
                     header.classList.add('sticky');
                 } else {
@@ -499,4 +455,4 @@
         </script>
     </body>
 
-    </html>
+</html>

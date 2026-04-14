@@ -179,21 +179,47 @@ public class CartDAO extends DBContext {
         }
     }
 
-    //Cập nhật số lượng (+ / -)
-    public void updateQuantity(int cartItemId, int quantity) {
+    //Cập nhật số lượng (+ / -), có kiểm tra tồn kho
+    public boolean updateQuantity(int cartItemId, int quantity) {
         // Nếu giảm số lượng về 0 hoặc âm thì xóa luôn sản phẩm đó
         if (quantity <= 0) {
             deleteCartItem(cartItemId);
-            return;
+            return true;
+        }
+        // Kiểm tra tồn kho trước khi cập nhật
+        CartItem item = getCartItemById(cartItemId);
+        if (item != null) {
+            int stock = getStockQuantityByVariantId(item.getVariant_id());
+            if (quantity > stock) {
+                return false; // Vượt quá tồn kho, từ chối cập nhật
+            }
         }
         String sql = "UPDATE cartitem SET quantity = ? WHERE id = ?";
         try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, quantity);
             ps.setInt(2, cartItemId);
             ps.executeUpdate();
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return false;
+    }
+
+    // Hàm lấy số lượng tồn kho thực tế của 1 biến thể từ DB
+    public int getStockQuantityByVariantId(int variantId) {
+        String sql = "SELECT stock_quantity FROM ProductVariant WHERE id = ?";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, variantId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("stock_quantity");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
     // Hàm Lấy thông tin chính xác từ ID được tích chọn

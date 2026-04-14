@@ -69,21 +69,44 @@ public class ProcessOrderServlet extends HttpServlet {
                 return;
             }
 
+            // Kiểm tra tồn kho trước khi đặt đơn
+            for (CartItem item : itemsToBuy) {
+                // Lấy số lượng tồn kho thực tế từ DB
+                int stockQty = cartDAO.getStockQuantityByVariantId(item.getVariant_id());
+                if (item.getQuantity() > stockQty) {
+                    // Thiếu hàng: trả về trang checkout với thông báo lỗi
+                    String errorMsg = "Sản phẩm \"" + item.getProductName()
+                            + "\" (" + item.getColor() + " - " + item.getSize() + ")"
+                            + " chỉ còn " + stockQty + " sản phẩm trong kho. Vui lòng giảm số lượng.";
+                    request.setAttribute("errorMessage", errorMsg);
+                    // Load lại dữ liệu cần thiết cho trang checkout
+                    String[] selectedIds = request.getParameterValues("cartItemIds");
+                    request.setAttribute("checkoutList", cartDAO.getSelectedCartItems(selectedIds));
+                    com.shopshop.dao.CategoryDAO catDAO = new com.shopshop.dao.CategoryDAO();
+                    request.setAttribute("winter", catDAO.getChildCategories(1));
+                    request.setAttribute("summer", catDAO.getChildCategories(2));
+                    request.setAttribute("pant", catDAO.getChildCategories(3));
+                    request.setAttribute("accessories", catDAO.getChildCategories(4));
+                    request.getRequestDispatcher("checkout.jsp").forward(request, response);
+                    return;
+                }
+            }
+
             // 4. TẠO ORDER 
             Orders order = new Orders();
-            // Lưu ý: Cậu kiểm tra trong class Orders, nếu hàm setter là setUserId thì đổi lại cho đúng nhé
+            
             order.setUser_id(user.getId()); 
             order.setTotalPrice(totalItemPrice + 20000); // Tiền hàng + Phí ship 20k
             order.setShipName(name);
             order.setShipAddress(address);
             order.setShipPhone(phone);
-            order.setStatus(1); // 1: Chờ xử lý
+            order.setStatus(0); // 0: Chờ xử lý
             order.setNote(note);
 
             int orderId = ordersDAO.insertOrder(order);
 
             if (orderId > 0) {
-                // 5. LƯU CHI TIẾT, TRỪ KHO VÀ XÓA GIỎ HÀNG
+                // Lưu chi tiết + trừ kho + xóa giỏ hàng
                 for (CartItem item : itemsToBuy) {
                     ordersDAO.insertOrderDetail(orderId, item.getVariant_id(), item.getQuantity(), item.getPrice());
                     ordersDAO.updateStock(item.getVariant_id(), item.getQuantity());
@@ -99,16 +122,21 @@ public class ProcessOrderServlet extends HttpServlet {
                 request.setAttribute("shipPhone", phone);
                 request.setAttribute("shipAddress", address);
                 
-                // DÒNG NÀY RẤT QUAN TRỌNG: Gửi danh sách món hàng khách vừa mua sang JSP
+                // Gửi danh sách món hàng khách vừa mua sang JSP
+                for (CartItem item : itemsToBuy) {
+                    item.setColor(item.getColor().toUpperCase());
+                    item.setSize(item.getSize().toUpperCase());
+                }
+                
                 request.setAttribute("orderedItems", itemsToBuy);
                 
-                // BỔ SUNG LẠI: Gửi dữ liệu cho thanh Menu Động để menu không bị trống
+                //Gửi dữ liệu cho thanh Menu
                 com.shopshop.dao.CategoryDAO categoryDAOMenu = new com.shopshop.dao.CategoryDAO();
                 request.setAttribute("winter", categoryDAOMenu.getChildCategories(1));
                 request.setAttribute("summer", categoryDAOMenu.getChildCategories(2));
                 request.setAttribute("pant", categoryDAOMenu.getChildCategories(3));
                 request.setAttribute("accessories", categoryDAOMenu.getChildCategories(4));
-                
+
                 request.getRequestDispatcher("order-success.jsp").forward(request, response);
             } else {
                 response.sendRedirect("cart");

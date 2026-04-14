@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import com.shopshop.dao.UsersDAO;
+import com.shopshop.dao.CartDAO;
 import com.shopshop.model.Users;
 import java.util.Map;
 
@@ -30,30 +31,8 @@ public class LoginServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         
         String username = request.getParameter("username");
-   //     System.out.println(username);
         String password = request.getParameter("password");
-   //     System.out.println(password);    
-        
-//        StringBuilder url = new StringBuilder(request.getRequestURL());
-//
-//        Map<String,String[]> params = request.getParameterMap();
-//
-//        if(!params.isEmpty())
-//        {
-//            url.append("?");
-//
-//            params.forEach((k,v)->
-//                url.append(k)
-//                   .append("=")
-//                   .append(v[0])
-//                   .append("&")
-//            );
-//
-//            url.deleteCharAt(url.length()-1);
-//        }
-//
-//        System.out.println(url.toString());
-//        
+ 
         
         UsersDAO dao = new UsersDAO();
         Users user = dao.login(username, password);
@@ -62,6 +41,10 @@ public class LoginServlet extends HttpServlet {
             // Đăng nhập thành công → Lưu user vào Session
             HttpSession session = request.getSession();
             session.setAttribute("user", user);
+            
+            CartDAO cartDAO = new CartDAO();
+            int limit = cartDAO.getCartCount(user.getId());
+            session.setAttribute("cartCount", limit);
 
             // Chuyển hướng theo role
             if (user.getRole() == 1) {
@@ -70,7 +53,7 @@ public class LoginServlet extends HttpServlet {
                 response.sendRedirect("home");
             }
         } else {
-            // Đăng nhập thất bại → Quay lại login.jsp kèm thông báo lỗi
+            // Đăng nhập thất bại -> Quay lại login.jsp kèm thông báo lỗi
             request.setAttribute("error", "Sai tên đăng nhập hoặc mật khẩu!");
             request.getRequestDispatcher("login.jsp").forward(request, response);
         }

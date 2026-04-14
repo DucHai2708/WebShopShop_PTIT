@@ -22,7 +22,7 @@ public class CheckoutServlet extends HttpServlet {
         // 1. Lấy mảng ID từ các checkbox "selectedItems" được gửi lên
         String[] selectedIds = request.getParameterValues("selectedItems");
         
-        // Nếu khách chưa chọn món nào mà bấm thanh toán -> Đuổi về giỏ hàng
+        // Nếu khách chưa chọn món nào mà bấm thanh toán -> Chuyển về về giỏ hàng
         if (selectedIds == null || selectedIds.length == 0) { 
             response.sendRedirect("cart"); 
             return; 
@@ -56,14 +56,17 @@ public class CheckoutServlet extends HttpServlet {
         request.getRequestDispatcher("checkout.jsp").forward(request, response);
     }
 
-    // =====================================================================
-    // 4. CHỐNG LỖI 405 (Method Not Allowed)
-    // Nếu người dùng vô tình gõ trực tiếp url "localhost:8080/.../checkout" 
+    
+    // Nếu người ùng vô tình gõ trực tiếp url "localhost:8080/.../checkout" 
     // lên trình duyệt, nó sẽ vào doGet. Ta đuổi họ về lại trang cart.
-    // =====================================================================
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) 
             throws ServletException, IOException {
+        String[] selectedIds = request.getParameterValues("selectedItems");
+        if (selectedIds != null && selectedIds.length > 0) {
+            doPost(request, response);
+            return;
+        }
         response.sendRedirect("cart");
     }
 }

@@ -377,33 +377,71 @@ public class ProductDAO extends DBContext {
         return false;
     }
 
-// 3. Hàm XÓA sản phẩm 
+// 3. Hàm XÓA sản phẩm (Cascade force-delete toàn bộ dữ liệu liên quan)
     public boolean deleteProduct(int id) {
-        //Xóa hết các Size/Màu của sản phẩm đó trong bảng ProductVariant trước
+        // Thứ tự xóa phải từ bảng con -> bảng cha để tránh lỗi Foreign Key Constraint
+        // Bước 1: Xóa CartItem có variant thuộc sản phẩm này
+        String sqlCartItem = "DELETE FROM CartItem WHERE variant_id IN (SELECT id FROM ProductVariant WHERE product_id = ?)";
+        // Bước 2: Xóa OrderDetail có variant thuộc sản phẩm này
+        String sqlOrderDetail = "DELETE FROM OrderDetail WHERE variant_id IN (SELECT id FROM ProductVariant WHERE product_id = ?)";
+        // Bước 3: Xóa tất cả biến thể (Màu/Size) của sản phẩm
         String sqlVariant = "DELETE FROM ProductVariant WHERE product_id = ?";
-        //Xóa sản phẩm chính trong bảng Product
+        // Bước 4: Xóa chính sản phẩm
         String sqlProduct = "DELETE FROM Product WHERE id = ?";
 
         try (Connection conn = getConnection()) {
             conn.setAutoCommit(false);
-            try (PreparedStatement psV = conn.prepareStatement(sqlVariant); PreparedStatement psP = conn.prepareStatement(sqlProduct)) {
+            try (
+                PreparedStatement psCart = conn.prepareStatement(sqlCartItem);
+                PreparedStatement psOrder = conn.prepareStatement(sqlOrderDetail);
+                PreparedStatement psV = conn.prepareStatement(sqlVariant);
+                PreparedStatement psP = conn.prepareStatement(sqlProduct)
+            ) {
+                // Bước 1: Xóa giỏ hàng liên quan
+                psCart.setInt(1, id);
+                psCart.executeUpdate();
 
+                // Bước 2: Xóa chi tiết đơn hàng liên quan
+                psOrder.setInt(1, id);
+                psOrder.executeUpdate();
+
+                // Bước 3: Xóa các biến thể
                 psV.setInt(1, id);
                 psV.executeUpdate();
 
+                // Bước 4: Xóa sản phẩm chính
                 psP.setInt(1, id);
                 int rows = psP.executeUpdate();
 
                 conn.commit();
-                return rows > 0; // Nếu cập nhật được
+                return rows > 0;
             } catch (Exception e) {
-                conn.rollback(); // Lỗi 1 cái là trả lại hết
+                conn.rollback();
                 e.printStackTrace();
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return false;
+    }
+
+    /**
+     * Đồng bộ quantity của Product = tổng stock_quantity của tất cả biến thể.
+     * Gọi hàm này sau mỗi lần thêm/sửa biến thể để đảm bảo nhất quán dữ liệu.
+     */
+    public void syncProductQuantity(int productId) {
+        String sql = "UPDATE Product SET quantity = ("
+                + "  SELECT COALESCE(SUM(pv.stock_quantity), 0)"
+                + "  FROM ProductVariant pv"
+                + "  WHERE pv.product_id = ?"
+                + ") WHERE id = ?";
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, productId);
+            ps.setInt(2, productId);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {
