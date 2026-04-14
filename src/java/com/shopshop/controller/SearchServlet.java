@@ -20,11 +20,23 @@ public class SearchServlet extends HttpServlet {
         String keyword = request.getParameter("keyword");
 
         if (keyword != null) {
+            String[] sizes = request.getParameterValues("size");
+            String[] colors = request.getParameterValues("color");
+            String[] prices = request.getParameterValues("price");
+
             ProductDAO pDao = new ProductDAO();
-            List<Product> listProducts = pDao.searchByName(keyword);
+            List<Product> listProducts;
+            if (sizes == null && colors == null && prices == null) {
+                listProducts = pDao.searchByName(keyword);
+            } else {
+                listProducts = pDao.searchByNameWithFilter(keyword, prices, sizes, colors);
+            }
             
             request.setAttribute("productList", listProducts);
             request.setAttribute("keyword", keyword);
+            request.setAttribute("sizes", sizes);
+            request.setAttribute("colors", colors);
+            request.setAttribute("priceRanges", prices);
             
             // GỬI DỮ LIỆU CHO MENU
             com.shopshop.dao.CategoryDAO categoryDAOMenu = new com.shopshop.dao.CategoryDAO();

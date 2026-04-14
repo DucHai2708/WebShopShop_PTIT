@@ -240,7 +240,88 @@ public class ProductDAO extends DBContext {
         return list;
     }
 
-    //Hàm tìm kiếm sản phẩm theo tên
+    // Hàm tìm kiếm sản phẩm theo tên kết hợp bộ lọc giá, kích cỡ, màu sắc
+    public List<Product> searchByNameWithFilter(String txtSearch, String[] priceRanges, String[] sizes, String[] colors) {
+        List<Product> list = new ArrayList<>();
+        boolean needJoinVariant = (sizes != null && sizes.length > 0) || (colors != null && colors.length > 0);
+
+        StringBuilder sql = new StringBuilder();
+        sql.append("SELECT DISTINCT p.* FROM Product p ");
+
+        if (needJoinVariant) {
+            sql.append("INNER JOIN ProductVariant pv ON p.id = pv.product_id ");
+        }
+
+        sql.append("WHERE p.name LIKE ? ");
+
+        if (priceRanges != null && priceRanges.length > 0) {
+            sql.append(" AND (");
+            List<String> conditions = new ArrayList<>();
+            for (String range : priceRanges) {
+                switch (range) {
+                    case "1": conditions.add("p.price < 200000"); break;
+                    case "2": conditions.add("(p.price >= 200000 AND p.price <= 500000)"); break;
+                    case "3": conditions.add("(p.price >= 500000 AND p.price <= 1000000)"); break;
+                    case "4": conditions.add("p.price > 1000000"); break;
+                }
+            }
+            sql.append(String.join(" OR ", conditions));
+            sql.append(")");
+        }
+
+        if (sizes != null && sizes.length > 0) {
+            sql.append(" AND pv.size IN (");
+            for (int i = 0; i < sizes.length; i++) {
+                sql.append(i > 0 ? ",?" : "?");
+            }
+            sql.append(")");
+        }
+
+        if (colors != null && colors.length > 0) {
+            sql.append(" AND pv.color IN (");
+            for (int i = 0; i < colors.length; i++) {
+                sql.append(i > 0 ? ",?" : "?");
+            }
+            sql.append(")");
+        }
+
+        try (Connection conn = getConnection(); PreparedStatement ps = conn.prepareStatement(sql.toString())) {
+            int paramIndex = 1;
+            ps.setString(paramIndex++, "%" + txtSearch + "%");
+
+            if (sizes != null && sizes.length > 0) {
+                for (String s : sizes) {
+                    ps.setString(paramIndex++, s);
+                }
+            }
+
+            if (colors != null && colors.length > 0) {
+                for (String c : colors) {
+                    ps.setString(paramIndex++, c);
+                }
+            }
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Product p = new Product(
+                            rs.getInt("id"),
+                            rs.getString("name"),
+                            rs.getString("image"),
+                            rs.getDouble("price"),
+                            rs.getString("description"),
+                            rs.getInt("category_id"),
+                            rs.getInt("quantity")
+                    );
+                    p.setVariants(this.getVariantProductId(p.getId()));
+                    list.add(p);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
     public List<Product> searchByName(String txtSearch) {
         List<Product> list = new ArrayList<>();
         String sql = "SELECT * FROM Product WHERE name LIKE ?";

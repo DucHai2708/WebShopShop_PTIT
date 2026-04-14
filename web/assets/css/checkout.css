@@ -1,0 +1,36 @@
+.checkout-btns {
+    display: flex;
+    justify-content: space-between;
+}
+
+.checkout-btns a {
+    text-decoration: none;
+    color: var(--text-color);
+}
+
+.checkout-btn {
+    width: 49%;
+    height: 100%;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    margin-top: 0;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: bold;
+    font-size: 16px;
+    /* border: none; */
+    /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
+    display: flex;
+    border: 1px solid var(--text-color);
+}
+
+.submit-btn {
+    background-color: #343a40;
+    color: var(--white-color) !important;
+    border: none !important;
+}   

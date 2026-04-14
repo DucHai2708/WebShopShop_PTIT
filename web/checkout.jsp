@@ -14,6 +14,8 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
     <title>Thanh toán - Atino</title>
+    <link rel="stylesheet" href="./assets/css/checkout.css">
+    <link rel="stylesheet" href="./assets/css/base.css">
 </head>
 <body style="background-color: #f8f9fa;">
     <div class="container mt-5">
@@ -101,11 +103,16 @@
                             </span>
                         </div>
 
-                        <div class="d-flex mt-2">
-                            <a href="cart" class="btn btn-outline-secondary btn-block py-3 font-weight-bold mr-2">
+                        <!-- <div class="d-flex mt-2 checkout-btns">
+                            <a href="cart" class="checkout-btn btn btn-outline-secondary btn-block py-3 font-weight-bold mr-2">
                                 ← Quay lại giỏ hàng
                             </a>
-                            <button type="submit" class="btn btn-info btn-block py-3 font-weight-bold ml-2">HOÀN TẤT ĐƠN HÀNG</button>
+                            <button type="submit" class="checkout-btn btn btn-info btn-block py-3 font-weight-bold ml-2">HOÀN TẤT ĐƠN HÀNG</button>
+                        </div> -->
+
+                        <div class="checkout-btns">
+                            <a href="cart" class="checkout-btn">Quay lại giỏ hàng</a>
+                            <button type="submit" class="checkout-btn submit-btn">Hoàn tất đơn hàng</button>
                         </div>
                     </div>
                 </div>
